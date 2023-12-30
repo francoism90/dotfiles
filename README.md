@@ -168,6 +168,8 @@ If possible, use rootless: <https://wiki.archlinux.org/title/Podman#Rootless_Pod
 
 ### Theming
 
+> **TIP:** See <https://itsfoss.com/flatpak-app-apply-theme/> instructions for Flatpak theming.
+
 ```bash
 rpm-ostree install gnome-tweak-tool
 ```
