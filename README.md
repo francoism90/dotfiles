@@ -147,6 +147,15 @@ You can pull the latest toolbox, using:
 podman pull fedora-toolbox:39
 ```
 
+To update the Toolbox:
+
+```bash
+toolbox enter
+sudo dnf update && sudo dnf upgrade
+```
+
+You can create multiple toolboxes, and even manage using [Podman Desktop](https://podman-desktop.io/).
+
 ### Replace Firefox
 
 ```bash
@@ -154,6 +163,7 @@ rpm-ostree override remove firefox firefox-langpacks
 ```
 
 > **TIP:** The Mozilla Firefox Flatpak package is a good replacement.
+
 > **TIP:** You can also hide the desktop entry itself.
 
 #### Podman
@@ -180,7 +190,7 @@ When using GTK-3 apps, see <https://github.com/lassekongo83/adw-gtk3> for detail
 flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
 ```
 
-After a reboot, you can apply theme settings with Gnome Tweak.
+After a reboot, you can apply theme settings using Gnome Tweaks.
 
 ### ZSH
 
