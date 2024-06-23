@@ -27,11 +27,11 @@ rpm-ostree install https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfre
 systemctl reboot
 ```
 
-> **NOTE:** It is important to reboot first before continuing with the guide.
+You can now install overlayed packages or packages inside a toolbox from RPM Fusion.
 
 ### Upgrading
 
-To upgrade on major releases, e.g. Fedora Silverblue 38 > 39:
+To upgrade on major releases, e.g. Fedora Silverblue 39 > 40:
 
 ```bash
 rpm-ostree update --uninstall rpmfusion-free-release --uninstall rpmfusion-nonfree-release \
@@ -46,26 +46,20 @@ rpm-ostree reset
 systemctl reboot
 ```
 
-Redo giving steps and reinstall your packages.
+Redo the giving steps and reinstall your packages.
 
 ## Hardware acceleration
 
-> **NOTE:** Make sure RPM Fusion is configured first.
+> **NOTE:** Enable this only when needed outside Flatpaks, and make sure RPM Fusion is configured first!
 
-See <https://rpmfusion.org/Howto/OSTree> when using Intel/NVIDIA, and require Broadcom/DVB firmwares.
+See <https://rpmfusion.org/Howto/OSTree> when using Intel/NVIDIA, and if you require Broadcom/DVB firmwares.
 
 ### AMDGPU
 
-Override current mesa-va-drivers:
+Override the current mesa-va-drivers:
 
 ```bash
 rpm-ostree override remove mesa-va-drivers --install mesa-va-drivers-freeworld
-```
-
-In most cases you don't need VDPAU anymore, but if you do require it:
-
-```bash
-rpm-ostree install mesa-vdpau-drivers-freeworld
 ```
 
 ### FFMpeg
@@ -106,13 +100,31 @@ vainfo: Supported profile and entrypoints
       VAProfileNone                   : VAEntrypointVideoProc
 ```
 
-Generally you should see a lot more decoding and encoding support.
+> **NOTE:** Most applications still require to force VA-API support.
 
 ### GStreamer
+
+> **TIP:** You can also use Gnome Software to install additional codecs.
 
 ```bash
 rpm-ostee install rpm-ostree install gstreamer1-plugins-bad-free-extras gstreamer1-plugins-bad-freeworld gstreamer1-plugins-ugly gstreamer1-vaapi
 ```
+
+### Brave
+
+To enable VA-API on the [Brave Browser](https://flathub.org/apps/com.brave.Browser) Flatpak package, create the `~/.var/app/com.brave.Browser/config/brave-flags.conf` file, with the following content:
+
+```bash
+--ignore-gpu-blocklist
+--enable-zero-copy
+--enable-gpu-rasterization
+--use-gl=angle
+--use-angle=vulkan
+--enable-accelerated-video-decode
+--enable-features=VaapiVideoDecoder,VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL,VaapiVideoEncoder,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE,OneTimePermission,OverlayScrollbar
+```
+
+Depending on your hardware, you may need to enable/disable different flags. See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
 
 ## Filesystems
 
@@ -139,12 +151,12 @@ sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer b
 
 ## Software
 
-It is discourage to install (large) software on the ostree. Try to use Flatpaks and your Toolbox (`toolbox enter`) as much as possible.
+It is discourage to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`) as much as possible.
 
 You can pull the latest toolbox, using:
 
 ```bash
-podman pull fedora-toolbox:39
+podman pull fedora-toolbox:40
 ```
 
 To update the Toolbox:
@@ -154,27 +166,27 @@ toolbox enter
 sudo dnf update && sudo dnf upgrade
 ```
 
-You can create multiple toolboxes, and even manage using [Podman Desktop](https://podman-desktop.io/).
+You can create multiple toolboxes, and even manage them using [Podman Desktop](https://podman-desktop.io/).
 
-### Replace Firefox
+### Firefox
+
+To replace the provided default Firefox package, with the Firefox Flathub version for example:
 
 ```bash
 rpm-ostree override remove firefox firefox-langpacks
 ```
 
-> **TIP:** The Mozilla Firefox Flatpak package is a good replacement.
-
-> **TIP:** You can also hide the desktop entry itself.
+> **NOTE:** You can also hide the desktop entry itself.
 
 #### Podman
 
 If you use Podman, and need Docker compatibility:
 
 ```bash
-rpm-ostree install podman-compose podman-docker
+rpm-ostree install podman-docker
 ```
 
-If possible, use rootless: <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+If possible, enable and use rootless containers: <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 
 ### Theming
 
@@ -191,11 +203,3 @@ flatpak install org.gtk.Gtk3theme.adw-gtk3 org.gtk.Gtk3theme.adw-gtk3-dark
 ```
 
 After a reboot, you can apply theme settings using Gnome Tweaks.
-
-### ZSH
-
-See <https://ohmyz.sh/> for details.
-
-```bash
-rpm-ostree install fira-code-fonts fzf google-roboto-fonts mozilla-fira-mono-fonts powerline-fonts pygmentize tmux zsh zsh-autosuggestions zsh-syntax-highlighting
-```
