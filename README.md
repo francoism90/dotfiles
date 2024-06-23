@@ -1,6 +1,6 @@
 # Fedora Silverblue - Postinstall
 
-Personal settings for Fedora Silverblue 39, with lovely help from:
+Personal settings for Fedora Silverblue, with lovely help from:
 
 - <https://rpmfusion.org/Howto/OSTree>
 - <https://github.com/iaacornus/silverblue-postinstall_upgrade>
