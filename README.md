@@ -48,6 +48,36 @@ systemctl reboot
 
 Redo the giving steps and reinstall your packages.
 
+## nofile
+
+Increasing `nofile` limits may be needed for certain applications and games to work.
+
+Append the following to `/etc/security/limits.conf`:
+
+```bash
+$ cat /etc/security/limits.conf
+*           hard    nofile  65535
+*           soft    nofile	8192
+```
+
+Depending on the situation, this file may not be used. You also need to adjust the systemd configuration:
+
+```bash
+# mkdir -p /etc/systemd/system.conf.d/
+# cat /etc/systemd/system.conf.d/10-filelimit.conf
+[Service]
+LimitNOFILE=65535
+```
+
+```bash
+# mkdir -p /etc/systemd/user.conf.d/
+# cat /etc/systemd/user.conf.d/10-filelimit.conf
+[Service]
+LimitNOFILE=65535
+```
+
+Reboot the system to apply the increased limits.
+
 ## Hardware acceleration
 
 > **NOTE:** Enable this only when needed outside Flatpaks, and make sure RPM Fusion is configured first!
