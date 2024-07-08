@@ -52,6 +52,8 @@ Redo the giving steps and reinstall your packages.
 
 Increasing `nofile` limits may be needed for certain applications and games to work.
 
+See <https://access.redhat.com/solutions/1257953> for more details.
+
 Append the following to `/etc/security/limits.conf`:
 
 ```bash
@@ -65,14 +67,14 @@ Depending on the situation, this file may not be used. You also need to adjust t
 ```bash
 # mkdir -p /etc/systemd/system.conf.d/
 # cat /etc/systemd/system.conf.d/10-filelimit.conf
-[Service]
+[Manager]
 LimitNOFILE=65535
 ```
 
 ```bash
 # mkdir -p /etc/systemd/user.conf.d/
 # cat /etc/systemd/user.conf.d/10-filelimit.conf
-[Service]
+[Manager]
 LimitNOFILE=65535
 ```
 
