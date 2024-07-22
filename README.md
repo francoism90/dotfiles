@@ -1,6 +1,6 @@
 # dotfiles
 
-This is a selection of settings and preferences for my Fedora Silverblue installation.
+This is a selection of settings and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) installation.
 
 ## Maintenance
 
