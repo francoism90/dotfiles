@@ -3,6 +3,7 @@
 Personal settings for Fedora Silverblue, with lovely help from:
 
 - <https://rpmfusion.org/Howto/OSTree>
+- <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
 - <https://github.com/iaacornus/silverblue-postinstall_upgrade>
 
 ## Maintenance
@@ -210,7 +211,7 @@ rpm-ostree override remove firefox firefox-langpacks
 
 > **NOTE:** You can also hide the desktop entry itself.
 
-#### Podman
+### Podman
 
 If you use Podman, and need Docker compatibility:
 
@@ -219,6 +220,19 @@ rpm-ostree install podman-docker
 ```
 
 If possible, enable and use rootless containers: <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+
+### VSCodium
+
+See the following guides:
+
+- <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
+- <https://github.com/jorchube/devcontainer-definitions>
+- <https://github.com/VSCodium/vscodium/discussions/1487>
+
+You may use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
+
+- Add to `Other files`: `xdg-run/podman:ro`
+- Add to `Variables`: `FLATPAK_ENABLE_SDK_EXT=podman,php83`
 
 ### Theming
 
