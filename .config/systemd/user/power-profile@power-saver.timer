@@ -1,0 +1,8 @@
+[Unit]
+Description=Run power-saver daily
+
+[Timer]
+OnCalendar=*-*-* 0:30:00
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,8 @@
+[Unit]
+Description=Set Power Profile to profile
+
+[Service]
+ExecStart=/usr/bin/powerprofilesctl set %i
+
+[Install]
+WantedBy=default.target
