@@ -17,15 +17,7 @@ See <https://access.redhat.com/solutions/1257953> for more details.
 
 > **NOTE:** Reboot the system to apply increased limits.
 
-### GStreamer
-
-You can use Gnome Software and checkout the Codecs selection for additional codecs.
-
-### Brave
-
-Depending on your hardware, you may need to enable/disable different flags. See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
-
-## Filesystems
+## Filesystem
 
 ### Encryption
 
@@ -35,20 +27,22 @@ See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for
 
 ### Btrfs
 
-If you are using Btrfs, you may want to enable <https://github.com/kdave/btrfsmaintenance>:
+If you are using Btrfs, you may want to use <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
 rpm-ostree install btrfsmaintenance
 nano /etc/sysconfig/btrfsmaintenance
 ```
 
-Enable the services:
+Enable the timers:
 
 ```bash
 sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
 ## Software
+
+### Toolbox
 
 It is discourage to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`) as much as possible.
 
@@ -77,9 +71,22 @@ rpm-ostree override remove firefox firefox-langpacks
 
 > **NOTE:** You can also hide the desktop entry itself.
 
+### Brave
+
+Depending on your hardware, you may need to enable/disable different flags. See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
+
 ### Podman
 
-Enable and use rootless containers: <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+Enable and use rootless containers:
+
+- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
+- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+
+To learn more about Podman Quadlet, the following resources may be useful:
+
+- <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
+- <https://www.redhat.com/sysadmin/quadlet-podman>
+- <https://mo8it.com/blog/quadlet/>
 
 ### VSCodium
 
@@ -93,6 +100,29 @@ You may use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and
 
 - Add to `Other files`: `xdg-run/podman:ro`
 - Add to `Variables`: `FLATPAK_ENABLE_SDK_EXT=podman,php83`
+
+#### Extensions
+
+Current extensions:
+
+- amiralizadeh9480.laravel-extra-intellisense
+- bmewburn.vscode-intelephense-client
+- bradlc.vscode-tailwindcss
+- christian-kohler.path-intellisense
+- dbaeumer.vscode-eslint
+- devsense.composer-php-vscode
+- eamodio.gitlens
+- esbenp.prettier-vscode
+- GitHub.copilot
+- GitHub.github-vscode-theme
+- GitHub.vscode-pull-request-github
+- onecentlin.laravel-blade
+- pKief.material-icon-theme
+- redhat.vscode-yaml
+- shufo.vscode-blade-formatter
+- streetsidesoftware.code-spell-checker
+- stylelint.vscode-stylelint
+- wmaurer.change-case
 
 ### Theming
 

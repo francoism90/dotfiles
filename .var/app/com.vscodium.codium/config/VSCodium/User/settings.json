@@ -1,0 +1,46 @@
+{
+  "css.format.spaceAroundSelectorSeparator": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontFamily": "'FiraCode Nerd Font Mono', 'Droid Sans Mono', 'monospace', monospace",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.quickSuggestions": {
+    "comments": "on",
+    "strings": "on"
+  },
+  "eslint.format.enable": true,
+  "eslint.useESLintClass": true,
+  "eslint.useFlatConfig": true,
+  "extensions.closeExtensionDetailsOnViewChange": true,
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "*.scss": "tailwindcss"
+  },
+  "files.autoGuessEncoding": true,
+  "files.readonlyFromPermissions": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "notebook.defaultFormatter": "esbenp.prettier-vscode",
+  "stylelint.packageManager": "yarn",
+  "tailwindCSS.experimental.classRegex": [
+    ["class\\(.*?\\)(?!\\])", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
+    ["classList.(?:add|remove)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
+    ["@?class\\(([^]*)\\)", "'([^']*)'"],
+    ["data-.*-class=['\"]([^'\"]*)"],
+    "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
+    ":\\s*?[\"'`]([^\"'`]*).*?,",
+    "(?:enter|leave)(?:from|to)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)"
+  ],
+  "tailwindCSS.includeLanguages": {
+    "blade": "html",
+    "blade.php": "html",
+    "plaintext": "html",
+    "vue": "html",
+    "vue-html": "html"
+  },
+  "workbench.colorTheme": "GitHub Dark",
+  "workbench.experimental.enableNewProfilesUI": true,
+  "workbench.list.smoothScrolling": true,
+  "workbench.startupEditor": "none"
+}
