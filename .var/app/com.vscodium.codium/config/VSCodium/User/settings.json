@@ -1,4 +1,5 @@
 {
+  "cSpell.enableFiletypes": ["!php"],
   "css.format.spaceAroundSelectorSeparator": true,
   "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -14,15 +15,20 @@
   "eslint.useFlatConfig": true,
   "extensions.closeExtensionDetailsOnViewChange": true,
   "files.associations": {
+    "*.blade.php": "blade",
     "*.css": "tailwindcss",
     "*.scss": "tailwindcss"
   },
   "files.autoGuessEncoding": true,
   "files.readonlyFromPermissions": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
   "git.autofetch": true,
   "git.confirmSync": false,
   "notebook.defaultFormatter": "esbenp.prettier-vscode",
+  "search.useIgnoreFiles": false,
   "stylelint.packageManager": "yarn",
+  "tailwindCSS.emmetCompletions": true,
   "tailwindCSS.experimental.classRegex": [
     ["class\\(.*?\\)(?!\\])", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
     ["classList.(?:add|remove)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
@@ -40,7 +46,6 @@
     "vue-html": "html"
   },
   "workbench.colorTheme": "GitHub Dark",
-  "workbench.experimental.enableNewProfilesUI": true,
   "workbench.list.smoothScrolling": true,
   "workbench.startupEditor": "none"
 }
