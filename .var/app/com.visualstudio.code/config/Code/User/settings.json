@@ -1,0 +1,113 @@
+{
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "redhat.vscode-yaml"
+    },
+    "cSpell.diagnosticLevel": "Hint",
+    "cSpell.enableFiletypes": ["!php", "blade"],
+    "css.format.spaceAroundSelectorSeparator": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "docker.dockerPath": "/app/tools/podman/bin/podman-remote",
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit"
+    },
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.defaultColorDecorators": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.fontFamily": "'FiraCode Nerd Font Mono', 'Droid Sans Mono', monospace",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.inlineSuggest.enabled": true,
+    "editor.linkedEditing": true,
+    "editor.mouseWheelZoom": true,
+    "editor.multiCursorModifier": "alt",
+    "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on"
+    },
+    "editor.smoothScrolling": true,
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true,
+    "eslint.useESLintClass": true,
+    "eslint.useFlatConfig": true,
+    "explorer.compactFolders": false,
+    "extensions.closeExtensionDetailsOnViewChange": true,
+    "files.associations": {
+        "*.css": "tailwindcss",
+        "*.scss": "tailwindcss"
+    },
+    "files.autoGuessEncoding": true,
+    "files.readonlyFromPermissions": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "github.branchProtection": true,
+    "gitlens.plusFeatures.enabled": false,
+    "gitlens.telemetry.enabled": false,
+    "html.format.templating": true,
+    "http.experimental.systemCertificatesV2": true,
+    "intelephense.files.maxSize": 10000000,
+    "intelephense.telemetry.enabled": false,
+    "LaravelExtraIntellisense.phpCommand": "/usr/lib/sdk/php83/bin/php -r \"{code}\"",
+    "merge-conflict.autoNavigateNextConflict.enabled": true,
+    "notebook.defaultFormatter": "esbenp.prettier-vscode",
+    "npm-intellisense.packageSubfoldersIntellisense": true,
+    "npm-intellisense.scanDevDependencies": true,
+    "php.validate.executablePath": "/usr/lib/sdk/php83/bin/php",
+    "prettier.singleAttributePerLine": true,
+    "prettier.tabWidth": 4,
+    "problems.showCurrentInStatus": true,
+    "search.showLineNumbers": true,
+    "search.useIgnoreFiles": false,
+    "settingsSync.ignoredSettings": [
+        "-php.validate.executablePath",
+        "-docker.dockerPath"
+    ],
+    "stylelint.packageManager": "yarn",
+    "svg.completion.emmet": true,
+    "tailwindCSS.emmetCompletions": true,
+    "tailwindCSS.experimental.classRegex": [
+        ["class\\(.*?\\)(?!\\])", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
+        [
+            "classList.(?:add|remove)\\(([^)]*)\\)",
+            "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"
+        ],
+        ["@?class\\(([^)]*)\\)", "['|\"]([^'\"]*)['|\"]"],
+        ["data-.*-class=['\"]([^'\"]*)"],
+        "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
+        ":\\s*?[\"'`]([^\"'`]*).*?,",
+        "(?:enter|leave)(?:from|to)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)"
+    ],
+    "tailwindCSS.includeLanguages": {
+        "blade": "html",
+        "blade.php": "html",
+        "plaintext": "html",
+        "vue": "html",
+        "vue-html": "html"
+    },
+    "telemetry.telemetryLevel": "off",
+    "terminal.integrated.defaultProfile.linux": "fish",
+    "terminal.integrated.profiles.linux": {
+        "bash": {
+            "args": ["fish"],
+            "path": "host-spawn"
+        }
+    },
+    "window.autoDetectColorScheme": true,
+    "window.menuBarVisibility": "toggle",
+    "workbench.accounts.experimental.showEntitlements": true,
+    "workbench.colorTheme": "GitHub Dark",
+    "workbench.commandPalette.experimental.suggestCommands": true,
+    "workbench.commandPalette.preserveInput": true,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
+    "workbench.editor.highlightModifiedTabs": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.list.smoothScrolling": true,
+    "workbench.preferredDarkColorTheme": "GitHub Dark",
+    "workbench.startupEditor": "none"
+}
