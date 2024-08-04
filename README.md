@@ -88,7 +88,7 @@ To learn more about Podman Quadlet, the following resources may be useful:
 - <https://www.redhat.com/sysadmin/quadlet-podman>
 - <https://mo8it.com/blog/quadlet/>
 
-### VSCodium
+### VSCodium / VSCode
 
 See the following guides:
 
@@ -105,24 +105,40 @@ You may use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and
 
 Current extensions:
 
-- amiralizadeh9480.laravel-extra-intellisense
-- bmewburn.vscode-intelephense-client
-- bradlc.vscode-tailwindcss
-- christian-kohler.path-intellisense
-- dbaeumer.vscode-eslint
-- devsense.composer-php-vscode
-- eamodio.gitlens
-- esbenp.prettier-vscode
-- GitHub.copilot
-- GitHub.github-vscode-theme
-- GitHub.vscode-pull-request-github
-- onecentlin.laravel-blade
-- pKief.material-icon-theme
-- redhat.vscode-yaml
-- shufo.vscode-blade-formatter
-- streetsidesoftware.code-spell-checker
-- stylelint.vscode-stylelint
-- wmaurer.change-case
+```bash
+$ flatpak run com.visualstudio.code  --list-extensions | xargs -L 1 echo vsc --install-extension
+aaron-bond.better-comments
+amiralizadeh9480.laravel-extra-intellisense
+bmewburn.vscode-intelephense-client
+bradlc.vscode-tailwindcss
+christian-kohler.npm-intellisense
+christian-kohler.path-intellisense
+davidanson.vscode-markdownlint
+dbaeumer.vscode-eslint
+devsense.composer-php-vscode
+eamodio.gitlens
+editorconfig.editorconfig
+eriklynd.json-tools
+esbenp.prettier-vscode
+github.copilot
+github.copilot-chat
+github.github-vscode-theme
+github.vscode-github-actions
+jock.svg
+ms-azuretools.vscode-docker
+ms-vscode.atom-keybindings
+onecentlin.laravel-blade
+pkief.material-icon-theme
+quicktype.quicktype
+redhat.vscode-yaml
+shd101wyy.markdown-preview-enhanced
+sleistner.vscode-fileutils
+streetsidesoftware.code-spell-checker
+stylelint.vscode-stylelint
+visualstudioexptteam.intellicode-api-usage-examples
+visualstudioexptteam.vscodeintellicode
+wmaurer.change-case
+```
 
 ### Theming
 
