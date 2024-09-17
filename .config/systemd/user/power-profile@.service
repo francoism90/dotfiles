@@ -2,7 +2,7 @@
 Description=Set Power Profile to profile
 
 [Service]
-ExecStart=/usr/bin/tuned-adm profile %i
+ExecStart=tuned-adm profile %i
 
 [Install]
 WantedBy=default.target
