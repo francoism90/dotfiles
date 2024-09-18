@@ -140,11 +140,20 @@ visualstudioexptteam.vscodeintellicode
 wmaurer.change-case
 ```
 
-### Theming
+### Fish
+
+See <https://starship.rs/guide/>, append paths:
+
+```fish
+rpm-ostree install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
+fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
+```
+
+## Appearance
 
 See <https://itsfoss.com/flatpak-app-apply-theme/> instructions for Flatpak theming.
 
-To add Gnome Tweak:
+To install Gnome Tweak:
 
 ```bash
 rpm-ostree install gnome-tweak-tool
