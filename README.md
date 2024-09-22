@@ -9,6 +9,12 @@ Reference:
 - <https://rpmfusion.org/Howto/OSTree>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
 
+To show difference after upgrades:
+
+```bash
+rpm-ostree db diff -c
+```
+
 ## nofile
 
 Increasing `nofile` limits may be needed for certain applications and games to work.
