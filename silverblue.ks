@@ -23,7 +23,7 @@ firstboot --enable
 
 # Generated using Blivet version 3.10.1
 ignoredisk --only-use=vda
-autopart --encrypted
+autopart --type=lvm --encrypted --passphrase="foo" --luks-version=luks2-hw-opal --opal-admin-passphrase="bar"
 
 # Partition clearing information
 clearpart --none --initlabel
