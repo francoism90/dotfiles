@@ -24,7 +24,7 @@ ostreesetup --osname="fedora" --remote="fedora" --url="file:///ostree/repo" --re
 firstboot --enable
 
 # Generated using Blivet version 3.10.1
-ignoredisk --only-use=vda
+ignoredisk --only-use=nvme0n1
 autopart --type=lvm --encrypted --passphrase="foo" --luks-version=luks2-hw-opal --hw-passphrase="bar"
 
 # Partition clearing information
