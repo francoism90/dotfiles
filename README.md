@@ -2,6 +2,16 @@
 
 This is a selection of settings and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) installation.
 
+## Anaconda kickstart
+
+1. Download the network installer ISO from <https://fedoraproject.org/atomic-desktops/silverblue/download/>
+2. Boot the ISO and stop at Grub screen
+3. Highlight "Install Fedora", press <kbd>e</kbd> and append:
+  ```text
+  inst.ks=https://raw.githubusercontent.com/francoism90/dotfiles/main/silverblue.ks
+  ```
+4. Press <kbd>F10</kbd> to start the installation using the kickstart file
+
 ## Maintenance
 
 Reference:
