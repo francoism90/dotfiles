@@ -10,6 +10,10 @@ This is a selection of settings and preferences for my [Fedora Silverblue](https
   ```text
   inst.ks=https://raw.githubusercontent.com/francoism90/dotfiles/main/silverblue.ks
   ```
+or
+  ```text
+  inst.ks=hd:LABEL=LIVE:ks/silverblue.ks
+  ```
 4. Press <kbd>F10</kbd> to start the installation using the kickstart file
 
 ## Maintenance
