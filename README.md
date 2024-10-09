@@ -39,6 +39,14 @@ See <https://access.redhat.com/solutions/1257953> for more details.
 
 ## Filesystem
 
+### Trim
+
+Enable the `fstrim` timer:
+
+```bash
+sudo systemctl enable fstrim.timer --now
+``` 
+
 ### Encryption
 
 If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue.
@@ -166,6 +174,13 @@ See <https://starship.rs/guide/>, append paths:
 
 ```fish
 rpm-ostree install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
+systemctl reboot
+chsh -s /bin/fish
+```
+
+To add fish path lookups:
+
+```fish
 fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
 ```
 
