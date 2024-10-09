@@ -26,7 +26,7 @@ firstboot --enable
 # Generated using Blivet version 3.10.1
 ignoredisk --only-use=nvme0n1
 
-autopart --type=lvm --encrypted --passphrase="foo" --luks-version=luks2-hw-opal
+autopart --encrypted --passphrase="my-super-good-encrypt-key" --luks-version=luks2-hw-opal --hw-passphrase="PSID"
 
 # Partition clearing information
 clearpart --none --initlabel
