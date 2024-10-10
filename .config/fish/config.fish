@@ -13,7 +13,8 @@ abbr -a -- foxws 'podman exec -it systemd-foxws-app'
 abbr -a -- hub 'podman exec -it systemd-hub-app'
 
 # apps
-abbr -a -- code 'flatpak run com.vscodium.codium '
+abbr -a -- vsc 'flatpak run com.visualstudio.code .'
+abbr -a -- code 'flatpak run com.vscodium.codium .'
 
 # git
 abbr -a -- ga 'git add'
