@@ -135,37 +135,44 @@ Current extensions:
 
 ```bash
 $ flatpak run com.visualstudio.code  --list-extensions | xargs -L 1 echo vsc --install-extension
-aaron-bond.better-comments
-amiralizadeh9480.laravel-extra-intellisense
-bmewburn.vscode-intelephense-client
-bradlc.vscode-tailwindcss
-christian-kohler.npm-intellisense
-christian-kohler.path-intellisense
-davidanson.vscode-markdownlint
-dbaeumer.vscode-eslint
-devsense.composer-php-vscode
-eamodio.gitlens
-editorconfig.editorconfig
-eriklynd.json-tools
-esbenp.prettier-vscode
-github.copilot
-github.copilot-chat
-github.github-vscode-theme
-github.vscode-github-actions
-jock.svg
-ms-azuretools.vscode-docker
-ms-vscode.atom-keybindings
-onecentlin.laravel-blade
-pkief.material-icon-theme
-quicktype.quicktype
-redhat.vscode-yaml
-shd101wyy.markdown-preview-enhanced
-sleistner.vscode-fileutils
-streetsidesoftware.code-spell-checker
-stylelint.vscode-stylelint
-visualstudioexptteam.intellicode-api-usage-examples
-visualstudioexptteam.vscodeintellicode
-wmaurer.change-case
+vsc --install-extension aaron-bond.better-comments
+vsc --install-extension amiralizadeh9480.laravel-extra-intellisense
+vsc --install-extension bmewburn.vscode-intelephense-client
+vsc --install-extension bradlc.vscode-tailwindcss
+vsc --install-extension christian-kohler.npm-intellisense
+vsc --install-extension christian-kohler.path-intellisense
+vsc --install-extension davidanson.vscode-markdownlint
+vsc --install-extension dbaeumer.vscode-eslint
+vsc --install-extension devsense.composer-php-vscode
+vsc --install-extension eamodio.gitlens
+vsc --install-extension editorconfig.editorconfig
+vsc --install-extension eriklynd.json-tools
+vsc --install-extension esbenp.prettier-vscode
+vsc --install-extension github.copilot
+vsc --install-extension github.copilot-chat
+vsc --install-extension github.github-vscode-theme
+vsc --install-extension github.vscode-github-actions
+vsc --install-extension jock.svg
+vsc --install-extension ms-azuretools.vscode-docker
+vsc --install-extension ms-vscode-remote.remote-containers
+vsc --install-extension ms-vscode-remote.remote-ssh
+vsc --install-extension ms-vscode-remote.remote-ssh-edit
+vsc --install-extension ms-vscode-remote.remote-wsl
+vsc --install-extension ms-vscode-remote.vscode-remote-extensionpack
+vsc --install-extension ms-vscode.atom-keybindings
+vsc --install-extension ms-vscode.remote-explorer
+vsc --install-extension ms-vscode.remote-server
+vsc --install-extension onecentlin.laravel-blade
+vsc --install-extension pkief.material-icon-theme
+vsc --install-extension quicktype.quicktype
+vsc --install-extension redhat.vscode-yaml
+vsc --install-extension shd101wyy.markdown-preview-enhanced
+vsc --install-extension sleistner.vscode-fileutils
+vsc --install-extension streetsidesoftware.code-spell-checker
+vsc --install-extension stylelint.vscode-stylelint
+vsc --install-extension visualstudioexptteam.intellicode-api-usage-examples
+vsc --install-extension visualstudioexptteam.vscodeintellicode
+vsc --install-extension wmaurer.change-case
 ```
 
 ### Fish
