@@ -1,5 +1,5 @@
 [Unit]
-Description=Run desktop profile daily
+Description=Run balanced profile daily
 
 [Timer]
 OnCalendar=*-*-* 8:30:00
