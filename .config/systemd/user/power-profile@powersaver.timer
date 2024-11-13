@@ -1,5 +1,5 @@
 [Unit]
-Description=Run power-saver daily
+Description=Run powersaver daily
 
 [Timer]
 OnCalendar=*-*-* 0:30:00
