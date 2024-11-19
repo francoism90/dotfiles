@@ -8,13 +8,11 @@ abbr -a -- scu 'systemctl --user'
 abbr -a -- tbe 'toolbox enter'
 abbr -a -- tbr 'toolbox run'
 
-# containers
-abbr -a -- foxws 'podman exec -it systemd-foxws-app'
-abbr -a -- hub 'podman exec -it systemd-hub-app'
+# tmux
+abbr -a -- ta 'tmux attach-session -t'
 
 # apps
 abbr -a -- vsc 'flatpak run com.visualstudio.code .'
-abbr -a -- code 'flatpak run com.vscodium.codium .'
 
 # git
 abbr -a -- ga 'git add'
