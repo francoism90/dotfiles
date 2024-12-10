@@ -8,8 +8,8 @@ Restart=always
 [Container]
 Image=lscr.io/linuxserver/sabnzbd:latest
 AutoUpdate=registry
-Volume=/mnt/data/SABnzbd/config:/config:rw,Z,U
-Volume=/mnt/data/SABnzbd/downloads:/downloads:rw,Z,U
+Volume=/mnt/data/SABnzbd/config:/config:rw,Z
+Volume=/mnt/data/SABnzbd/downloads:/downloads:rw,Z
 Secret=tlscert,target=/run/secrets/cert.pem
 Secret=tlskey,target=/run/secrets/key.pem
 Environment=PUID=1000
