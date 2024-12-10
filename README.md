@@ -10,7 +10,7 @@ This is a selection of settings and preferences for my [Fedora Silverblue](https
   ```text
   inst.ks=https://raw.githubusercontent.com/francoism90/dotfiles/main/silverblue.ks
   ```
-or
+or when using an USB-device labelled `LIVE`:
   ```text
   inst.ks=hd:LABEL=LIVE:ks/silverblue.ks
   ```
@@ -77,7 +77,7 @@ It is discourage to install (large) software on the ostree. Try to use Flatpaks 
 You can pull the latest toolbox, using:
 
 ```bash
-podman pull fedora-toolbox:40
+podman pull fedora-toolbox:41
 ```
 
 To update a toolbox:
