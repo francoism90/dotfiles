@@ -175,7 +175,16 @@ vsc --install-extension visualstudioexptteam.vscodeintellicode
 vsc --install-extension wmaurer.change-case
 ```
 
-### Fish
+### Ptyxis (Terminal)
+
+To apply transparency ([credits](https://discussion.fedoraproject.org/t/use-dconf-to-set-transparency-for-ptyxis/135003)):
+
+```bash
+dconf read /org/gnome/Ptyxis/default-profile-uuid
+dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
+```
+
+#### Fish
 
 See <https://starship.rs/guide/>, append paths:
 
