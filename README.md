@@ -186,19 +186,26 @@ dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 
 #### Fish
 
-See <https://starship.rs/guide/>, append paths:
+Install fish:
 
-```fish
+```bash
 rpm-ostree install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
 systemctl reboot
+```
+
+Change user shell:
+
+```bash
 chsh -s /bin/fish
 ```
 
-To add fish path lookups:
+Add fish path lookups:
 
 ```fish
 fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
 ```
+
+Follow <https://starship.rs/guide/>.
 
 ## Appearance
 
