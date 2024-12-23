@@ -5,4 +5,4 @@ Description=Set Power Profile to profile
 ExecStart=tuned-adm profile %i
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
