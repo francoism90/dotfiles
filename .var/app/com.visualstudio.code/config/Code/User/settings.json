@@ -1,21 +1,23 @@
 {
+    "Laravel.phpCommand": "/usr/lib/sdk/php84/bin/php",
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "[markdown]": {
         "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
     },
     "[yaml]": {
         "editor.defaultFormatter": "redhat.vscode-yaml"
     },
-    "cSpell.diagnosticLevel": "Hint",
-    "cSpell.enableFiletypes": ["!php", "blade"],
+    "better-comments.highlightPlainText": true,
+    "cSpell.userWords": ["heroicons", "inertiajs", "Laravel", "pinia"],
     "css.format.spaceAroundSelectorSeparator": true,
     "diffEditor.ignoreTrimWhitespace": false,
-    "docker.dockerPath": "/app/tools/podman/bin/podman-remote",
     "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
     "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit"
+        "source.fixAll": "explicit",
+        "source.organizeImports": "always"
     },
-    "editor.cursorSmoothCaretAnimation": "on",
-    "editor.defaultColorDecorators": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.fontFamily": "'FiraCode Nerd Font Mono', 'Droid Sans Mono', monospace",
     "editor.formatOnPaste": true,
@@ -29,6 +31,7 @@
         "strings": "on"
     },
     "editor.smoothScrolling": true,
+    "editor.suggest.showStatusBar": true,
     "eslint.format.enable": true,
     "eslint.lintTask.enable": true,
     "eslint.useESLintClass": true,
@@ -39,35 +42,30 @@
         "*.css": "tailwindcss",
         "*.scss": "tailwindcss"
     },
-    "files.autoGuessEncoding": true,
     "files.readonlyFromPermissions": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
-    "github.branchProtection": true,
     "gitlens.plusFeatures.enabled": false,
     "gitlens.telemetry.enabled": false,
     "html.format.templating": true,
-    "http.experimental.systemCertificatesV2": true,
     "intelephense.files.maxSize": 10000000,
     "intelephense.telemetry.enabled": false,
-    "LaravelExtraIntellisense.phpCommand": "/usr/lib/sdk/php83/bin/php -r \"{code}\"",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "markdown.validate.enabled": true,
+    "material-icon-theme.activeIconPack": "vue_vuex",
     "merge-conflict.autoNavigateNextConflict.enabled": true,
     "notebook.defaultFormatter": "esbenp.prettier-vscode",
     "npm-intellisense.packageSubfoldersIntellisense": true,
     "npm-intellisense.scanDevDependencies": true,
-    "php.validate.executablePath": "/usr/lib/sdk/php83/bin/php",
+    "php.executablePath": "/usr/lib/sdk/php84/bin/php",
+    "php.validate.executablePath": "/usr/lib/sdk/php84/bin/php",
+    "prettier.experimentalTernaries": true,
     "prettier.singleAttributePerLine": true,
     "prettier.tabWidth": 4,
-    "problems.showCurrentInStatus": true,
     "search.showLineNumbers": true,
     "search.useIgnoreFiles": false,
-    "settingsSync.ignoredSettings": [
-        "-php.validate.executablePath",
-        "-docker.dockerPath"
-    ],
-    "stylelint.packageManager": "yarn",
     "svg.completion.emmet": true,
     "tailwindCSS.emmetCompletions": true,
     "tailwindCSS.experimental.classRegex": [
@@ -90,24 +88,18 @@
         "vue-html": "html"
     },
     "telemetry.telemetryLevel": "off",
-    "terminal.integrated.defaultProfile.linux": "fish",
-    "terminal.integrated.profiles.linux": {
-        "bash": {
-            "args": ["fish"],
-            "path": "host-spawn"
-        }
-    },
-    "window.autoDetectColorScheme": true,
+    "typescript.npm": "/usr/lib/sdk/node22/bin/npm",
+    "typescript.preferences.organizeImports": {},
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "vue.server.hybridMode": true,
     "window.menuBarVisibility": "toggle",
-    "workbench.accounts.experimental.showEntitlements": true,
+    "window.openFoldersInNewWindow": "on",
     "workbench.colorTheme": "GitHub Dark",
     "workbench.commandPalette.experimental.suggestCommands": true,
     "workbench.commandPalette.preserveInput": true,
     "workbench.editor.enablePreview": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
-    "workbench.editor.highlightModifiedTabs": true,
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.list.smoothScrolling": true,
-    "workbench.preferredDarkColorTheme": "GitHub Dark",
-    "workbench.startupEditor": "none"
+    "workbench.quickOpen.preserveInput": true,
+    "workbench.startupEditor": "newUntitledFile"
 }
