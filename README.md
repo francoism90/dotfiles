@@ -12,7 +12,7 @@ This is a selection of settings and preferences for my [Fedora Silverblue](https
   ```
 or when using an USB-device labelled `LIVE`:
   ```text
-  inst.ks=hd:LABEL=LIVE/silverblue.ks
+  inst.ks=hd:LABEL=LIVE:/silverblue.ks
   ```
 or when using an USB directly:
 ```text
@@ -210,6 +210,12 @@ Add fish path lookups:
 fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
 ```
 
+To disable greeting (welcome message):
+
+```fish
+set -U fish_greeting
+```
+
 Follow <https://starship.rs/guide/>.
 
 ## Appearance
@@ -221,3 +227,11 @@ To install Gnome Tweak:
 ```bash
 rpm-ostree install gnome-tweak-tool
 ```
+
+Current Theme:
+
+Icon Theme (GTK - non-root): https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
+
+Cursor Theme: https://github.com/phisch/phinger-cursors
+
+Font: IBM Plex Sans + FiraCode Nerd Font Mono
