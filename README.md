@@ -16,7 +16,7 @@ or when using an USB-device labelled `LIVE`:
   ```
 or when using an USB directly:
 ```text
-init.ks=hd:nvme0n1p3:/silverblue.ks
+inst.ks=hd:nvme0n1p3:/silverblue.ks
 ```
 
 4. Press <kbd>F10</kbd> to start the installation using the kickstart file
