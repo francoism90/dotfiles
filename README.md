@@ -121,6 +121,13 @@ To learn more about Podman Quadlet, the following resources may be useful:
 - <https://www.redhat.com/sysadmin/quadlet-podman>
 - <https://mo8it.com/blog/quadlet/>
 
+Install Docker compatible packages:
+
+```bash
+rpm-ostree install podman-docker podman-compose
+systemctl reboot
+```
+
 ### VSCodium / VSCode
 
 See the following guides:
@@ -129,10 +136,21 @@ See the following guides:
 - <https://github.com/jorchube/devcontainer-definitions>
 - <https://github.com/VSCodium/vscodium/discussions/1487>
 
-You may use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
+You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
 
-- Add to `Other files`: `xdg-run/podman:ro`
-- Add to `Variables`: `FLATPAK_ENABLE_SDK_EXT=podman,php83`
+- Add to `Other files`: `xdg-run/podman`
+- Add to `Other files`: `/tmp`
+
+
+#### Wayland
+
+To enable Wayland support:
+
+```bash
+flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
+```
+
+See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 
 #### Extensions
 
@@ -182,7 +200,7 @@ vsc --install-extension wmaurer.change-case
 
 ### Ptyxis (Terminal)
 
-To apply transparency ([credits](https://discussion.fedoraproject.org/t/use-dconf-to-set-transparency-for-ptyxis/135003)):
+To apply opacity ([credits](https://discussion.fedoraproject.org/t/use-dconf-to-set-transparency-for-ptyxis/135003)):
 
 ```bash
 dconf read /org/gnome/Ptyxis/default-profile-uuid
