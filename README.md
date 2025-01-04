@@ -128,6 +128,12 @@ rpm-ostree install podman-docker podman-compose
 systemctl reboot
 ```
 
+Enable linger:
+
+```bash
+loginctl enable-linger $USER
+```
+
 ### VSCodium / VSCode
 
 See the following guides:
