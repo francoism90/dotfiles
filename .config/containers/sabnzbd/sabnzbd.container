@@ -1,0 +1,24 @@
+[Unit]
+Description=SABnzbd container
+
+[Container]
+Image=docker.io/linuxserver/sabnzbd:latest
+AutoUpdate=registry
+LogDriver=none
+Environment=PUID=1000
+Environment=PGID=1000
+Environment=TZ=Europe/Amsterdam
+Volume=/mnt/data/SABnzbd/config:/config:rw,Z
+Volume=/mnt/data/SABnzbd/downloads:/downloads:rw,Z
+User=1000
+Group=1000
+UserNS=keep-id:uid=1000,gid=1000
+Network=sabnzbd.network
+ExposeHostPort=8080
+
+[Service]
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target
