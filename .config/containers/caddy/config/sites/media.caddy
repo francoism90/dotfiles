@@ -1,0 +1,4 @@
+jellyfin.nas.lan {
+    import tls
+    reverse_proxy systemd-jellyfin:8096
+}
