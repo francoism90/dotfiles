@@ -1,0 +1,12 @@
+[Unit]
+Description=Data mount
+
+[Mount]
+What=UUID=<UUID>
+Where=/var/mnt/data
+Type=btrfs
+Options=defaults,auto,noatime,subvol=private,compress-force=zstd:5             
+TimeoutSec=900
+
+[Install]
+WantedBy=multi-user.target
