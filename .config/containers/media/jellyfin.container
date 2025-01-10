@@ -14,7 +14,7 @@ Volume=jellyfin-cache:/cache:rw,Z,U
 Volume=${MEDIA_PATH}:/media:ro,Z
 Network=caddy.network
 Network=media.network
-ExposeHostPort=8096
+PublishPort=8096:8096/tcp
 
 [Service]
 EnvironmentFile=%h/.config/containers/systemd/media/config/app.env
