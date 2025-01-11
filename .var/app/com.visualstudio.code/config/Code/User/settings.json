@@ -1,5 +1,4 @@
 {
-    "Laravel.phpCommand": "/usr/lib/sdk/php84/bin/php",
     "[jsonc]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -10,9 +9,15 @@
         "editor.defaultFormatter": "redhat.vscode-yaml"
     },
     "better-comments.highlightPlainText": true,
+    "cSpell.diagnosticLevel": "Hint",
     "cSpell.userWords": ["heroicons", "inertiajs", "Laravel", "pinia"],
     "css.format.spaceAroundSelectorSeparator": true,
+    "dev.containers.dockerComposePath": "podman-compose",
+    "dev.containers.dockerPath": "podman",
+    "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
     "diffEditor.ignoreTrimWhitespace": false,
+    "docker.composeCommand": "podman-compose",
+    "docker.dockerPath": "podman",
     "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit",
@@ -45,10 +50,6 @@
     "files.readonlyFromPermissions": true,
     "files.trimFinalNewlines": true,
     "files.trimTrailingWhitespace": true,
-    "git.confirmSync": false,
-    "git.enableSmartCommit": true,
-    "gitlens.plusFeatures.enabled": false,
-    "gitlens.telemetry.enabled": false,
     "html.format.templating": true,
     "intelephense.files.maxSize": 10000000,
     "intelephense.telemetry.enabled": false,
@@ -58,15 +59,10 @@
     "merge-conflict.autoNavigateNextConflict.enabled": true,
     "notebook.defaultFormatter": "esbenp.prettier-vscode",
     "npm-intellisense.packageSubfoldersIntellisense": true,
-    "npm-intellisense.scanDevDependencies": true,
-    "php.executablePath": "/usr/lib/sdk/php84/bin/php",
-    "php.validate.executablePath": "/usr/lib/sdk/php84/bin/php",
-    "prettier.experimentalTernaries": true,
     "prettier.singleAttributePerLine": true,
     "prettier.tabWidth": 4,
     "search.showLineNumbers": true,
     "search.useIgnoreFiles": false,
-    "svg.completion.emmet": true,
     "tailwindCSS.emmetCompletions": true,
     "tailwindCSS.experimental.classRegex": [
         ["class\\(.*?\\)(?!\\])", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
@@ -88,10 +84,6 @@
         "vue-html": "html"
     },
     "telemetry.telemetryLevel": "off",
-    "typescript.npm": "/usr/lib/sdk/node22/bin/npm",
-    "typescript.preferences.organizeImports": {},
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "vue.server.hybridMode": true,
     "window.menuBarVisibility": "toggle",
     "window.openFoldersInNewWindow": "on",
     "workbench.colorTheme": "GitHub Dark",
