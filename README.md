@@ -134,6 +134,20 @@ Enable linger:
 loginctl enable-linger $USER
 ```
 
+### Firewall(d)
+
+To open services and ports:
+
+```bash
+sudo firewall-cmd --list-all-zones
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --permanent --add-service=http3
+sudo firewall-cmd --permanent --add-service=samba
+sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8096/tcp
+sudo firewall-cmd --reload
+```
+
 ### VSCodium / VSCode
 
 See the following guides:
