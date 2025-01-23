@@ -214,11 +214,7 @@ Follow <https://starship.rs/guide/>.
 
 See <https://itsfoss.com/flatpak-app-apply-theme/> instructions for Flatpak theming.
 
-To install Gnome Tweak:
-
-```bash
-rpm-ostree install gnome-tweak-tool
-```
+Use [Refine](https://flathub.org/apps/page.tesk.Refine) to apply customization.
 
 Current Theme:
 
