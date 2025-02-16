@@ -162,4 +162,4 @@ Icon Theme (GTK - non-root): https://github.com/PapirusDevelopmentTeam/papirus-i
 
 Cursor Theme: https://github.com/phisch/phinger-cursors
 
-Font: IBM Plex Sans + FiraCode Nerd Font Mono
+Fonts: [Inter](https://rsms.me/inter/) + [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads)
