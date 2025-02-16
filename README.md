@@ -1,52 +1,29 @@
 # dotfiles
 
-This is a selection of settings and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Bluefin](https://projectbluefin.io/) installation.
+This is a selection of settings and preferences for my OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) installation.
 
-## Anaconda kickstart
+In most cases the given instructions should also work on MicroOS and Tumbleweed.
 
-1. Download the network installer ISO from <https://fedoraproject.org/atomic-desktops/silverblue/download/>
-2. Boot the ISO and stop at Grub screen
-3. Highlight "Install Fedora", press <kbd>e</kbd> and append:
-  ```text
-  inst.ks=https://raw.githubusercontent.com/francoism90/dotfiles/main/silverblue.ks
-  ```
-or when using an USB-device labelled `LIVE`:
-  ```text
-  inst.ks=hd:LABEL=LIVE:/silverblue.ks
-  ```
-or when using an USB directly:
-```text
-inst.ks=hd:nvme0n1p3:/silverblue.ks
-```
+## Drivers
 
-4. Press <kbd>F10</kbd> to start the installation using the kickstart file
+### NVIDIA
+
+See the OpenSUSE Wiki for details:
+
+- <https://en.opensuse.org/SDB:NVIDIA_drivers>
+- <https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control>
+
+You may get conflicts, it seems to work fine when you choose to ignore the missing library or package.
+
+On Aeon you may need to remove the `--root-pw` option for the `mokutil --import` command, and give a password manually instead.
 
 ## Maintenance
-
-Reference:
-
-- <https://rpmfusion.org/Howto/OSTree>
-- <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
-
-To show difference after upgrades:
-
-```bash
-rpm-ostree db diff -c
-```
-
-## nofile
-
-Increasing `nofile` limits may be needed for certain applications and games to work.
-
-See <https://access.redhat.com/solutions/1257953> for more details.
-
-> **NOTE:** Reboot the system to apply increased limits.
 
 ## Filesystem
 
 ### Trim
 
-Enable the `fstrim` timer:
+Enable the `fstrim` when using a SSD/NVme-device timer:
 
 ```bash
 sudo systemctl enable fstrim.timer --now
@@ -54,17 +31,20 @@ sudo systemctl enable fstrim.timer --now
 
 ### Encryption
 
-If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue.
+If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and allowing discards:
+
+```bash
+sudo cryptsetup --perf-no_read_workqueue --perf-no_write_workqueue --allow-discards --persistent refresh aeon_root
+```
 
 See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details.
 
 ### Btrfs
 
-If you are using Btrfs, you may want to use <https://github.com/kdave/btrfsmaintenance>:
+If you are using Btrfs, you may want to configure <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
-rpm-ostree install btrfsmaintenance
-nano /etc/sysconfig/btrfsmaintenance
+sudo nano /etc/sysconfig/btrfsmaintenance
 ```
 
 Enable the timers:
@@ -73,36 +53,19 @@ Enable the timers:
 sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
+### zram
+
+To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
+
+```bash
+sudo systemctl enable zramswap.service --now
+```
+
 ## Software
 
-### Toolbox
+It is discourage to install software on the root filesystem, see the Aeon Wiki for details:
 
-It is discourage to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`) as much as possible.
-
-You can pull the latest toolbox, using:
-
-```bash
-podman pull fedora-toolbox:41
-```
-
-To update a toolbox:
-
-```bash
-toolbox enter
-sudo dnf update && sudo dnf upgrade
-```
-
-You can create multiple toolboxes, and even manage them using [Podman Desktop](https://podman-desktop.io/).
-
-### Firefox
-
-To replace the provided default Firefox package, with the Firefox Flathub version for example:
-
-```bash
-rpm-ostree override remove firefox firefox-langpacks
-```
-
-> **NOTE:** You can also hide the desktop entry itself.
+- <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>
 
 ### Brave
 
@@ -121,32 +84,17 @@ To learn more about Podman Quadlet, the following resources may be useful:
 - <https://www.redhat.com/sysadmin/quadlet-podman>
 - <https://mo8it.com/blog/quadlet/>
 
-Install Docker compatible packages:
-
-```bash
-rpm-ostree install podman-docker podman-compose
-systemctl reboot
-```
-
-Enable linger:
+To enable linger, e.g. keep containers running when logged out:
 
 ```bash
 loginctl enable-linger $USER
 ```
 
-### Firewall(d)
+### Firewall
 
-To open services and ports:
+Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers.
 
-```bash
-sudo firewall-cmd --list-all-zones
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --permanent --add-service=https
-sudo firewall-cmd --permanent --add-service=http3
-sudo firewall-cmd --permanent --add-service=samba
-sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8096/tcp
-sudo firewall-cmd --reload
-```
+It's still possible to install `firewalld`, but this may cause Flatpak and container network issues.
 
 ### VSCodium / VSCode
 
@@ -156,11 +104,10 @@ See the following guides:
 - <https://github.com/jorchube/devcontainer-definitions>
 - <https://github.com/VSCodium/vscodium/discussions/1487>
 
-You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
+You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal) to set the following overwrites:
 
-- Add to `Other files`: `xdg-run/podman`
-- Add to `Other files`: `/tmp`
-
+- Add to `Other files`: `xdg-run/podman:ro`
+- Add to `Other files`: `/tmp:rw`
 
 #### Wayland
 
@@ -183,20 +130,13 @@ dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 
 #### Fish
 
-Install fish:
+Install fish in the OpenSUSE distrobox container:
 
 ```bash
-rpm-ostree install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
-systemctl reboot
+sudo zypper install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
 ```
 
-Change user shell:
-
-```bash
-chsh -s /bin/fish
-```
-
-Add fish path lookups:
+To add fish path lookups:
 
 ```fish
 fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
@@ -208,15 +148,15 @@ To disable greeting (welcome message):
 set -U fish_greeting
 ```
 
-Follow <https://starship.rs/guide/>.
+Follow <https://starship.rs/guide/> to setup Starship.
 
 ## Appearance
 
 See <https://itsfoss.com/flatpak-app-apply-theme/> instructions for Flatpak theming.
 
-Use [Refine](https://flathub.org/apps/page.tesk.Refine) to apply customization.
+Use [Refine](https://flathub.org/apps/page.tesk.Refine) to apply customization or [dconf-editor](https://flathub.org/apps/ca.desrt.dconf-editor) - look up keys in `/org/gnome/`.
 
-Current Theme:
+### Current Theme
 
 Icon Theme (GTK - non-root): https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
 
