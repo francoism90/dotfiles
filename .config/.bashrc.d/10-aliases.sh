@@ -1,0 +1,7 @@
+alias la='ls -A'
+alias ll='ls -l'
+alias lla='ll -A'
+alias llh='ll -h'
+alias llha='ll -hA'
+alias sc='sudo systemctl'
+alias scu='systemctl --user'
