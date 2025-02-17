@@ -12,7 +12,7 @@
 [push]
 	autoSetupRemote = true
 [user]
-	email = francoism90@users.noreply.github.com
-	name = francoism90
+	email = username@users.noreply.github.com
+	name = username
 [color]
 	ui = auto
