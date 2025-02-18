@@ -6,6 +6,23 @@ In most cases the given instructions should also work on MicroOS and Tumbleweed.
 
 ## Drivers
 
+### Kernel
+
+If you want to run the latest kernel, see <https://kernel.opensuse.org/master.html> for details:
+
+```bash
+sudo zypper addrepo https://download.opensuse.org/repositories/Kernel:HEAD/standard/Kernel:HEAD.repo
+sudo zypper refresh
+zypper lr
+```
+
+To install a version of the `master` branch:
+
+```bash
+sudo transactional-update -i pkg install kernel-default-6.14~rc3 kernel-default-devel-6.14~rc3
+systemctl reboot
+```
+
 ### NVIDIA
 
 See the OpenSUSE Wiki for details:
@@ -16,6 +33,17 @@ See the OpenSUSE Wiki for details:
 You may get conflicts, it seems to work fine when you choose to ignore the missing library or package.
 
 On Aeon you may need to remove the `--root-pw` option for the `mokutil --import` command, and give a password manually instead.
+
+To built the latest drivers on the `master` kernel, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
+
+```
+sudo transactional-update shell
+cd /usr/src/kernel-modules/nvidia-570.86.16-default
+<patch>
+exit
+```
+
+It's important to reboot first, afterwards reinstall the `master` kernel (see instructions above).
 
 ## Maintenance
 
