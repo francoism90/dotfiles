@@ -55,7 +55,7 @@ Enable the `fstrim` when using a SSD/NVme-device timer:
 
 ```bash
 sudo systemctl enable fstrim.timer --now
-``` 
+```
 
 ### Encryption
 
@@ -86,6 +86,7 @@ sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer b
 To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
 
 ```bash
+sudo transactional-update -i pkg install systemd-zram-service
 sudo systemctl enable zramswap.service --now
 ```
 
@@ -122,7 +123,12 @@ loginctl enable-linger $USER
 
 Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers.
 
-It's still possible to install `firewalld`, but this may cause Flatpak and container network issues.
+It's still possible to install `firewalld`, but this may cause Flatpak and container network issues:
+
+```bash
+sudo transactional-update -i pkg install firewalld firewalld-bash-completion
+sudo systemctl enable firewalld.service --now
+```
 
 ### VSCodium / VSCode
 
@@ -186,8 +192,8 @@ Use [Refine](https://flathub.org/apps/page.tesk.Refine) to apply customization o
 
 ### Current Theme
 
-Icon Theme (GTK - non-root): https://github.com/PapirusDevelopmentTeam/papirus-icon-theme
+Icon Theme (GTK - non-root): <https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
 
-Cursor Theme: https://github.com/phisch/phinger-cursors
+Cursor Theme: <https://github.com/phisch/phinger-cursors>
 
 Fonts: [Inter](https://rsms.me/inter/) + [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads)
