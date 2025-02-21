@@ -45,8 +45,6 @@ exit
 
 It's important to reboot first, afterwards reinstall the `master` kernel (see instructions above).
 
-## Maintenance
-
 ## Filesystem
 
 ### Trim
@@ -88,6 +86,15 @@ To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
 ```bash
 sudo transactional-update -i pkg install systemd-zram-service
 sudo systemctl enable zramswap.service --now
+```
+
+### tuned
+
+To enable [tuned](https://github.com/redhat-performance/tuned):
+
+```bash
+sudo transactional-update -i pkg install tuned tuned-profiles-atomic tuned-utils
+sudo systemctl enable tuned --now
 ```
 
 ## Software
