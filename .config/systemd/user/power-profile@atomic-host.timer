@@ -1,5 +1,5 @@
 [Unit]
-Description=Run balanced profile daily
+Description=Run atomic-host profile daily
 
 [Timer]
 OnCalendar=*-*-* 8:30:00
