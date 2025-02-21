@@ -137,6 +137,14 @@ sudo transactional-update -i pkg install firewalld firewalld-bash-completion
 sudo systemctl enable firewalld.service --now
 ```
 
+To open ports/servies:
+
+```bash
+sudo firewall-cmd --permanent --add-serice=https
+sudo firewall-cmd --permanent --add-port=8920/tcp
+sudo firewall-cmd --reload
+```
+
 ### VSCodium / VSCode
 
 See the following guides:
