@@ -10,8 +10,8 @@ Environment=PGID=1000
 Environment=TZ=Europe/Amsterdam
 Environment=WEBUI_PORT=8090
 Environment=TORRENTING_PORT=6881
-Volume=/mnt/data/qBittorrent/config:/config:rw,Z
-Volume=/mnt/data/qBittorrent/downloads:/downloads:rw,Z
+Volume=/var/mnt/data/qBittorrent/config:/config:rw,Z
+Volume=/var/mnt/data/qBittorrent/downloads:/downloads:rw,Z
 User=1000
 Group=1000
 UserNS=keep-id:uid=1000,gid=1000

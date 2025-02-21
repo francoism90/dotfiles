@@ -1,2 +1,0 @@
-# root
-luks-<uuid> none luks,discard,no-read-workqueue,no-write-workqueue
