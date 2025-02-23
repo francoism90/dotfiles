@@ -65,6 +65,37 @@ sudo cryptsetup --perf-no_read_workqueue --perf-no_write_workqueue --allow-disca
 
 See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details.
 
+### TPM
+
+The following resources may be helpful:
+- <https://microos.opensuse.org/blog/2024-09-03-quickstart-fde-yast2/>
+- <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
+- <https://wiki.archlinux.org/title/Systemd-cryptenroll>
+
+If you want to use Full Disk Encryption (FDE) with TPM2:
+
+```bash
+sdbootutil unenroll --method=tpm2
+PIN=<new recovery PIN> sdbootutil enroll --method=tpm2
+```
+
+To verify the current enrollment:
+
+```bash
+# systemd-cryptenroll /dev/nvme0n1p2
+SLOT TYPE
+   0 password
+   1 tpm2
+   2 recovery
+```
+
+If for some reason the enrollment wasn't successful, you may want to enroll a new key:
+
+```bash
+cat /etc/sysconfig/fde-tools | grep FDE_SEAL_PCR_LIST=
+systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=4+5+7+9 /dev/nvme0n1p2
+```
+
 ### Btrfs
 
 If you are using Btrfs, you may want to configure <https://github.com/kdave/btrfsmaintenance>:
