@@ -40,7 +40,7 @@ To built the latest drivers on the `master` kernel, see <https://forums.develope
 sudo transactional-update shell
 cd /usr/src/kernel-modules/nvidia-570.86.16-default
 <patch>
-exit
+sudo dracut -vf --regenerate-all
 ```
 
 It's important to reboot first, afterwards reinstall the `master` kernel (see instructions above).
