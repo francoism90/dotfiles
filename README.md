@@ -69,6 +69,7 @@ See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for
 
 The following resources may be helpful:
 - <https://microos.opensuse.org/blog/2024-09-03-quickstart-fde-yast2/>
+- <https://github.com/openSUSE/sdbootutil/issues/118#issuecomment-2665975124>
 - <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
 - <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
