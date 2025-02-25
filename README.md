@@ -2,7 +2,7 @@
 
 This is a selection of settings and preferences for my OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) installation.
 
-In most cases the given instructions should also work on MicroOS and Tumbleweed.
+In most cases the given instructions should also work on MicroOS.
 
 ## Drivers
 
@@ -19,7 +19,7 @@ zypper lr
 To install a version of the `master` branch:
 
 ```bash
-sudo transactional-update -i pkg install kernel-default-6.14~rc3 kernel-default-devel-6.14~rc3
+sudo transactional-update -i pkg install kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4
 systemctl reboot
 ```
 
@@ -78,7 +78,7 @@ If you want to use Full Disk Encryption (FDE) with TPM2:
 
 ```bash
 sdbootutil unenroll --method=tpm2
-PIN=<new recovery PIN> sdbootutil enroll --method=tpm2
+sdbootutil --ask-pin update-predictions
 ```
 
 To verify the current enrollment:
