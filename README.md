@@ -39,30 +39,35 @@ On Aeon you may need to remove the `--root-pw` option for the `mokutil --import`
 
 #### Secure Boot
 
-If you use Secure Boot, make sure to always sign the module:
+If you use Secure Boot, make sure to always sign the module (you may need to redo this on updates):
 
 ```bash
 # mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
 $ systemctl reboot
 ```
 
-After a reboot, enroll the key using the provided password, and check if the NVIDIA modules are loaded using something like `lsmod | grep nv` after startup.
+After a reboot, enroll the key using the provided password, and validate if the NVIDIA modules are loaded using something like `lsmod | grep nv` after startup.
 
 #### Custom Kernel
 
-To built the latest drivers on the `master` kernel for example, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
+To built the latest NVIDIA drivers on the `master` kernel for example, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
 
-```
+```bash
 # transactional-update shell
 # cd /usr/src/kernel-modules/nvidia-<version>-default
 # <patch> (if needed)
 # dracut -vf --regenerate-all
 # exit
-# transactional-update initrd
 $ systemctl reboot
 ```
 
-It's important to reboot first, afterwards re-run initrd (see Kernel instructions).
+It's important to reboot first, afterwards re-run initrd (see Kernel instructions):
+
+```bash
+# transactional-update initrd
+# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
+# systemctl reboot
+```
 
 ### Encryption
 
@@ -107,13 +112,13 @@ If for some reason the enrollment wasn't successful, you may want to reset the T
 # systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=4+5+7+9 /dev/nvme0n1p2
 ```
 
-Please note this may need a couple of reboots and a TPM reset in the BIOS as well.
+> Please note this may require a couple of reboots, and possibly a TPM reset in the BIOS as well.
 
 ## Filesystem
 
 ### Trim
 
-Enable the `fstrim.timer` when using SSD/NVme-device(s):
+Enable the `fstrim.timer` when using SSD/NVme drives:
 
 ```bash
 # systemctl enable fstrim.timer --now
@@ -157,7 +162,7 @@ To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroO
 
 It is discourage to install software on the root filesystem, see the Aeon Wiki for details  <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>.
 
-Unfortunately you may need to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and only needed if you want to use it outsides Flatpaks and containers.
+You may want to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and should only be needed if you want to use it outsides Flatpaks and containers.
 
 ### Samba
 
@@ -237,7 +242,7 @@ To open ports/services:
 
 ### VSCodium / VSCode
 
-The following resources may be useful:
+The following resources may be useful when you want to use devcontainers and Podman integration:
 
 - <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
 - <https://github.com/jorchube/devcontainer-definitions>
@@ -269,7 +274,7 @@ $ dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 
 #### Fish
 
-Install fish in the OpenSUSE distrobox container (this is recommended over global installation):
+Install fish in the OpenSUSE distrobox container using BoxBuddy (this is recommended over system packages):
 
 ```bash
 # zypper install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
@@ -287,7 +292,7 @@ To disable greeting (welcome message):
 $ set -U fish_greeting
 ```
 
-Follow <https://starship.rs/guide/> to setup Starship, and make sure to set it as default container in Ptyxis.
+Follow <https://starship.rs/guide/> to setup Starship, and make sure to set it as default container in Ptyxis and/or BoxBuddy.
 
 ## Appearance
 
