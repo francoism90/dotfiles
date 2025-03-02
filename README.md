@@ -35,8 +35,6 @@ See the OpenSUSE Wiki for details:
 
 You may get conflicts, it seems to work fine when you choose to ignore the missing library or package.
 
-On Aeon you may need to remove the `--root-pw` option for the `mokutil --import` command, and give a password manually instead.
-
 #### Secure Boot
 
 If you use Secure Boot, make sure to always sign the module (you may need to redo this on updates):
