@@ -6,6 +6,32 @@ Hopefully the provided instructions are useful, when you also run or decide to m
 
 ## System
 
+To learn more about `transactional-update`: <https://kubic.opensuse.org/documentation/man-pages/transactional-update.8.html>. For example, sometimes you may want to use the `--continue` arg, `shell` to use `zypper` commands, or use `apply` to prevent a reboot.
+
+### Updating
+
+> Note: Aeon and MicroOS uses the `transactional-update.timer` to apply updates daily.
+
+To update the system, the preferred approach is to use `dup`:
+
+```bash
+# transactional-update dup
+# transactional-update reboot
+```
+
+To disable automatic rebooting after upgrades, which may be useful when you run MicroOS as a server:
+
+```bash
+# systemctl disable rebootmgr.service
+```
+
+To update Flatpaks:
+
+```bash
+$ flatpak update
+# flatpak update
+```
+
 ### Kernel
 
 > Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel.
@@ -33,7 +59,8 @@ See the OpenSUSE Wiki for details:
 - <https://en.opensuse.org/SDB:NVIDIA_drivers>
 - <https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control>
 
-You may get conflicts, it seems to work fine when you choose to ignore the missing library or package.
+You may get conflicts or warnings, it seems to work fine when you choose to ignore the missing library or package.
+This seems to happen because the actual depency hasn't been provided yet. It's recommended to keep the snapshot without the NVIDIA drivers applied, just to always to be able to return to a clean state.
 
 #### Secure Boot
 
@@ -156,11 +183,15 @@ To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroO
 # tuned-adm profile
 ```
 
+Other tuned profiles exists, for example for database servers.
+
 ## Software
 
 It is discourage to install software on the root filesystem, see the Aeon Wiki for details  <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>.
 
-You may want to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and should only be needed if you want to use it outsides Flatpaks and containers. For example, you may want to use the [Packman](https://en.opensuse.org/Additional_package_repositories#Packman) for aptX audio support.
+You may want to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and should only be needed if you want to use it outsides Flatpaks and containers.
+
+For example, you may want to use the [Packman](https://en.opensuse.org/Additional_package_repositories#Packman) repository for aptX audio support. Best is to note use the vendor-switch command.
 
 ### Samba
 
@@ -221,7 +252,7 @@ $ loginctl enable-linger $USER
 
 ### Firewall
 
-Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS firewalld should be included.
+Aeon doesn't come with any firewall, this is by design. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS firewalld should be included.
 
 It's still possible to install `firewalld` on Aeon, but this may cause Flatpak and container network issues:
 
@@ -281,7 +312,7 @@ Install fish in the OpenSUSE distrobox container using BoxBuddy (this is recomme
 To add fish path lookups:
 
 ```fish
-$ fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
+$ fish_add_path ~/.local/bin ~/.config/yarn/global/node_modules/.bin
 ```
 
 To disable greeting (welcome message):
