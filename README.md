@@ -136,6 +136,29 @@ It is discourage to install software on the root filesystem, see the Aeon Wiki f
 
 - <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>
 
+### Samba
+
+To install Samba:
+
+```bash
+sudo transactional-update --continue -i pkg install samba
+sudo smbpasswd -a <username>
+sudo systemctl restart smb nmb
+```
+
+When you use firewalld:
+
+```bash
+sudo firewall-cmd --permanent --add-service={samba,samba-client,samba-dc}
+sudo firewall-cmd --reload
+```
+
+To allow the sharing of home folders:
+
+```bash
+sudo setsebool -P samba_enable_home_dirs 1
+```
+
 ### Brave
 
 Depending on your hardware, you may need to enable/disable different flags. See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
