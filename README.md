@@ -4,7 +4,7 @@ This is a selection of settings and preferences for my personal OpenSUSE [Aeon D
 
 Hopefully the provided instructions are useful, when you also run or decide to move to OpenSUSE. :)
 
-## Drivers
+## System
 
 ### Kernel
 
@@ -37,16 +37,7 @@ You may get conflicts, it seems to work fine when you choose to ignore the missi
 
 On Aeon you may need to remove the `--root-pw` option for the `mokutil --import` command, and give a password manually instead.
 
-To built the latest drivers on the `master` kernel, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
-
-```
-# transactional-update shell
-# cd /usr/src/kernel-modules/nvidia-570.86.16-default
-# <patch> (if needed)
-# dracut -vf --regenerate-all
-```
-
-It's important to reboot first, afterwards reinstall the `master` kernel (see instructions above).
+#### Secure Boot
 
 If you use Secure Boot, make sure to always sign the module:
 
@@ -55,21 +46,27 @@ If you use Secure Boot, make sure to always sign the module:
 $ systemctl reboot
 ```
 
-After a reboot, check if the nvdia modules are loaded using something like `lsmod | grep nv`.
+After a reboot, enroll the key using the provided password, and check if the NVIDIA modules are loaded using something like `lsmod | grep nv` after startup.
 
-## Filesystem
+#### Custom Kernel
 
-### Trim
+To built the latest drivers on the `master` kernel for example, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
 
-Enable the `fstrim.timer` when using a SSD/NVme-device:
-
-```bash
-# systemctl enable fstrim.timer --now
 ```
+# transactional-update shell
+# cd /usr/src/kernel-modules/nvidia-<version>-default
+# <patch> (if needed)
+# dracut -vf --regenerate-all
+# exit
+# transactional-update initrd
+$ systemctl reboot
+```
+
+It's important to reboot first, afterwards re-run initrd (see Kernel instructions).
 
 ### Encryption
 
-If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and allowing discards (e.g. trim):
+If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and allow discards (e.g. trim):
 
 ```bash
 # cryptsetup --perf-no_read_workqueue --perf-no_write_workqueue --allow-discards --persistent refresh aeon_root
@@ -86,7 +83,7 @@ The following resources may be helpful:
 - <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
 
-If you want to use Full Disk Encryption (FDE) with TPM2, make sure to (re)enroll when needed:
+If you want to use Full Disk Encryption (FDE) with TPM, make sure to (re)enroll when needed:
 
 ```bash
 # SYSTEMD_LOG_LEVEL=debug sdbootutil --ask-pin update-predictions
@@ -102,15 +99,25 @@ SLOT TYPE
    2 recovery
 ```
 
-If for some reason the enrollment wasn't successful, you may want to enroll a new key:
+If for some reason the enrollment wasn't successful, you may want to reset the TPM and enroll a new key:
 
 ```bash
-# cat /etc/sysconfig/fde-tools | grep FDE_SEAL_PCR_LIST=
 # sdbootutil unenroll --method=tpm2
+# cat /etc/sysconfig/fde-tools | grep FDE_SEAL_PCR_LIST=
 # systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=4+5+7+9 /dev/nvme0n1p2
 ```
 
-Please note this may need a couple of reboots, and TPM is known to be a challenge on Linux.
+Please note this may need a couple of reboots and a TPM reset in the BIOS as well.
+
+## Filesystem
+
+### Trim
+
+Enable the `fstrim.timer` when using SSD/NVme-device(s):
+
+```bash
+# systemctl enable fstrim.timer --now
+```
 
 ### Btrfs
 
@@ -148,11 +155,9 @@ To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroO
 
 ## Software
 
-It is discourage to install software on the root filesystem, see the Aeon Wiki for details:
+It is discourage to install software on the root filesystem, see the Aeon Wiki for details  <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>.
 
-- <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>
-
-Unfortunately you may need to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and only needed if you want to use it outsides Flatpaks.
+Unfortunately you may need to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and only needed if you want to use it outsides Flatpaks and containers.
 
 ### Samba
 
@@ -187,7 +192,9 @@ To allow the sharing of home folders:
 Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `.var/app/com.brave.Browser/config
 /brave-flags.conf`.
 
-See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
+See the following resources for details:
+- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
+- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
 
 ### Podman
 
@@ -196,7 +203,7 @@ Enable and use rootless containers:
 - <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
 - <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 
-To learn more about Podman Quadlet, the following resources may be useful:
+To learn more about Podman Quadlet, see the following resources:
 
 - <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
 - <https://www.redhat.com/sysadmin/quadlet-podman>
@@ -213,7 +220,7 @@ $ loginctl enable-linger $USER
 
 Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS firewalld should be included.
 
-It's still possible to install `firewalld`, but this may cause Flatpak and container network issues:
+It's still possible to install `firewalld` on Aeon, but this may cause Flatpak and container network issues:
 
 ```bash
 # transactional-update -i pkg install firewalld firewalld-bash-completion
@@ -230,7 +237,7 @@ To open ports/services:
 
 ### VSCodium / VSCode
 
-See the following guides:
+The following resources may be useful:
 
 - <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
 - <https://github.com/jorchube/devcontainer-definitions>
