@@ -210,11 +210,15 @@ Other tuned profiles exists, for example for database servers.
 
 ## Software
 
-It is discourage to install software on the root filesystem, see the Aeon Wiki for details  <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>.
+It is discourage to install software on the root filesystem, see the [Aeon Wiki](<https://en.opensuse.org/Portal:Aeon/SoftwareInstall>) for details.
 
-You may want to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and should only be needed if you want to use it outsides Flatpaks and containers.
+### Codecs
 
-For example, you may want to use the [Packman](https://en.opensuse.org/Additional_package_repositories#Packman) repository for aptX audio support. Best is to note use the vendor-switch command.
+> Note this is unsupported, and should only be needed if you want to use codecs outsides Flatpaks and containers.
+
+You may need to install [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories) for additional audio and video support.
+
+For full instructions, see <https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories>.
 
 ### Samba
 
