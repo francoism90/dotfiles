@@ -163,6 +163,12 @@ If for some reason the enrollment wasn't successful, you may want to reset the T
 
 ```bash
 # sdbootutil unenroll --method=tpm2
+# sdbootutil enroll --method=tpm2 --ask-pw
+```
+
+If for some reason you want to manually enroll:
+
+```bash
 # cat /etc/sysconfig/fde-tools | grep FDE_SEAL_PCR_LIST=
 # systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=4+5+7+9 /dev/nvme0n1p2
 ```
