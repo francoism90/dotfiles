@@ -32,6 +32,27 @@ $ flatpak update
 # flatpak update
 ```
 
+### Maintenance
+
+To view current repositories:
+
+```bash
+$ zypper lr
+```
+
+To view the packages installed by a repository:
+
+```bash
+$ zypper search -i -r <repo alias|#|URI>
+$ zypper search -i -r packman
+```
+
+To list every package in a repository:
+
+```bash
+$ zypper pa -ir packman
+```
+
 ### Kernel
 
 > Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel.
