@@ -6,7 +6,9 @@ Hopefully the provided instructions are useful, when you also run or decide to m
 
 ## System
 
-To learn more about `transactional-update`: <https://kubic.opensuse.org/documentation/man-pages/transactional-update.8.html>. For example, sometimes you may want to use the `--continue` arg, `shell` to use `zypper` commands, or use `apply` to prevent a reboot.
+To learn more about `transactional-update`: <https://kubic.opensuse.org/documentation/man-pages/transactional-update.8.html>.
+
+For example, sometimes you may want to use the `--continue` arg, `shell` to use `zypper` commands, or use `apply` to prevent a reboot.
 
 ### Updating
 
