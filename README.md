@@ -36,6 +36,13 @@ $ flatpak update
 
 ### Maintenance
 
+To clean-up old snapshots:
+
+```bash
+# transactional-update cleanup
+# transactional-update reboot
+```
+
 To view current repositories:
 
 ```bash
