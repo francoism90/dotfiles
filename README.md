@@ -138,12 +138,16 @@ It is discourage to install software on the root filesystem, see the Aeon Wiki f
 
 ### Samba
 
+See the following links for details:
+- <https://doc.opensuse.org/documentation/leap/reference/html/book-reference/cha-samba.html>
+- <https://wiki.archlinux.org/title/Samba>
+
 To install Samba:
 
 ```bash
 sudo transactional-update --continue -i pkg install samba
 sudo smbpasswd -a <username>
-sudo systemctl restart smb nmb
+sudo systemctl enable smb nmb --now
 ```
 
 When you use firewalld:
@@ -157,11 +161,15 @@ To allow the sharing of home folders:
 
 ```bash
 sudo setsebool -P samba_enable_home_dirs 1
+sudo systemctl restart smb nmb
 ```
 
 ### Brave
 
-Depending on your hardware, you may need to enable/disable different flags. See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
+Depending on your hardware, you may want to enable flags in `.var/app/com.brave.Browser/config
+/brave-flags.conf`.
+
+See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
 
 ### Podman
 
@@ -184,7 +192,7 @@ loginctl enable-linger $USER
 
 ### Firewall
 
-Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers.
+Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS the firewall should be included.
 
 It's still possible to install `firewalld`, but this may cause Flatpak and container network issues:
 
