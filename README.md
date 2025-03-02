@@ -162,7 +162,7 @@ To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroO
 
 It is discourage to install software on the root filesystem, see the Aeon Wiki for details  <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>.
 
-You may want to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and should only be needed if you want to use it outsides Flatpaks and containers.
+You may want to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and should only be needed if you want to use it outsides Flatpaks and containers. For example, you may want to use the [Packman](https://en.opensuse.org/Additional_package_repositories#Packman) for aptX audio support.
 
 ### Samba
 
