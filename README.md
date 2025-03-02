@@ -1,26 +1,29 @@
 # dotfiles
 
-This is a selection of settings and preferences for my OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) installation.
+This is a selection of settings and preferences for my personal OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) and [MicroOS](https://microos.opensuse.org/) installation.
 
-In most cases the given instructions should also work on MicroOS.
+Hopefully the provided instructions are useful, when you also run or decide to move to OpenSUSE. :)
 
 ## Drivers
 
 ### Kernel
 
+> Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel.
+
 If you want to run the latest kernel, see <https://kernel.opensuse.org/master.html> for details:
 
 ```bash
-sudo zypper addrepo https://download.opensuse.org/repositories/Kernel:HEAD/standard/Kernel:HEAD.repo
-sudo zypper refresh
-zypper lr
+# transactional-update shell
+# zypper addrepo https://download.opensuse.org/repositories/Kernel:HEAD/standard/Kernel:HEAD.repo
+# zypper refresh
+$ zypper lr
 ```
 
 To install a version of the `master` branch:
 
 ```bash
-sudo transactional-update -i pkg install kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4
-systemctl reboot
+# transactional-update -i pkg install kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4
+$ systemctl reboot
 ```
 
 ### NVIDIA
@@ -37,30 +40,39 @@ On Aeon you may need to remove the `--root-pw` option for the `mokutil --import`
 To built the latest drivers on the `master` kernel, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
 
 ```
-sudo transactional-update shell
-cd /usr/src/kernel-modules/nvidia-570.86.16-default
-<patch>
-sudo dracut -vf --regenerate-all
+# transactional-update shell
+# cd /usr/src/kernel-modules/nvidia-570.86.16-default
+# <patch> (if needed)
+# dracut -vf --regenerate-all
 ```
 
 It's important to reboot first, afterwards reinstall the `master` kernel (see instructions above).
+
+If you use Secure Boot, make sure to always sign the module:
+
+```bash
+# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
+$ systemctl reboot
+```
+
+After a reboot, check if the nvdia modules are loaded using something like `lsmod | grep nv`.
 
 ## Filesystem
 
 ### Trim
 
-Enable the `fstrim` when using a SSD/NVme-device timer:
+Enable the `fstrim.timer` when using a SSD/NVme-device:
 
 ```bash
-sudo systemctl enable fstrim.timer --now
+# systemctl enable fstrim.timer --now
 ```
 
 ### Encryption
 
-If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and allowing discards:
+If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and allowing discards (e.g. trim):
 
 ```bash
-sudo cryptsetup --perf-no_read_workqueue --perf-no_write_workqueue --allow-discards --persistent refresh aeon_root
+# cryptsetup --perf-no_read_workqueue --perf-no_write_workqueue --allow-discards --persistent refresh aeon_root
 ```
 
 See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details.
@@ -74,11 +86,10 @@ The following resources may be helpful:
 - <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
 
-If you want to use Full Disk Encryption (FDE) with TPM2:
+If you want to use Full Disk Encryption (FDE) with TPM2, make sure to (re)enroll when needed:
 
 ```bash
-sdbootutil unenroll --method=tpm2
-sdbootutil --ask-pin update-predictions
+# SYSTEMD_LOG_LEVEL=debug sdbootutil --ask-pin update-predictions
 ```
 
 To verify the current enrollment:
@@ -94,22 +105,25 @@ SLOT TYPE
 If for some reason the enrollment wasn't successful, you may want to enroll a new key:
 
 ```bash
-cat /etc/sysconfig/fde-tools | grep FDE_SEAL_PCR_LIST=
-systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=4+5+7+9 /dev/nvme0n1p2
+# cat /etc/sysconfig/fde-tools | grep FDE_SEAL_PCR_LIST=
+# sdbootutil unenroll --method=tpm2
+# systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=4+5+7+9 /dev/nvme0n1p2
 ```
+
+Please note this may need a couple of reboots, and TPM is known to be a challenge on Linux.
 
 ### Btrfs
 
 If you are using Btrfs, you may want to configure <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
-sudo nano /etc/sysconfig/btrfsmaintenance
+# nano /etc/sysconfig/btrfsmaintenance
 ```
 
-Enable the timers:
+Enable the Btrfs maintenance timers:
 
 ```bash
-sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
+# systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
 ### zram
@@ -117,17 +131,19 @@ sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer b
 To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
 
 ```bash
-sudo transactional-update -i pkg install systemd-zram-service
-sudo systemctl enable zramswap.service --now
+# transactional-update -i pkg install systemd-zram-service
+# systemctl enable zramswap.service --now
 ```
 
 ### tuned
 
-To enable [tuned](https://github.com/redhat-performance/tuned):
+To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroOS:
 
 ```bash
-sudo transactional-update -i pkg install tuned tuned-profiles-atomic tuned-utils
-sudo systemctl enable tuned --now
+# transactional-update -i pkg install tuned tuned-profiles-atomic tuned-utils
+# systemctl enable tuned --now
+# tuned-adm profile atomic-host
+# tuned-adm profile
 ```
 
 ## Software
@@ -135,6 +151,8 @@ sudo systemctl enable tuned --now
 It is discourage to install software on the root filesystem, see the Aeon Wiki for details:
 
 - <https://en.opensuse.org/Portal:Aeon/SoftwareInstall>
+
+Unfortunately you may need to do this for [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories), please note this is unsupported, and only needed if you want to use it outsides Flatpaks.
 
 ### Samba
 
@@ -145,28 +163,28 @@ See the following links for details:
 To install Samba:
 
 ```bash
-sudo transactional-update --continue -i pkg install samba
-sudo smbpasswd -a <username>
-sudo systemctl enable smb nmb --now
+# transactional-update --continue -i pkg install samba
+# smbpasswd -a <username>
+# systemctl enable smb nmb --now
 ```
 
 When you use firewalld:
 
 ```bash
-sudo firewall-cmd --permanent --add-service={samba,samba-client,samba-dc}
-sudo firewall-cmd --reload
+# firewall-cmd --permanent --add-service={samba,samba-client,samba-dc}
+# firewall-cmd --reload
 ```
 
 To allow the sharing of home folders:
 
 ```bash
-sudo setsebool -P samba_enable_home_dirs 1
-sudo systemctl restart smb nmb
+# setsebool -P samba_enable_home_dirs 1
+# systemctl restart smb nmb
 ```
 
 ### Brave
 
-Depending on your hardware, you may want to enable flags in `.var/app/com.brave.Browser/config
+Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `.var/app/com.brave.Browser/config
 /brave-flags.conf`.
 
 See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
@@ -187,26 +205,27 @@ To learn more about Podman Quadlet, the following resources may be useful:
 To enable linger, e.g. keep containers running when logged out:
 
 ```bash
-loginctl enable-linger $USER
+$ loginctl enable-linger $USER
+# loginctl enable-linger root
 ```
 
 ### Firewall
 
-Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS the firewall should be included.
+Aeon doesn't come with any firewall. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS firewalld should be included.
 
 It's still possible to install `firewalld`, but this may cause Flatpak and container network issues:
 
 ```bash
-sudo transactional-update -i pkg install firewalld firewalld-bash-completion
-sudo systemctl enable firewalld.service --now
+# transactional-update -i pkg install firewalld firewalld-bash-completion
+# systemctl enable firewalld.service --now
 ```
 
-To open ports/servies:
+To open ports/services:
 
 ```bash
-sudo firewall-cmd --permanent --add-serice=https
-sudo firewall-cmd --permanent --add-port=8920/tcp
-sudo firewall-cmd --reload
+# firewall-cmd --permanent --add-service=https
+# firewall-cmd --permanent --add-port=8920/tcp
+# firewall-cmd --reload
 ```
 
 ### VSCodium / VSCode
@@ -227,7 +246,7 @@ You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatse
 To enable Wayland support:
 
 ```bash
-flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
+$ flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
 ```
 
 See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
@@ -237,31 +256,31 @@ See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 To apply opacity ([credits](https://discussion.fedoraproject.org/t/use-dconf-to-set-transparency-for-ptyxis/135003)):
 
 ```bash
-dconf read /org/gnome/Ptyxis/default-profile-uuid
-dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
+$ dconf read /org/gnome/Ptyxis/default-profile-uuid
+$ dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 ```
 
 #### Fish
 
-Install fish in the OpenSUSE distrobox container:
+Install fish in the OpenSUSE distrobox container (this is recommended over global installation):
 
 ```bash
-sudo zypper install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
+# zypper install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
 ```
 
 To add fish path lookups:
 
 ```fish
-fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
+$ fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
 ```
 
 To disable greeting (welcome message):
 
 ```fish
-set -U fish_greeting
+$ set -U fish_greeting
 ```
 
-Follow <https://starship.rs/guide/> to setup Starship.
+Follow <https://starship.rs/guide/> to setup Starship, and make sure to set it as default container in Ptyxis.
 
 ## Appearance
 
