@@ -68,66 +68,9 @@ To search for packages including versions:
 $ zypper search -s nvidia
 ```
 
-### Kernel
+## Hardware
 
-> Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel.
-
-If you want to run the latest kernel (see <https://kernel.opensuse.org/master.html> for details):
-
-```bash
-# transactional-update shell
-# zypper addrepo https://download.opensuse.org/repositories/Kernel:HEAD/standard/Kernel:HEAD.repo
-# zypper refresh
-# zypper lr
-# zypper install kernel-default-6.14~rc5 kernel-default-devel-6.14~rc5
-# exit
-```
-
-> Note: you may need to remove older kernel versions manually, e.g. `zypper remove kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4`.
-
-### NVIDIA
-
-See the OpenSUSE Wiki for details:
-
-- <https://en.opensuse.org/SDB:NVIDIA_drivers>
-- <https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control>
-
-You may get conflicts or warnings, it seems to work fine when you choose to ignore the missing library or package.
-This seems to happen because the actual depency hasn't been provided yet. It's recommended to keep the snapshot without the NVIDIA drivers applied, just to always to be able to return to a clean state.
-
-#### Secure Boot
-
-If you use Secure Boot, make sure to always sign the nvidia.ko module (you may need to redo this on updates):
-
-```bash
-# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
-$ systemctl reboot
-```
-
-After a reboot, enroll the key using the provided password, and validate if the NVIDIA modules are loaded using something like `lsmod | grep nv` after startup.
-
-#### Custom Kernel
-
-To built the latest NVIDIA drivers on the `master` kernel for example, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
-
-```bash
-# transactional-update shell
-# cd /usr/src/kernel-modules/nvidia-<version>-default
-# <patch> (if needed)
-# dracut -vf --regenerate-all
-# exit
-# transactional-update reboot
-```
-
-It's important to reboot first, afterwards re-run initrd (see Kernel instructions):
-
-```bash
-# transactional-update initrd
-# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
-# systemctl reboot
-```
-
-### Encryption
+### Encryption (luks)
 
 If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and allow discards (e.g. trim):
 
@@ -148,7 +91,7 @@ The following resources may be helpful:
 - <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
 
-If you want to use Full Disk Encryption (FDE) with TPM, make sure to (re)enroll when needed (this may happen on an UEFI firmware update):
+If you use Full Disk Encryption (FDE) with a TPM, make sure to (re)enroll when needed (this may happen on an UEFI firmware update):
 
 ```bash
 # SYSTEMD_LOG_LEVEL=debug sdbootutil --ask-pin update-predictions
@@ -180,9 +123,61 @@ If for some reason you want to manually enroll:
 
 > Please note this may require a couple of reboots, and possibly a TPM reset in the BIOS as well.
 
-## Filesystem
+### NVIDIA
 
-### Trim
+See the OpenSUSE Wiki for details:
+
+- <https://en.opensuse.org/SDB:NVIDIA_drivers>
+- <https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control>
+
+You may get conflicts or warnings, it seems to work fine when you choose to ignore the missing library or package.
+This seems to happen because the actual depency hasn't been provided yet. It's recommended to keep the snapshot without the NVIDIA drivers applied, just to always to be able to return to a clean state.
+
+#### Secure Boot
+
+If you use Secure Boot, make sure to always sign the nvidia.ko module (you may need to redo this on updates):
+
+```bash
+# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
+$ systemctl reboot
+```
+
+After a reboot, enroll the key using the provided password, and validate if the NVIDIA modules are loaded using something like `lsmod | grep nv` after startup.
+
+### Kernel
+
+> Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel.
+
+If you want to run the latest (next) kernel (see <https://kernel.opensuse.org/master.html> for details):
+
+```bash
+# transactional-update shell
+# zypper addrepo https://download.opensuse.org/repositories/Kernel:HEAD/standard/Kernel:HEAD.repo
+# zypper refresh
+# zypper lr
+# zypper install kernel-default-6.14~rc5 kernel-default-devel-6.14~rc5
+# exit
+```
+
+> Note: you may need to remove older kernel versions manually, e.g. `zypper remove kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4`.
+
+#### Patching NVIDIA drivers
+
+To built the latest NVIDIA drivers on a different kernel compared to main, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
+
+```bash
+# transactional-update shell
+# cd /usr/src/kernel-modules/nvidia-<version>-default
+# <patch> (if needed)
+# dracut -vf --regenerate-all
+# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
+# exit
+# transactional-update reboot
+```
+
+### Filesystems
+
+#### Trim
 
 To use periodic trimming, enable the `fstrim.timer` when using SSD/NVme drives:
 
@@ -190,7 +185,7 @@ To use periodic trimming, enable the `fstrim.timer` when using SSD/NVme drives:
 # systemctl enable fstrim.timer --now
 ```
 
-### Btrfs
+#### Btrfs
 
 If you are using Btrfs, you may want to configure <https://github.com/kdave/btrfsmaintenance>:
 
@@ -204,7 +199,7 @@ Enable the Btrfs maintenance timers:
 # systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
-### zram
+#### zram
 
 To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
 
@@ -213,7 +208,7 @@ To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
 # systemctl enable zramswap.service --now
 ```
 
-### tuned
+#### tuned
 
 To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroOS:
 
@@ -230,15 +225,19 @@ Other tuned profiles exists, for example for database servers and powersaving.
 
 It is discourage to install software on the root filesystem, see the [Aeon Wiki](<https://en.opensuse.org/Portal:Aeon/SoftwareInstall>) for details.
 
+Use BoxBuddy on Aeon, and distrobox/Podman on MicroOS.
+
 ### Codecs
 
 > Note this is unsupported, and should only be needed if you want to use codecs outsides Flatpaks and containers.
 
 You may need to install [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories) for additional audio and video support.
 
+It is recommended to install the packages you need, as installing the full package using `oci` may break your system or cause version conflicts.
+
 For full instructions, see <https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories>.
 
-### Samba
+### Samba (filesharing)
 
 See the following links for details:
 - <https://doc.opensuse.org/documentation/leap/reference/html/book-reference/cha-samba.html>
@@ -269,7 +268,7 @@ To allow the sharing of home folders:
 ### Brave
 
 Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `.var/app/com.brave.Browser/config
-/brave-flags.conf`.
+/brave-flags.conf`. The given example, forces the usage of VA-API, but it can be unstable.
 
 See the following resources for details:
 - <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
