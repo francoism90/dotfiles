@@ -1,8 +1,8 @@
 # dotfiles
 
-This is a selection of settings and preferences for my personal OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) and [MicroOS](https://microos.opensuse.org/) installation.
+This is a selection of settings, notes and preferences for my personal OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) and [MicroOS](https://microos.opensuse.org/) installation.
 
-Hopefully the provided instructions are useful, when you also run or decide to move to OpenSUSE. :)
+Hopefully the provided instructions are useful, when you do run OpenSUSE. :)
 
 ## System
 
@@ -12,9 +12,9 @@ For example, sometimes you may want to use the `--continue` arg, `shell` to use 
 
 ### Updating
 
-> Note: Aeon and MicroOS uses the `transactional-update.timer` to apply updates daily.
+> Note: Aeon and MicroOS uses the `transactional-update.timer` to apply updates daily (when plugged into AC).
 
-To update the system, the preferred approach is to use `dup`:
+To update the system manually, the preferred approach is to always use `dup`:
 
 ```bash
 # transactional-update dup
@@ -24,7 +24,7 @@ To update the system, the preferred approach is to use `dup`:
 To disable automatic rebooting after upgrades, which may be useful when you run MicroOS as a server:
 
 ```bash
-# systemctl disable rebootmgr.service
+# systemctl disable rebootmgr.service (or transactional-update.timer if you also want to stop updating - NOT RECOMMENDED)
 ```
 
 To update Flatpaks:
@@ -36,7 +36,7 @@ $ flatpak update
 
 ### Maintenance
 
-To clean-up old snapshots:
+To clean-up old snapshots (also see https://wiki.archlinux.org/title/Snapper#Delete_a_snapshot):
 
 ```bash
 # transactional-update cleanup
@@ -62,25 +62,28 @@ To list every package in a repository:
 $ zypper pa -ir packman
 ```
 
+To search for packages including versions:
+
+```bash
+$ zypper search -s nvidia
+```
+
 ### Kernel
 
 > Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel.
 
-If you want to run the latest kernel, see <https://kernel.opensuse.org/master.html> for details:
+If you want to run the latest kernel (see <https://kernel.opensuse.org/master.html> for details):
 
 ```bash
 # transactional-update shell
 # zypper addrepo https://download.opensuse.org/repositories/Kernel:HEAD/standard/Kernel:HEAD.repo
 # zypper refresh
-$ zypper lr
+# zypper lr
+# zypper install kernel-default-6.14~rc5 kernel-default-devel-6.14~rc5
+# exit
 ```
 
-To install a version of the `master` branch:
-
-```bash
-# transactional-update -i pkg install kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4
-$ systemctl reboot
-```
+> Note: you may need to remove older kernel versions manually, e.g. `zypper remove kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4`.
 
 ### NVIDIA
 
@@ -94,7 +97,7 @@ This seems to happen because the actual depency hasn't been provided yet. It's r
 
 #### Secure Boot
 
-If you use Secure Boot, make sure to always sign the module (you may need to redo this on updates):
+If you use Secure Boot, make sure to always sign the nvidia.ko module (you may need to redo this on updates):
 
 ```bash
 # mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
@@ -113,7 +116,7 @@ To built the latest NVIDIA drivers on the `master` kernel for example, see <http
 # <patch> (if needed)
 # dracut -vf --regenerate-all
 # exit
-$ systemctl reboot
+# transactional-update reboot
 ```
 
 It's important to reboot first, afterwards re-run initrd (see Kernel instructions):
@@ -136,6 +139,8 @@ See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for
 
 ### TPM
 
+> Tip: You may want to add a [passphrase](https://wiki.archlinux.org/title/Systemd-cryptenroll#Regular_password) as fallback.
+
 The following resources may be helpful:
 - <https://en.opensuse.org/Portal:MicroOS/FDE>
 - <https://github.com/openSUSE/sdbootutil/issues/118#issuecomment-2665975124>
@@ -143,7 +148,7 @@ The following resources may be helpful:
 - <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
 
-If you want to use Full Disk Encryption (FDE) with TPM, make sure to (re)enroll when needed:
+If you want to use Full Disk Encryption (FDE) with TPM, make sure to (re)enroll when needed (this may happen on an UEFI firmware update):
 
 ```bash
 # SYSTEMD_LOG_LEVEL=debug sdbootutil --ask-pin update-predictions
@@ -179,7 +184,7 @@ If for some reason you want to manually enroll:
 
 ### Trim
 
-Enable the `fstrim.timer` when using SSD/NVme drives:
+To use periodic trimming, enable the `fstrim.timer` when using SSD/NVme drives:
 
 ```bash
 # systemctl enable fstrim.timer --now
@@ -219,7 +224,7 @@ To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroO
 # tuned-adm profile
 ```
 
-Other tuned profiles exists, for example for database servers.
+Other tuned profiles exists, for example for database servers and powersaving.
 
 ## Software
 
@@ -294,7 +299,7 @@ $ loginctl enable-linger $USER
 
 Aeon doesn't come with any firewall, this is by design. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS firewalld should be included.
 
-It's still possible to install `firewalld` on Aeon, but this may cause Flatpak and container network issues:
+It's still possible to install `firewalld` on Aeon, but this may cause Flatpak/container network issues and is unsupported:
 
 ```bash
 # transactional-update -i pkg install firewalld firewalld-bash-completion
