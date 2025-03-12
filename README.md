@@ -123,12 +123,29 @@ If for some reason you want to manually enroll:
 
 > Please note this may require a couple of reboots, and possibly a TPM reset in the BIOS as well.
 
-### NVIDIA
+### NVIDIA (open-driver)
 
-See the OpenSUSE Wiki for details:
+See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for details:
 
-- <https://en.opensuse.org/SDB:NVIDIA_drivers>
-- <https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control>
+```bash
+# transactional-update shell
+# zypper install openSUSE-repos-MicroOS-NVIDIA
+# zypper in nvidia-open-driver-G06-signed-kmp-default
+# version=$(rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
+# zypper in nvidia-video-G06 == ${version} nvidia-compute-utils-G06 == ${version}
+# zypper in nvidia-settings
+# dracut -fv
+# exit
+```
+Reboot the system, and check if `dmesg` can load the NVIDIA driver:
+
+```bash
+NVRM: loading NVIDIA UNIX Open Kernel Module for x86_64  570.124.04  Release Build  (abuild@host)  Tue Mar  4 11:08:41 UTC 2025
+```
+
+### NVIDIA (closed-driver)
+
+See [SDB:NVIDIA_drivers](<https://en.opensuse.org/SDB:NVIDIA_drivers> for details.
 
 You may get conflicts or warnings, it seems to work fine when you choose to ignore the missing library or package.
 This seems to happen because the actual depency hasn't been provided yet. It's recommended to keep the snapshot without the NVIDIA drivers applied, just to always to be able to return to a clean state.
