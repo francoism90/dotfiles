@@ -1,12 +1,3 @@
-[includeIf "gitdir:~/Code/francoism90/**"]
-  path = ~/Code/francoism90/.gitconfig
-[includeIf "gitdir:~/Code/foxws/**"]
-  path = ~/Code/foxws/.gitconfig
-[filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
 [init]
 	defaultBranch = main
 [push]
