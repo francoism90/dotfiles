@@ -367,13 +367,13 @@ $ dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 Install fish in the OpenSUSE distrobox container using BoxBuddy (this is recommended over system packages):
 
 ```bash
-# zypper install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
+# zypper install fish starship
 ```
 
 To add fish path lookups:
 
 ```fish
-$ fish_add_path ~/.local/bin ~/.config/yarn/global/node_modules/.bin
+$ fish_add_path ~/.local/bin
 ```
 
 To disable greeting (welcome message):
