@@ -13,12 +13,12 @@ Volume=/var/mnt/data/SABnzbd/downloads:/downloads:rw,Z
 User=1000
 Group=1000
 UserNS=keep-id:uid=1000,gid=1000
-Network=sabnzbd.network
-ExposeHostPort=8080
+Network=pi.network
+PublishPort=8080     
 
 [Service]
-Restart=always
-TimeoutStartSec=900
+TimeoutStartSec=90
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
