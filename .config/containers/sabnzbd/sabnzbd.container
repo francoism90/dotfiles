@@ -14,7 +14,7 @@ User=1000
 Group=1000
 UserNS=keep-id:uid=1000,gid=1000
 Network=pi.network
-PublishPort=8080     
+PublishPort=8080:8080
 
 [Service]
 TimeoutStartSec=90
