@@ -15,14 +15,14 @@ Volume=/var/mnt/data/qBittorrent/downloads:/downloads:rw,Z
 User=1000
 Group=1000
 UserNS=keep-id:uid=1000,gid=1000
-Network=qbittorrent.network
-ExposeHostPort=8090
+Network=pi.network
+PublishPort=8090:8090
 PublishPort=6881:6881
 PublishPort=6881:6881/udp
 
 [Service]
-Restart=always
-TimeoutStartSec=900
+TimeoutStartSec=90
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
