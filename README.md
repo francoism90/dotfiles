@@ -21,10 +21,10 @@ To update the system manually, the preferred approach is to always use `dup`:
 # transactional-update reboot
 ```
 
-To disable automatic rebooting after upgrades, which may be useful when you run MicroOS as a server:
+To manage [automatic rebooting](https://github.com/SUSE/rebootmgr):
 
 ```bash
-# systemctl disable rebootmgr.service (or transactional-update.timer if you also want to stop updating - NOT RECOMMENDED)
+# sudo cp /usr/share/rebootmgr/rebootmgr.conf /etc/rebootmgr/rebootmgr.conf
 ```
 
 To update Flatpaks:
