@@ -14,7 +14,7 @@ For example, you may want to prefer the `--continue -i` args, `shell` to use `zy
 
 > Note: Aeon and MicroOS only run the `transactional-update.timer` when plugged into AC.
 
-To update the system automaticly:
+To update the system automatically:
 
 ```bash
 # systemctl enable transactional-update.timer transactional-update-cleanup.timer --now
