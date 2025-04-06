@@ -24,7 +24,8 @@ To update the system manually, the preferred approach is to always use `dup`:
 To manage [automatic rebooting](https://github.com/SUSE/rebootmgr):
 
 ```bash
-# sudo cp /usr/share/rebootmgr/rebootmgr.conf /etc/rebootmgr/rebootmgr.conf
+# mkdir -p /etc/rebootmgr
+# cp /usr/share/rebootmgr/rebootmgr.conf /etc/rebootmgr/rebootmgr.conf
 ```
 
 To update Flatpaks:
