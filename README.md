@@ -175,7 +175,6 @@ See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for detai
 # transactional-update —-continue pkg in nvidia-video-G06 == ${version} nvidia-compute-utils-G06 == ${version}
 # transactional-update —-continue pkg in nvidia-settings
 # transactional-update —-continue initrd
-# exit
 # systemctl reboot
 ```
 
