@@ -151,7 +151,7 @@ If for some reason you want to manually enroll:
 
 > Please note this may require a couple of reboots, and possibly a TPM reset in the BIOS as well.
 
-#### tuned
+### tuned (power-management)
 
 To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroOS:
 
