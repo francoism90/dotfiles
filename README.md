@@ -156,7 +156,7 @@ If for some reason you want to manually enroll:
 To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroOS:
 
 ```bash
-# transactional-update --continue pkg in tuned tuned-profiles-atomic tuned-utils
+# transactional-update pkg in tuned tuned-profiles-atomic tuned-utils
 # systemctl enable tuned --now
 # tuned-adm profile atomic-host
 # tuned-adm profile
@@ -265,7 +265,7 @@ Enable the Btrfs maintenance timers:
 To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
 
 ```bash
-# transactional-update --continue pkg in systemd-zram-service
+# transactional-update pkg in systemd-zram-service
 # systemctl enable zramswap --now
 ```
 
@@ -306,7 +306,7 @@ Aeon doesn't come with any firewall, this is by design. Instead you should contr
 It's still possible to install `firewalld` on Aeon, but this may cause Flatpak/container network issues and is unsupported:
 
 ```bash
-# transactional-update --continue pkg in firewalld firewalld-bash-completion
+# transactional-update pkg in firewalld firewalld-bash-completion
 # systemctl enable firewalld --now
 ```
 
@@ -391,7 +391,7 @@ See the following links for details:
 To install Samba:
 
 ```bash
-# transactional-update --continue pkg in samba
+# transactional-update pkg in samba
 # smbpasswd -a <username>
 # systemctl enable smb nmb --now
 ```
