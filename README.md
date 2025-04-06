@@ -8,7 +8,7 @@ Hopefully the provided instructions are useful, when you do run OpenSUSE. :)
 
 To learn more about `transactional-update`: <https://kubic.opensuse.org/documentation/man-pages/transactional-update.8.html>.
 
-For example, sometimes you may want to use the `--continue` arg, `shell` to use `zypper` commands, or use `apply` to prevent a reboot.
+For example, you may want to prefer the `--continue -i` args, `shell` to use `zypper` commands, and use `apply` to apply changes without a reboot.
 
 ### Updating
 
@@ -141,9 +141,9 @@ If for some reason you want to manually enroll:
 
 > Please note this may require a couple of reboots, and possibly a TPM reset in the BIOS as well.
 
-### NVIDIA (open-driver)
+### NVIDIA (open-driver - recommended)
 
-> Tip: See [SDB:NVIDIA Switcheroo Control](https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control) when using a device with Optimus (e.g. AMD/Intel + AMD GPU). 
+> Tip: See [SDB:NVIDIA Switcheroo Control](https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control) when using a device with Optimus (e.g. AMD/Intel + NVIDIA GPU). 
 
 See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for details:
 
@@ -154,7 +154,7 @@ See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for detai
 # version=$(rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
 # zypper in nvidia-video-G06 == ${version} nvidia-compute-utils-G06 == ${version}
 # zypper in nvidia-settings
-# dracut -fv
+# dracut -vf --regenerate-all
 # exit
 ```
 Reboot the system, and check if `dmesg` can load the NVIDIA driver:
@@ -183,7 +183,7 @@ After a reboot, enroll the key using the provided password, and validate if the 
 
 ### Kernel
 
-> Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel.
+> Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel instead.
 
 If you want to run the latest (next) kernel (see <https://kernel.opensuse.org/master.html> for details):
 
@@ -227,7 +227,7 @@ To use periodic trimming, enable the `fstrim.timer` when using SSD/NVme drives:
 If you are using Btrfs, you may want to configure <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
-# nano /etc/sysconfig/btrfsmaintenance
+# vi /etc/sysconfig/btrfsmaintenance
 ```
 
 Enable the Btrfs maintenance timers:
