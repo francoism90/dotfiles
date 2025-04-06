@@ -12,7 +12,13 @@ For example, sometimes you may want to use the `--continue` arg, `shell` to use 
 
 ### Updating
 
-> Note: Aeon and MicroOS uses the `transactional-update.timer` to apply updates daily (when plugged into AC).
+> Note: Aeon and MicroOS only run the `transactional-update.timer` when plugged into AC.
+
+To update the system automaticly:
+
+```bash
+# systemctl enable transactional-update.timer transactional-update-cleanup.timer --now
+```
 
 To update the system manually, the preferred approach is to always use `dup`:
 
@@ -41,7 +47,18 @@ To clean-up old snapshots (also see https://wiki.archlinux.org/title/Snapper#Del
 
 ```bash
 # transactional-update cleanup
-# transactional-update reboot
+```
+
+To install a package:
+
+```bash
+# transactional-update pkg install <name1> <name2>
+```
+
+To apply changes without a reboot:
+
+```bash
+# transactional-update apply
 ```
 
 To view current repositories:
@@ -125,6 +142,8 @@ If for some reason you want to manually enroll:
 > Please note this may require a couple of reboots, and possibly a TPM reset in the BIOS as well.
 
 ### NVIDIA (open-driver)
+
+> Tip: See [SDB:NVIDIA Switcheroo Control](https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control) when using a device with Optimus (e.g. AMD/Intel + AMD GPU). 
 
 See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for details:
 
