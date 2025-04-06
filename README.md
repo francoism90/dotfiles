@@ -274,7 +274,7 @@ It is discourage to install packages on the root filesystem, see the [Aeon Wiki]
 
 You can use [BoxBuddy](https://github.com/Dvlv/BoxBuddyRS), [distrobox](https://github.com/89luca89/distrobox), and [Podman](https://github.com/containers/podman) instead.
 
-#### Fish
+### Fish
 
 [Fish shell](https://fishshell.com/) can be used in a distrobox, and be set it as default container in Ptyxis and/or BoxBuddy.
 
