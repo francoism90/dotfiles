@@ -5,6 +5,7 @@
     servers {
         enable_full_duplex
         trusted_proxies static private_ranges
+        trusted_proxies_strict
     }
 }
 
@@ -16,6 +17,10 @@
 
 (tls) {
     tls internal
+}
+
+(compress) {
+    encode zstd gzip
 }
 
 import /etc/caddy/sites/*.caddy
