@@ -1,5 +1,5 @@
 [Unit]
-Description=Set Power Profile to profile
+Description=Set Power Profile
 
 [Service]
 ExecStart=tuned-adm profile %i

@@ -1,5 +1,5 @@
 [Unit]
-Description=Run powersaver daily
+Description=Set powersave profile
 
 [Timer]
 OnCalendar=*-*-* 0:30:00
