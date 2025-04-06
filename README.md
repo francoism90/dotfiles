@@ -2,7 +2,7 @@
 
 This is a selection of settings, notes and preferences for my personal OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) and [MicroOS](https://microos.opensuse.org/) installation.
 
-Hopefully the provided instructions are useful, when you do run OpenSUSE. :)
+Hopefully the provided instructions are useful. :)
 
 ## System
 
@@ -143,8 +143,6 @@ If for some reason you want to manually enroll:
 
 ### NVIDIA (open-driver - recommended)
 
-> Tip: See [SDB:NVIDIA Switcheroo Control](https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control) when using a device with Optimus (e.g. AMD/Intel + NVIDIA GPU). 
-
 See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for details:
 
 ```bash
@@ -163,9 +161,11 @@ Reboot the system, and check if `dmesg` can load the NVIDIA driver:
 NVRM: loading NVIDIA UNIX Open Kernel Module for x86_64  570.124.04  Release Build  (abuild@host)  Tue Mar  4 11:08:41 UTC 2025
 ```
 
+> Note: See [SDB:NVIDIA Switcheroo Control](https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control) when using a device with Optimus (e.g. AMD/Intel + NVIDIA GPU). 
+
 ### NVIDIA (closed-driver)
 
-See [SDB:NVIDIA_drivers](<https://en.opensuse.org/SDB:NVIDIA_drivers> for details.
+See [SDB:NVIDIA_drivers](https://en.opensuse.org/SDB:NVIDIA_drivers) for details.
 
 You may get conflicts or warnings, it seems to work fine when you choose to ignore the missing library or package.
 This seems to happen because the actual depency hasn't been provided yet. It's recommended to keep the snapshot without the NVIDIA drivers applied, just to always to be able to return to a clean state.
@@ -185,7 +185,7 @@ After a reboot, enroll the key using the provided password, and validate if the 
 
 > Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel instead.
 
-If you want to run the latest (next) kernel (see <https://kernel.opensuse.org/master.html> for details):
+If you want to run the latest [next/master kernel](<https://kernel.opensuse.org/master.html>):
 
 ```bash
 # transactional-update shell
@@ -212,7 +212,7 @@ To built the latest NVIDIA drivers on a different kernel compared to main, see <
 # transactional-update reboot
 ```
 
-### Filesystems
+### Filesystem
 
 #### Trim
 
@@ -256,17 +256,17 @@ To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroO
 # tuned-adm profile
 ```
 
-Other tuned profiles exists, for example for database servers and powersaving.
+> Tip: Other tuned profiles exists, for example for database servers and powersaving.
 
 ## Software
 
-It is discourage to install software on the root filesystem, see the [Aeon Wiki](<https://en.opensuse.org/Portal:Aeon/SoftwareInstall>) for details.
+It is discourage to install packages on the root filesystem, see the [Aeon Wiki](<https://en.opensuse.org/Portal:Aeon/SoftwareInstall>) for details.
 
-Use BoxBuddy on Aeon, and distrobox/Podman on MicroOS.
+You can use [BoxBuddy](https://github.com/Dvlv/BoxBuddyRS) on Aeon, and Podman-containers/distroboxes on MicroOS.
 
 ### Codecs
 
-> Note this is unsupported, and should only be needed if you want to use codecs outsides Flatpaks and containers.
+> Note this is unsupported, and should only be needed if you want to use codecs outsides Flatpaks and containers (e.g. for audio devices).
 
 You may need to install [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories) for additional audio and video support.
 
@@ -304,8 +304,8 @@ To allow the sharing of home folders:
 
 ### Brave
 
-Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `.var/app/com.brave.Browser/config
-/brave-flags.conf`. The given example, forces the usage of VA-API, but it can be unstable.
+Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `~/.var/app/com.brave.Browser/config
+/brave-flags.conf`. The given example, forces the usage of VA-API, but it can be unstable and may need to be adjusted for your GPU-vendor.
 
 See the following resources for details:
 - <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
@@ -313,16 +313,16 @@ See the following resources for details:
 
 ### Podman
 
-Enable and use rootless containers:
-
-- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
-- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
-
 To learn more about Podman Quadlet, see the following resources:
 
 - <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
 - <https://www.redhat.com/sysadmin/quadlet-podman>
 - <https://mo8it.com/blog/quadlet/>
+
+To enable and use rootless containers:
+
+- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
+- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 
 To enable linger, e.g. keep containers running when logged out:
 
@@ -333,7 +333,7 @@ $ loginctl enable-linger $USER
 
 ### Firewall
 
-Aeon doesn't come with any firewall, this is by design. Instead you should control ports and services using Podman Quadlet and containers. On MicroOS firewalld should be included.
+Aeon doesn't come with any firewall, this is by design. Instead you should control ports and services using Podman Quadlet, Flatpak and containers. On MicroOS firewalld should be included.
 
 It's still possible to install `firewalld` on Aeon, but this may cause Flatpak/container network issues and is unsupported:
 
@@ -384,7 +384,7 @@ $ dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 
 #### Fish
 
-Install fish in the OpenSUSE distrobox container using BoxBuddy (this is recommended over system packages):
+Install fish in an OpenSUSE distrobox container using BoxBuddy (this is recommended over system packages):
 
 ```bash
 # zypper install fish starship
@@ -416,4 +416,4 @@ Icon Theme (GTK - non-root): <https://github.com/PapirusDevelopmentTeam/papirus-
 
 Cursor Theme: <https://github.com/phisch/phinger-cursors>
 
-Fonts: [Inter](https://rsms.me/inter/) + [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads)
+Fonts: Adwaita Fonts + [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads)
