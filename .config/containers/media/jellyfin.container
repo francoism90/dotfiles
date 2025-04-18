@@ -11,7 +11,7 @@ UserNS=keep-id:uid=${UID},gid=${GID}
 AddDevice=/dev/dri/:/dev/dri/
 Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
-Volume=${MEDIA_PATH}:/media:ro,Z
+Volume=${MEDIA_PATH}:/media:rw,Z,U
 Network=proxy.network
 PublishPort=8096:8096
 PublishPort=8920:8920
