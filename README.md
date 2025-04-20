@@ -166,15 +166,21 @@ To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroO
 
 ### NVIDIA (open-driver - recommended)
 
+Make sure to apply to following adjustments first:
+- <https://en.opensuse.org/SDB:NVIDIA_drivers>
+- <https://en.opensuse.org/SDB:NVIDIA_drivers#Via_terminal_on_Aeon,_Kalpa,_Leap_Micro>
+
 See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for details:
 
 ```bash
-# transactional-update pkg in openSUSE-repos-MicroOS-NVIDIA
-# transactional-update —-continue pkg in nvidia-open-driver-G06-signed-kmp-default
-# version=$(transactional-update —-continue run rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
-# transactional-update —-continue pkg in nvidia-video-G06 == ${version} nvidia-compute-utils-G06 == ${version}
-# transactional-update —-continue pkg in nvidia-settings
-# transactional-update —-continue initrd
+# transactional-update shell
+# zypper in openSUSE-repos-MicroOS-NVIDIA
+# zypper in nvidia-open-driver-G06-signed-kmp-default
+# version=$(rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
+zypper in nvidia-video-G06 == ${version} nvidia-compute-utils-G06 == ${version}
+# zypper in nvidia-settings
+# dracut -vf --regenerate-all
+# exit
 # systemctl reboot
 ```
 
