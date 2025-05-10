@@ -4,7 +4,7 @@ This is a selection of settings, notes and preferences for my personal OpenSUSE 
 
 Hopefully the provided instructions are useful. :)
 
-> Note: Commands prepend with `# <command>` should be executed as `root`.
+> Note: Commands prepend with `# <command>` should be executed as `root`, `$ <command>` as your normal user.
 
 ## System
 
@@ -93,6 +93,15 @@ To search for packages including versions:
 
 ```bash
 zypper search -s <pkg>
+zypper search -s --installed-only <pkg>
+```
+
+The following command may be useful when dealing with repo changes, however note this can be dangerous(!):
+
+```bash
+sudo transactional-update shell
+zypper refresh --force
+zypper dup --remove-orphaned --allow-name-change --allow-vendor-change
 ```
 
 ## Hardware
