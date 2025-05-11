@@ -1,0 +1,13 @@
+/dev/mapper/cr_root / btrfs noatime,compress=zstd:1 0 0
+/dev/mapper/cr_root /var btrfs noatime,compress=zstd:1,subvol=/@/var,x-initrd.mount 0 0
+/dev/mapper/cr_root /usr/local btrfs noatime,compress=zstd:1,subvol=/@/usr/local 0 0
+/dev/mapper/cr_root /srv btrfs noatime,compress=zstd:1,subvol=/@/srv 0 0
+/dev/mapper/cr_root /root btrfs noatime,compress=zstd:1,subvol=/@/root,x-initrd.mount 0 0
+/dev/mapper/cr_root /opt btrfs noatime,compress=zstd:1,subvol=/@/opt 0 0
+/dev/mapper/cr_root /home btrfs noatime,compress=zstd:1,subvol=/@/home,x-systemd.growfs 0 0
+/dev/mapper/cr_root /boot/writable btrfs noatime,compress=zstd:1,subvol=/@/boot/writable 0 0
+/dev/mapper/cr_root /boot/grub2/x86_64-efi btrfs noatime,compress=zstd:1,subvol=/@/boot/grub2/x86_64-efi 0 0
+/dev/mapper/cr_root /boot/grub2/i386-pc btrfs noatime,compress=zstd:1,subvol=/@/boot/grub2/i386-pc 0 0
+/dev/mapper/cr_root /.snapshots btrfs noatime,compress=zstd:1,subvol=/@/.snapshots 0 0
+UUID=<UUID> /boot/efi vfat utf8 0 2
+/etc /etc none bind 0 0
