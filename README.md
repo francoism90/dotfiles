@@ -278,8 +278,9 @@ To use [bees](https://github.com/Zygo/bees) (dedupe agent):
 
 ```bash
 # transactional-update pkg in bees
-# cp /etc/bees/beesd.conf.sample /etc/bees/data.conf
-# systemctl start beesd@data
+# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid>.conf
+# nano /etc/bees/<uuid>.conf
+# systemctl start beesd@<uuid>
 ```
 
 #### zram (swap)
