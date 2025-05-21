@@ -1,99 +1,99 @@
 {
-    "[jsonc]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "[markdown]": {
-        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-    },
-    "[yaml]": {
-        "editor.defaultFormatter": "redhat.vscode-yaml"
-    },
-    "better-comments.highlightPlainText": true,
-    "cSpell.diagnosticLevel": "Hint",
-    "cSpell.userWords": ["heroicons", "inertiajs", "Laravel", "pinia"],
-    "css.format.spaceAroundSelectorSeparator": true,
-    "dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
-    "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
-    "diffEditor.ignoreTrimWhitespace": false,
-    "docker.dockerPath": "podman",
-    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
-    "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit",
-        "source.organizeImports": "always"
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.fontFamily": "'FiraCode Nerd Font Mono', 'Droid Sans Mono', monospace",
-    "editor.formatOnPaste": true,
-    "editor.formatOnSave": true,
-    "editor.inlineSuggest.enabled": true,
-    "editor.linkedEditing": true,
-    "editor.mouseWheelZoom": true,
-    "editor.multiCursorModifier": "alt",
-    "editor.quickSuggestions": {
-        "comments": "on",
-        "strings": "on"
-    },
-    "editor.smoothScrolling": true,
-    "editor.suggest.showStatusBar": true,
-    "eslint.format.enable": true,
-    "eslint.lintTask.enable": true,
-    "eslint.useESLintClass": true,
-    "eslint.useFlatConfig": true,
-    "explorer.compactFolders": false,
-    "extensions.closeExtensionDetailsOnViewChange": true,
-    "files.associations": {
-        "*.css": "tailwindcss",
-        "*.scss": "tailwindcss"
-    },
-    "files.readonlyFromPermissions": true,
-    "files.trimFinalNewlines": true,
-    "files.trimTrailingWhitespace": true,
-    "git.autofetch": true,
-    "git.confirmSync": false,
-    "git.enableSmartCommit": true,
-    "html.format.templating": true,
-    "intelephense.files.maxSize": 10000000,
-    "intelephense.telemetry.enabled": false,
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "markdown.validate.enabled": true,
-    "material-icon-theme.activeIconPack": "vue_vuex",
-    "merge-conflict.autoNavigateNextConflict.enabled": true,
-    "notebook.defaultFormatter": "esbenp.prettier-vscode",
-    "npm-intellisense.packageSubfoldersIntellisense": true,
-    "prettier.singleAttributePerLine": true,
-    "prettier.tabWidth": 4,
-    "search.showLineNumbers": true,
-    "search.useIgnoreFiles": false,
-    "tailwindCSS.emmetCompletions": true,
-    "tailwindCSS.experimental.classRegex": [
-        ["class\\(.*?\\)(?!\\])", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
-        [
-            "classList.(?:add|remove)\\(([^)]*)\\)",
-            "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"
-        ],
-        ["@?class\\(([^)]*)\\)", "['|\"]([^'\"]*)['|\"]"],
-        ["data-.*-class=['\"]([^'\"]*)"],
-        "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
-        ":\\s*?[\"'`]([^\"'`]*).*?,",
-        "(?:enter|leave)(?:from|to)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)"
-    ],
-    "tailwindCSS.includeLanguages": {
-        "blade": "html",
-        "blade.php": "html",
-        "plaintext": "html",
-        "vue": "html",
-        "vue-html": "html"
-    },
-    "telemetry.telemetryLevel": "off",
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "window.menuBarVisibility": "toggle",
-    "window.openFoldersInNewWindow": "on",
-    "workbench.colorTheme": "GitHub Dark",
-    "workbench.commandPalette.experimental.suggestCommands": true,
-    "workbench.commandPalette.preserveInput": true,
-    "workbench.editor.enablePreview": false,
-    "workbench.editor.enablePreviewFromQuickOpen": false,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.quickOpen.preserveInput": true,
-    "workbench.startupEditor": "newUntitledFile"
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "better-comments.highlightPlainText": true,
+  "cSpell.diagnosticLevel": "Hint",
+  "dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
+  "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
+  "dev.containers.logLevel": "info",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "docker.lsp.telemetry": "off",
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.fontFamily": "'FiraCode Nerd Font Mono', 'Droid Sans Mono', monospace",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.mouseWheelZoom": true,
+  "editor.multiCursorModifier": "alt",
+  "editor.quickSuggestions": {
+    "comments": "on",
+    "strings": "on"
+  },
+  "editor.smoothScrolling": true,
+  "editor.suggest.showStatusBar": true,
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.useESLintClass": true,
+  "eslint.useFlatConfig": true,
+  "explorer.compactFolders": false,
+  "extensions.closeExtensionDetailsOnViewChange": true,
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "*.scss": "tailwindcss"
+  },
+  "files.readonlyFromPermissions": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "html.format.templating": true,
+  "intelephense.files.maxSize": 10000000,
+  "intelephense.telemetry.enabled": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "markdown.validate.enabled": true,
+  "material-icon-theme.activeIconPack": "vue_vuex",
+  "merge-conflict.autoNavigateNextConflict.enabled": true,
+  "notebook.defaultFormatter": "esbenp.prettier-vscode",
+  "npm-intellisense.packageSubfoldersIntellisense": true,
+  "remote.SSH.remotePlatform": {
+    "core": "linux"
+  },
+  "remote.SSH.useExecServer": false,
+  "remote.SSH.useLocalServer": false,
+  "search.showLineNumbers": true,
+  "search.useIgnoreFiles": false,
+  "stylelint.packageManager": "pnpm",
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.experimental.classRegex": [
+    ["class\\(.*?\\)(?!\\])", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
+    ["classList.(?:add|remove)\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
+    ["@?class\\(([^)]*)\\)", "['|\"]([^'\"]*)['|\"]"],
+    ["data-.*-class=['\"]([^'\"]*)"],
+    "(?:\"|')class(?:\"|')[\\s]*=>[\\s]*(?:\"|')([^\"']*)",
+    ":\\s*?[\"'`]([^\"'`]*).*?,",
+    "(?:enter|leave)(?:from|to)?=\\s*(?:\"|'|{`)([^(?:\"|'|`})]*)"
+  ],
+  "tailwindCSS.includeLanguages": {
+    "blade": "html",
+    "blade.php": "html",
+    "plaintext": "html",
+    "vue": "html",
+    "vue-html": "html"
+  },
+  "telemetry.feedback.enabled": false,
+  "telemetry.telemetryLevel": "off",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "window.menuBarVisibility": "toggle",
+  "window.titleBarStyle": "native",
+  "workbench.colorTheme": "GitHub Dark",
+  "workbench.commandPalette.experimental.suggestCommands": true,
+  "workbench.commandPalette.preserveInput": true,
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.quickOpen.preserveInput": true,
+  "workbench.startupEditor": "newUntitledFile"
 }
