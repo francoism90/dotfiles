@@ -21,5 +21,13 @@ sudo rpm-ostree install https://download1.rpmfusion.org/nonfree/fedora/releases/
 Reboot to apply changes:
 
 ```bash
-systemctl reboot`
+systemctl reboot
+```
+
+### NVIDIA (open-driver)
+
+This requires the `rpmfusion-nonfree-tainted` repository:
+
+```bash
+sudo rpm-ostree install akmod-nvidia-open
 ```
