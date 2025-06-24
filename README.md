@@ -1,16 +1,21 @@
 # dotfiles
 
-This is a selection of settings, notes and preferences for my personal OpenSUSE [Aeon Desktop](https://aeondesktop.github.io/) and [MicroOS](https://microos.opensuse.org/) installation.
-
-Hopefully the provided instructions are useful. :)
+This is a selection of settings and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/).
 
 > Note: Commands prepend with `# <command>` should be executed as `root`, `$ <command>` as your normal user.
 
 ## System
 
-To learn more about `transactional-update`: <https://kubic.opensuse.org/documentation/man-pages/transactional-update.8.html>.
+Reference:
 
-For example, you may want to append the `--continue` and `-i` args to the `transaction-update` command when needed.
+- <https://rpmfusion.org/Howto/OSTree>
+- <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
+
+To show difference after upgrades:
+
+```bash
+rpm-ostree db diff -c
+```
 
 ### Updating
 
