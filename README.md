@@ -27,11 +27,14 @@ $ systemctl reboot
 ### NVIDIA (open-driver)
 
 See the following sources for more information:
-- [https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#OSTree_.28Silverblue.2FKinoite.2Fetc.29]
-- [https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open]
+- https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#OSTree_.28Silverblue.2FKinoite.2Fetc.29
+- https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open
 
 This requires the `rpmfusion-nonfree-tainted` repository:
 
+```bash
+rpm-ostree install akmod-nvidia-open
+```
 ```bash
 # rpm-ostree install akmod-nvidia-open
 ```
