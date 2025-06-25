@@ -1,12 +1,14 @@
 # dotfiles
 
-This is a selection of settings and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/).
+This is a selection of settings, notes and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/), [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/) and [Fedora CoreOS](https://fedoraproject.org/coreos/) installations.
 
-> Note: Commands prepend with `# <command>` should be executed as `root`, `$ <command>` as your normal user.
+> Note: Commands prepend with `# <command>` should be executed as `root` (sudo), `$ <command>` as your normal user.
 
 ## System
 
-Reference:
+### Maintenance
+
+References:
 
 - <https://rpmfusion.org/Howto/OSTree>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
@@ -17,387 +19,191 @@ To show difference after upgrades:
 rpm-ostree db diff -c
 ```
 
-### Updating
+### NVIDIA
 
-> Note: Aeon and MicroOS only run the `transactional-update.timer` when plugged into AC.
+> Tip: You may want to apply the steps in Secure Boot first.
 
-To update the system automatically:
+See the following sources for more information:
 
-```bash
-# systemctl enable transactional-update.timer transactional-update-cleanup.timer --now
-```
-
-To update the system manually, the preferred approach is to always use `dup`:
+- <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#OSTree_.28Silverblue.2FKinoite.2Fetc.29>
+- <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
 
 ```bash
-# transactional-update dup
-# transactional-update reboot
+# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power
+# systemctl enable nvidia-{suspend,resume,hibernate} --now
 ```
 
-To manage [automatic rebooting](https://github.com/SUSE/rebootmgr):
+#### Secure Boot
+
+See <https://github.com/CheariX/silverblue-akmods-keys> for more details:
 
 ```bash
-# mkdir -p /etc/rebootmgr
-# cp /usr/share/rebootmgr/rebootmgr.conf /etc/rebootmgr/rebootmgr.conf
+# rpm-ostree install rpmdevtools akmods
 ```
 
-To update Flatpaks:
+Install Machine Owner Key (MOK) - the key may already exists:
 
 ```bash
-$ flatpak update
-# flatpak update
+# kmodgenca
+# mokutil --import /etc/pki/akmods/certs/public_key.der
 ```
 
-### Maintenance
-
-To clean-up old snapshots (also see <https://wiki.archlinux.org/title/Snapper#Delete_a_snapshot>):
+Clone the project:
 
 ```bash
-# transactional-update cleanup
+git clone https://github.com/CheariX/silverblue-akmods-keys
+cd silverblue-akmods-keys
 ```
 
-To install packages (only when needed):
+To allow building with the NVIDIA open driver (recommended if supported):
 
 ```bash
-# transactional-update pkg in <pkg1> <pkg2>
+echo "%_with_kmod_nvidia_open 1" >> macros.kmodtool
 ```
 
-To continue on ongoing changes:
+Build akmods-keys:
 
 ```bash
-# transactional-update --continue <command>
-# transactional-update --continue pkg in <pkg3>
+# bash setup.sh
+# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
 ```
-
-To apply changes live (a reboot is always preferred):
-
-```bash
-# transactional-update apply
-```
-
-To view current repositories:
-
-```bash
-zypper lr
-```
-
-To view the packages installed by a repository:
-
-```bash
-zypper search -i -r <repo alias|#|URI>
-zypper search -i -r packman
-```
-
-To list every package in a repository:
-
-```bash
-zypper pa -ir packman
-```
-
-To search for packages including versions:
-
-```bash
-zypper search -s <pkg>
-zypper search -s --installed-only <pkg>
-```
-
-The following command may be useful when dealing with repo changes, however note this can be dangerous(!):
-
-```bash
-sudo transactional-update shell
-zypper refresh --force
-zypper dup --remove-orphaned --allow-name-change --allow-vendor-change
-```
-
-## Hardware
-
-### Encryption (luks)
-
-If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and allow discards (e.g. trim):
-
-```bash
-# cryptsetup --perf-no_read_workqueue --perf-no_write_workqueue --allow-discards --persistent refresh aeon_root
-```
-
-See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details.
 
 ### TPM
 
 > Tip: You may want to add a [passphrase](https://wiki.archlinux.org/title/Systemd-cryptenroll#Regular_password) as fallback.
 
-The following resources may be helpful:
+The following resources may be helpful to setup TPM:
 
-- <https://en.opensuse.org/Portal:MicroOS/FDE>
-- <https://github.com/openSUSE/sdbootutil/issues/118#issuecomment-2665975124>
 - <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
-- <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
+- <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 
-If you use Full Disk Encryption (FDE) with a TPM, make sure to (re)enroll when needed (this may happen on an UEFI firmware update):
+### nofile
+
+Increasing `nofile` limits may be needed for certain applications and games to work.
+
+See <https://access.redhat.com/solutions/1257953> for more details.
+
+> **NOTE:** Reboot the system to apply increased limits.
+
+## Filesystem
+
+### Trim
+
+Enable the `fstrim` timer:
 
 ```bash
-# SYSTEMD_LOG_LEVEL=debug sdbootutil --ask-pin update-predictions
+sudo systemctl enable fstrim.timer --now
 ```
 
-To verify the current enrollment for an encryption partition:
+### Encryption
+
+If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue.
+
+See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details.
+
+### Btrfs
+
+If you are using Btrfs, you may want to use <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
-# systemd-cryptenroll /dev/nvme0n1p2
-SLOT TYPE
-   0 password
-   1 tpm2
-   2 recovery
+rpm-ostree install btrfsmaintenance
+nano /etc/sysconfig/btrfsmaintenance
 ```
 
-If for some reason the enrollment wasn't successful, you may want to reset the TPM and enroll a new key:
+Enable the timers:
 
 ```bash
-# sdbootutil unenroll --method=tpm2
-# sdbootutil enroll --method=tpm2 --ask-pw
-```
-
-If for some reason you want to manually enroll:
-
-```bash
-# cat /etc/sysconfig/fde-tools | grep FDE_SEAL_PCR_LIST=
-# systemd-cryptenroll --wipe-slot=tpm2 --tpm2-device=auto --tpm2-pcrs=4+5+7+9 /dev/nvme0n1p2
-```
-
-> Please note this may require a couple of reboots, and possibly a TPM reset in the BIOS as well.
-
-### tuned (power-management)
-
-To enable [tuned](https://github.com/redhat-performance/tuned) when using MicroOS:
-
-```bash
-# transactional-update pkg in tuned tuned-profiles-atomic tuned-utils
-# systemctl enable tuned --now
-# tuned-adm profile atomic-host
-# tuned-adm profile
-```
-
-> Tip: Other tuned profiles exists, e.g. database servers and powersaving profiles.
-
-### NVIDIA (open-driver - recommended)
-
-Make sure to apply to following adjustments first:
-- <https://en.opensuse.org/SDB:NVIDIA_drivers>
-- <https://en.opensuse.org/SDB:NVIDIA_drivers#Via_terminal_on_Aeon,_Kalpa,_Leap_Micro>
-
-See <https://sndirsch.github.io/nvidia/2022/06/07/nvidia-opengpu.html> for details:
-
-```bash
-# transactional-update shell
-# zypper in openSUSE-repos-MicroOS-NVIDIA
-# zypper in nvidia-open-driver-G06-signed-kmp-default
-# version=$(rpm -qa --queryformat '%{VERSION}\n' nvidia-open-driver-G06-signed-kmp-default | cut -d "_" -f1 | sort -u | tail -n 1)
-zypper in nvidia-video-G06 == ${version} nvidia-compute-utils-G06 == ${version}
-# zypper in nvidia-settings
-# dracut -vf --regenerate-all
-# exit
-# systemctl reboot
-```
-
-Reboot the system, and validate if `dmesg` can load the NVIDIA driver:
-
-```bash
-NVRM: loading NVIDIA UNIX Open Kernel Module for x86_64  570.124.04  Release Build  (abuild@host)  Tue Mar  4 11:08:41 UTC 2025
-```
-
-> Note: See [SDB:NVIDIA Switcheroo Control](https://en.opensuse.org/SDB:NVIDIA_Switcheroo_Control) when using a device with Optimus (e.g. AMD/Intel + NVIDIA GPU).
-
-### NVIDIA (closed-driver)
-
-See [SDB:NVIDIA_drivers](https://en.opensuse.org/SDB:NVIDIA_drivers) for details.
-
-You may get conflicts or warnings, it seems to work fine when you choose to ignore the missing library or package.
-This seems to happen because the actual depency hasn't been provided yet. It's recommended to keep the snapshot without the NVIDIA drivers applied, just to always to be able to return to a clean state.
-
-#### Secure Boot
-
-If you use Secure Boot, make sure to always sign the nvidia.ko module (you may need to re-import this on UEFI-updates):
-
-```bash
-# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
-```
-
-After a reboot, enroll the key using the provided password, and validate if the NVIDIA modules are loaded using something like `lsmod | grep nv` after startup.
-
-### Kernel
-
-> Note: only do this for testing or troubleshooting, it's recommended to always use the provided kernel instead.
-
-If you want to run the latest [next/master kernel](<https://kernel.opensuse.org/master.html>):
-
-```bash
-# transactional-update shell
-# zypper addrepo https://download.opensuse.org/repositories/Kernel:HEAD/standard/Kernel:HEAD.repo
-# zypper refresh --force
-# zypper install kernel-default-6.14~rc5 kernel-default-devel-6.14~rc5
-# dracut -vf --regenerate-all
-# exit
-# systemctl reboot
-```
-
-> Note: you may need to remove older kernel versions manually, e.g. `zypper remove kernel-default-6.14~rc4 kernel-default-devel-6.14~rc4`.
-
-#### Patching NVIDIA drivers
-
-To built the latest NVIDIA drivers on a different kernel compared to main, see <https://forums.developer.nvidia.com/t/570-release-feedback-discussion/321956/70?page=3>:
-
-```bash
-# transactional-update shell
-# cd /usr/src/kernel-modules/nvidia-<version>-default
-# <patch> (if needed)
-# dracut -vf --regenerate-all
-# mokutil --import /usr/share/nvidia-pubkeys/MOK-nvidia-driver-<version>-default.der
-# exit
-# systemctl reboot
-```
-
-### Filesystem
-
-#### Trim
-
-To use periodic trimming, enable the `fstrim.timer` when using SSD/NVMe-drives:
-
-```bash
-# systemctl enable fstrim.timer --now
-```
-
-#### Btrfs
-
-If you are using Btrfs, you may want to configure <https://github.com/kdave/btrfsmaintenance>:
-
-```bash
-# vi /etc/sysconfig/btrfsmaintenance
-```
-
-Enable the Btrfs maintenance timers:
-
-```bash
-# systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
-```
-
-To use [bees](https://github.com/Zygo/bees) (dedupe agent):
-
-```bash
-# transactional-update pkg in bees
-# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid>.conf
-# nano /etc/bees/<uuid>.conf
-# systemctl start beesd@<uuid>
-```
-
-#### zram (swap)
-
-To enable [zwramswap](https://wiki.archlinux.org/title/Zram#Using_zramswap):
-
-```bash
-# transactional-update pkg in systemd-zram-service
-# systemctl enable zramswap --now
+sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
 ## Software
 
-It is discourage to install packages on the root filesystem, see the [Aeon Wiki](<https://en.opensuse.org/Portal:Aeon/SoftwareInstall>) for details.
+### Toolbox
 
-You can use [BoxBuddy](https://github.com/Dvlv/BoxBuddyRS), [distrobox](https://github.com/89luca89/distrobox), and [Podman](https://github.com/containers/podman) instead.
+It is discourage to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`) as much as possible.
 
-### Fish
-
-[Fish shell](https://fishshell.com/) can be used in a distrobox, and be set it as default container in Ptyxis and/or BoxBuddy.
-
-Use BoxBuddy to create a container with the `opensuse/distrobox:latest` image (or prefered), afterwards install:
+You can pull the latest toolbox, using:
 
 ```bash
-# zypper install fish starship
+podman pull fedora-toolbox:42
 ```
 
-> Note: Follow <https://starship.rs/guide/> to setup Starship.
-
-To add fish path lookups:
-
-```fish
-fish_add_path ~/.local/bin
-```
-
-To disable greeting (welcome message):
-
-```fish
-set -U fish_greeting
-```
-
-### Firewall
-
-Aeon doesn't come with any firewall, this is by design. Instead you should control ports and services using Podman Quadlet, Flatpak and containers. On MicroOS firewalld should be included.
-
-It's still possible to install `firewalld` on Aeon, but this may cause Flatpak/container network issues and is unsupported:
+To update a toolbox:
 
 ```bash
-# transactional-update pkg in firewalld firewalld-bash-completion
-# systemctl enable firewalld --now
+toolbox enter
+sudo dnf update && sudo dnf upgrade
 ```
 
-To open ports/services:
+You can create multiple toolboxes, and even manage them using [Podman Desktop](https://podman-desktop.io/).
+
+### Firefox
+
+To replace the provided default Firefox package, with the Firefox Flathub version for example:
 
 ```bash
-# firewall-cmd --permanent --add-service=https
-# firewall-cmd --permanent --add-port=8920/tcp
-# firewall-cmd --reload
+rpm-ostree override remove firefox firefox-langpacks
 ```
+
+> **NOTE:** You can also hide the desktop entry itself.
+
+### Brave
+
+Depending on your hardware, you may need to enable/disable different flags. See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
 
 ### Podman
 
-To learn more about Podman Quadlet, see the following resources:
+Enable and use rootless containers:
+
+- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
+- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+
+To learn more about Podman Quadlet, the following resources may be useful:
 
 - <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
 - <https://www.redhat.com/sysadmin/quadlet-podman>
 - <https://mo8it.com/blog/quadlet/>
 
-To enable and use rootless containers:
-
-- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
-- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
-
-To enable linger, e.g. keep containers running when logged out:
+To install Docker compatible packages:
 
 ```bash
-$ loginctl enable-linger $USER
-# loginctl enable-linger root
+rpm-ostree install podman-docker podman-compose
+systemctl reboot
 ```
 
-### Codecs
+Enable linger (e.g. keep containers running after logging out):
 
-> Note this is unsupported, and should only be needed if you want to use codecs outsides Flatpaks and containers (e.g. for audio devices).
+```bash
+loginctl enable-linger $USER
+```
 
-You may need to install [codecs](https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories) for additional audio and video support.
+### Firewall(d)
 
-It is recommended to install the packages you need, as installing the full package using `oci` may break your system or cause version conflicts.
+To open services and ports:
 
-For full instructions, see <https://en.opensuse.org/SDB:Installing_codecs_from_Packman_repositories>.
-
-### Brave
-
-Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `~/.var/app/com.brave.Browser/config/brave-flags.conf`.
-The given example forces the usage of VA-API, but it can be unstable and may need to be adjusted for your GPU-vendor(s).
-
-See the following resources for details:
-
-- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
-- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
+```bash
+sudo firewall-cmd --list-all-zones
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --permanent --add-service=http3
+sudo firewall-cmd --permanent --add-service=samba
+sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8096/tcp
+sudo firewall-cmd --reload
+```
 
 ### VSCodium / VSCode
 
-The following resources may be useful when you want to use devcontainers and Podman integration:
+See the following guides:
 
 - <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
 - <https://github.com/jorchube/devcontainer-definitions>
 - <https://github.com/VSCodium/vscodium/discussions/1487>
 
-You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal) to set the following overwrites:
+You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
 
-- Add to `Other files`: `xdg-run/podman:ro`
-- Add to `Other files`: `/tmp:rw`
+- Add to `Other files`: `xdg-run/podman`
+- Add to `Other files`: `/tmp`
 
 #### Wayland
 
@@ -409,36 +215,6 @@ flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZ
 
 See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 
-### Samba (filesharing)
-
-See the following links for details:
-
-- <https://doc.opensuse.org/documentation/leap/reference/html/book-reference/cha-samba.html>
-- <https://wiki.archlinux.org/title/Samba>
-
-To install Samba:
-
-```bash
-# transactional-update pkg in samba
-# smbpasswd -a <username>
-# systemctl enable smb nmb --now
-```
-
-When you use firewalld:
-
-```bash
-# systemctl enable firewalld --now
-# firewall-cmd --permanent --add-service={samba,samba-client,samba-dc}
-# firewall-cmd --reload
-```
-
-To allow the sharing of home folders:
-
-```bash
-# setsebool -P samba_enable_home_dirs 1
-# systemctl restart smb nmb
-```
-
 ### Ptyxis (Terminal)
 
 To apply opacity ([credits](https://discussion.fedoraproject.org/t/use-dconf-to-set-transparency-for-ptyxis/135003)):
@@ -448,16 +224,31 @@ dconf read /org/gnome/Ptyxis/default-profile-uuid
 dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 ```
 
-## Appearance
+#### Fish
 
-See <https://itsfoss.com/flatpak-app-apply-theme/> instructions for Flatpak theming.
+Install fish:
 
-Use [Refine](https://flathub.org/apps/page.tesk.Refine) to apply customization or [dconf-editor](https://flathub.org/apps/ca.desrt.dconf-editor) - look up keys in `/org/gnome/`.
+```bash
+rpm-ostree install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
+systemctl reboot
+```
 
-### Current Theme
+Change user shell:
 
-Icon Theme (GTK - non-root): <https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
+```bash
+chsh -s /bin/fish
+```
 
-Cursor Theme: <https://github.com/phisch/phinger-cursors>
+Add fish path lookups:
 
-Fonts: Adwaita Fonts + [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads)
+```fish
+fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
+```
+
+To disable greeting (welcome message):
+
+```fish
+set -U fish_greeting
+```
+
+Follow <https://starship.rs/guide/>.
