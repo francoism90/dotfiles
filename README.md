@@ -19,6 +19,12 @@ To show difference after upgrades:
 rpm-ostree db diff -c
 ```
 
+To search for packages:
+
+```bash
+rpm-ostree search <term>
+```
+
 ### NVIDIA
 
 > Tip: You may want to apply the steps in Secure Boot first.
@@ -226,17 +232,12 @@ dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
 
 #### Fish
 
+> Note: Change the shell to use in Konsole (or any terminal application).
+
 Install fish:
 
 ```bash
-rpm-ostree install fish ibm-plex-mono-fonts ibm-plex-sans-fonts ibm-plex-serif-fonts
-systemctl reboot
-```
-
-Change user shell:
-
-```bash
-chsh -s /bin/fish
+# rpm-ostree install fish
 ```
 
 Add fish path lookups:
@@ -251,4 +252,4 @@ To disable greeting (welcome message):
 set -U fish_greeting
 ```
 
-Follow <https://starship.rs/guide/>.
+Follow <https://starship.rs/guide/> to offer oh-my-zsh features to fish.
