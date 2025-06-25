@@ -29,7 +29,7 @@ See the following sources for more information:
 ```
 
 ```bash
-# systemctl enable nvidia-{suspend,resume,hibernate}
+# systemctl enable nvidia-{suspend,resume,hibernate} --now
 ```
 
 #### Secure Boot
@@ -40,7 +40,7 @@ See https://github.com/CheariX/silverblue-akmods-keys for more details:
 # rpm-ostree install --apply-live rpmdevtools akmods
 ```
 
-Install your Machine Owner Key (MOK):
+Install Machine Owner Key (MOK):
 
 ```bash
 # kmodgenca
