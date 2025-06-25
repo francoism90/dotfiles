@@ -31,3 +31,38 @@ See the following sources for more information:
 ```bash
 # systemctl enable nvidia-{suspend,resume,hibernate}
 ```
+
+#### Secure Boot
+
+See https://github.com/CheariX/silverblue-akmods-keys for more details:
+
+```bash
+# rpm-ostree install --apply-live rpmdevtools akmods
+```
+
+Install your Machine Owner Key (MOK):
+
+```bash
+# kmodgenca
+# mokutil --import /etc/pki/akmods/certs/public_key.der
+```
+
+Clone the project:
+
+```bash
+git clone https://github.com/CheariX/silverblue-akmods-keys
+cd silverblue-akmods-keys
+```
+
+To build with NVIDIA open driver:
+
+```bash
+echo "%_with_kmod_nvidia_open 1" >> macros.kmodtool
+```
+
+Build akmods-keys:
+
+```bash
+# bash setup.sh
+# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
+```
