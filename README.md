@@ -4,7 +4,7 @@ This is a selection of settings and preferences for my [Fedora Silverblue](https
 
 > Note: Commands prepend with `# <command>` should be executed as `root` (sudo), `$ <command>` as your normal user.
 
-## System
+## Software
 
 ### RPMFusion
 
@@ -18,7 +18,9 @@ Reboot to apply changes:
 $ systemctl reboot
 ```
 
-### NVIDIA (open-driver)
+## System
+
+### NVIDIA
 
 See the following sources for more information:
 - https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#OSTree_.28Silverblue.2FKinoite.2Fetc.29
