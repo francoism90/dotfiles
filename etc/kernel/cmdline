@@ -1,1 +1,0 @@
-quiet loglevel=2 systemd.show_status=no console=ttyS0,115200 console=tty0 vt.global_cursor_default=0 ignition.platform.id=metal security=selinux selinux=1 root=UUID=XXX rd.driver.blacklist=nouveau amdgpu.dcdebugmask=0x10 amdgpu.ppfeaturemask=0xfff7ffff

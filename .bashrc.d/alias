@@ -1,19 +1,10 @@
-# system
 alias la='ls -A'
-alias ll='ls -l'
 alias lla='ll -A'
 alias llh='ll -h'
 alias llha='ll -hA'
 alias sc='sudo systemctl'
 alias scu='systemctl --user'
-alias zin='sudo zypper in'
-alias zup='sudo zypper dup'
-alias zse='zypper se'
 alias ta='tmux attach -t'
 alias tl='tmux ls'
 alias tn='tmux new -s'
 alias ts='tmux switch -t'
-alias tau='sudo transactional-update'
-
-# projects
-alias hub='~/projects/hub/bin/quadlet'
