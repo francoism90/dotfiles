@@ -1,6 +1,6 @@
 # dotfiles
 
-This is a selection of settings and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/), [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/) and [Fedora CoreOS](https://fedoraproject.org/coreos/).
+This is a selection of settings, notes and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/), [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/) and [Fedora CoreOS](https://fedoraproject.org/coreos/).
 
 > Note: Commands prepend with `# <command>` should be executed as `root` (sudo), `$ <command>` as your normal user.
 
