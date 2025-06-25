@@ -153,7 +153,7 @@ To replace the provided default Firefox package, with the Firefox Flathub versio
 rpm-ostree override remove firefox firefox-langpacks
 ```
 
-> **NOTE:** You can also hide the desktop entry itself.
+> Note: You can also hide the desktop entry itself.
 
 ### Brave
 
@@ -212,6 +212,14 @@ You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatse
 - Add to `Other files`: `xdg-run/podman`
 - Add to `Other files`: `/tmp`
 
+Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
+
+```bash
+"dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
+"dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
+"dev.containers.logLevel": "info",
+```
+
 #### Wayland
 
 To enable Wayland support:
@@ -222,18 +230,9 @@ flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZ
 
 See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 
-### Ptyxis (Terminal)
-
-To apply opacity ([credits](https://discussion.fedoraproject.org/t/use-dconf-to-set-transparency-for-ptyxis/135003)):
-
-```bash
-dconf read /org/gnome/Ptyxis/default-profile-uuid
-dconf write /org/gnome/Ptyxis/Profiles/{profile-uuid}/opacity 0.95
-```
-
 #### Fish
 
-> Note: Change the shell to use in Konsole (or any terminal application).
+> Note: Change the shell to use in terminal application (`/usr/bin/fish`).
 
 Install fish:
 
@@ -253,4 +252,4 @@ To disable greeting (welcome message):
 set -U fish_greeting
 ```
 
-Follow <https://starship.rs/guide/> to offer oh-my-zsh features to fish.
+Follow <https://starship.rs/guide/> to enable oh-my-zsh features for fish-shell.
