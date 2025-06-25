@@ -244,7 +244,7 @@ Install fish:
 Add fish path lookups:
 
 ```fish
-fish_add_path  ~/.local/bin ~/.config/yarn/global/node_modules/.bin
+fish_add_path ~/.local/bin
 ```
 
 To disable greeting (welcome message):
