@@ -36,7 +36,8 @@ See the following sources for more information:
 
 ```bash
 # rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power
-# systemctl enable nvidia-{suspend,resume,hibernate} --now
+# systemctl enable nvidia-{suspend,resume,hibernate}
+systemctl reboot
 ```
 
 #### Secure Boot
