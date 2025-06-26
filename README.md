@@ -215,13 +215,14 @@ systemctl --user enable podman-auto-update.timer --now
 To open services and ports:
 
 ```bash
-sudo firewall-cmd --list-all-zones
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --permanent --add-service=https
-sudo firewall-cmd --permanent --add-service=http3
-sudo firewall-cmd --permanent --add-service=samba
-sudo firewall-cmd --permanent --zone=FedoraServer --add-port=8096/tcp
-sudo firewall-cmd --reload
+# firewall-cmd --get-active-zones
+# firewall-cmd --list-all-zones
+# firewall-cmd --permanent --add-service=http
+# firewall-cmd --permanent --add-service=https
+# firewall-cmd --permanent --add-service=http3
+# firewall-cmd --permanent --add-service=samba
+# firewall-cmd --permanent --zone=FedoraServer --add-port=8096/tcp
+# firewall-cmd --reload
 ```
 
 ### VSCodium / VSCode
