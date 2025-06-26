@@ -25,7 +25,7 @@ To search for packages:
 rpm-ostree search <term>
 ```
 
-### NVIDIA
+### NVIDIA (Optimus)
 
 > Tip: You may want to apply the steps in Secure Boot first.
 
@@ -35,8 +35,8 @@ See the following sources for more information:
 - <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
 
 ```bash
-# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power
-# systemctl enable nvidia-{suspend,resume,hibernate}
+# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power nvidia-modprobe nvidia-persistenced nvidia-settings
+# systemctl enable nvidia-{suspend,resume,hibernate,persistenced}
 systemctl reboot
 ```
 
