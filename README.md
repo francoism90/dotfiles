@@ -8,8 +8,10 @@ This is a selection of settings, notes and preferences for my [Fedora Silverblue
 
 ### Maintenance
 
-References:
+Useful references:
 
+- <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
+- <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
 - <https://rpmfusion.org/Howto/OSTree>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
 
@@ -81,9 +83,27 @@ Build akmods-keys:
 
 The following resources may be helpful to setup TPM:
 
+- <https://github.com/stenwt/silverblue-docs/blob/patch-1/modules/ROOT/pages/tips-and-tricks.adoc#enabling-tpm2-for-luks>
 - <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
 - <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
+
+To set up TPM2 unlocking, first, find the LUKS device you want to enroll. This is probably in `/etc/crypttab`. You can also use `sudo cryptsetup status /dev/mapper/luks*` to identify the device.
+
+Next, enable the required initramfs and kernel features. Note that the initramfs command below will overwrite any other initramfs changes you have made:
+
+```bash
+# rpm-ostree kargs --append=rd.luks.options=tpm2-device=auto
+# rpm-ostree initramfs --enable --arg=-a --arg=systemd-pcrphase
+```
+
+Then, using the device you identified with 'cryptsetup status' previously, enroll the device:
+
+```bash
+systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
+```
+
+Reboot; you should not be prompted to enter your LUKS passphrase on boot.
 
 ### nofile
 
