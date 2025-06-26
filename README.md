@@ -1,6 +1,6 @@
 # dotfiles
 
-This is a selection of settings, notes and preferences for my [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/), [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/) and [Fedora CoreOS](https://fedoraproject.org/coreos/) installations.
+This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) installations.
 
 > Note: Commands prepend with `# <command>` should be executed as `root` (sudo).
 
@@ -12,8 +12,10 @@ Useful references:
 
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
-- <https://rpmfusion.org/Howto/OSTree>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
+- <https://rpmfusion.org/Howto/OSTree>
+
+### Package management
 
 To show difference after upgrades:
 
@@ -50,14 +52,14 @@ See <https://github.com/CheariX/silverblue-akmods-keys> for more details:
 # rpm-ostree install rpmdevtools akmods
 ```
 
-Install Machine Owner Key (MOK) - the key may already exists:
+Install Machine Owner Key (MOK) - (the key may already exists - you don't have to overwrite):
 
 ```bash
 # kmodgenca
 # mokutil --import /etc/pki/akmods/certs/public_key.der
 ```
 
-Clone the project:
+Clone the silverblue-akmods-keys project:
 
 ```bash
 git clone https://github.com/CheariX/silverblue-akmods-keys
@@ -105,13 +107,19 @@ systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
 
 Reboot; you should not be prompted to enter your LUKS passphrase on boot.
 
-### nofile
+### tuned
 
-Increasing `nofile` limits may be needed for certain applications and games to work.
+You may want to install tuned on IoT-matchines:
 
-See <https://access.redhat.com/solutions/1257953> for more details.
+```bash
+rpm-ostree install tuned tuned-profiles-atomic
+```
 
-> **NOTE:** Reboot the system to apply increased limits.
+### Cockpit
+
+Follow the [installation instructions](https://cockpit-project.org/running.html#coreos).
+
+In addition you want to install `cockpit-networkmanager` and  `cockpit-files`.
 
 ## Filesystem
 
@@ -134,14 +142,14 @@ See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for
 If you are using Btrfs, you may want to use <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
-rpm-ostree install btrfsmaintenance
-nano /etc/sysconfig/btrfsmaintenance
+# rpm-ostree install btrfsmaintenance
+# nano /etc/sysconfig/btrfsmaintenance
 ```
 
 Enable the timers:
 
 ```bash
-sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
+# systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
 ## Software
@@ -164,16 +172,6 @@ sudo dnf update && sudo dnf upgrade
 ```
 
 You can create multiple toolboxes, and even manage them using [Podman Desktop](https://podman-desktop.io/).
-
-### Firefox
-
-To replace the provided default Firefox package, with the Firefox Flathub version for example:
-
-```bash
-rpm-ostree override remove firefox firefox-langpacks
-```
-
-> Note: You can also hide the desktop entry itself.
 
 ### Brave
 
@@ -203,6 +201,13 @@ Enable linger (e.g. keep containers running after logging out):
 
 ```bash
 loginctl enable-linger $USER
+```
+
+To automatically manage container updates:
+
+```bash
+# systemctl enable podman-auto-update.timer --now
+systemctl --user enable podman-auto-update.timer --now
 ```
 
 ### Firewall(d)
