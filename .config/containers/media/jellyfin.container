@@ -5,13 +5,11 @@ Description=Jellyfin container
 Image=docker.io/jellyfin/jellyfin:latest
 AutoUpdate=registry
 LogDriver=none
-User=${UID}
-Group=${UID}
-UserNS=keep-id:uid=${UID},gid=${GID}
+UserNS=keep-id
 AddDevice=/dev/dri/:/dev/dri/
 Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
-Volume=${MEDIA_PATH}:/media:rw,Z,U
+Volume=/mnt/media:/media:rw,Z,U
 Network=proxy.network
 PublishPort=8096:8096
 PublishPort=8920:8920
@@ -19,9 +17,8 @@ PublishPort=1900:1900/udp
 PublishPort=7359:7359/udp
 
 [Service]
-EnvironmentFile=%h/.config/containers/systemd/media/config/app.env
 TimeoutStartSec=90
-Restart=always
+Restart=on-failure
 SuccessExitStatus=0 143
 
 [Install]
