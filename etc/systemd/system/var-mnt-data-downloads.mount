@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount downloads subvolume
+
+[Mount]
+What=UUID=<UUID-OF-CRYPTMAP>
+Where=/var/mnt/data/downloads
+Type=btrfs
+Options=defaults,noatime,nodatacow,space_cache=v2,commit=120,subvol=@downloads
+TimeoutSec=90
+
+[Install]
+WantedBy=multi-user.target
