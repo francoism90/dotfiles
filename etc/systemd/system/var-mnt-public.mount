@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount public subvolume
+
+[Mount]
+What=UUID=<UUID-OF-CRYPTMAP>
+Where=/var/mnt/public
+Type=btrfs
+Options=defaults,noatime,compress-force=zstd:5,space_cache=v2,commit=120,subvol=@public
+TimeoutSec=90
+
+[Install]
+WantedBy=multi-user.target

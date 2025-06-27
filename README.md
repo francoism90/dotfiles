@@ -2,7 +2,7 @@
 
 This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) installations.
 
-> Note: Commands prepend with `# <command>` should be executed as `root` (sudo).
+> Note: Commands prepend with `# <command>` should be executed as `root` (`sudo`).
 
 ## System
 
@@ -90,7 +90,7 @@ The following resources may be helpful to setup TPM:
 - <https://wiki.archlinux.org/title/Systemd-cryptenroll>
 - <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 
-To set up TPM2 unlocking, first, find the LUKS device you want to enroll. This is probably in `/etc/crypttab`. You can also use `sudo cryptsetup status /dev/mapper/luks*` to identify the device.
+To set up TPM2 unlocking, first, find the LUKS device you want to enroll. This is probably in `/etc/crypttab`. You can also use `cryptsetup status /dev/mapper/luks*` to identify the device.
 
 Next, enable the required initramfs and kernel features. Note that the initramfs command below will overwrite any other initramfs changes you have made:
 
@@ -128,7 +128,7 @@ In addition you want to install `cockpit-networkmanager` and  `cockpit-files`.
 Enable the `fstrim` timer:
 
 ```bash
-sudo systemctl enable fstrim.timer --now
+# systemctl enable fstrim.timer --now
 ```
 
 ### Encryption
@@ -221,7 +221,7 @@ To open services and ports:
 # firewall-cmd --permanent --add-service=https
 # firewall-cmd --permanent --add-service=http3
 # firewall-cmd --permanent --add-service=samba
-# firewall-cmd --permanent --zone=FedoraServer --add-port=8096/tcp
+# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
 # firewall-cmd --reload
 ```
 
@@ -256,7 +256,11 @@ flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZ
 
 See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 
-#### Fish
+### Samba
+
+See <https://fedoraproject.org/wiki/SELinux/samba> for details.
+
+### Fish
 
 > Note: Change the shell to use in terminal application (`/usr/bin/fish`).
 

@@ -3,7 +3,7 @@ Description=Mount backup subvolume
 
 [Mount]
 What=UUID=<UUID-OF-CRYPTMAP>
-Where=/var/mnt/data/backup
+Where=/var/mnt/backup
 Type=btrfs
 Options=defaults,noatime,compress-force=zstd:5,space_cache=v2,subvol=@backup
 TimeoutSec=90

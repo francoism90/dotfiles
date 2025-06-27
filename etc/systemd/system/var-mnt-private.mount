@@ -1,0 +1,12 @@
+[Unit]
+Description=Mount private subvolume
+
+[Mount]
+What=UUID=<UUID-OF-CRYPTMAP>
+Where=/var/mnt/private
+Type=btrfs
+Options=defaults,noatime,compress-force=zstd:5,space_cache=v2,commit=120,subvol=@private
+TimeoutSec=900
+
+[Install]
+WantedBy=multi-user.target

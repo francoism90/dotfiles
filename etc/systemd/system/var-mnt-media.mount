@@ -3,7 +3,7 @@ Description=Mount media subvolume
 
 [Mount]
 What=UUID=<UUID-OF-CRYPTMAP>
-Where=/var/mnt/data/media
+Where=/var/mnt/media
 Type=btrfs
 Options=defaults,noatime,compress-force=zstd:5,space_cache=v2,commit=120,subvol=@media
 TimeoutSec=90
