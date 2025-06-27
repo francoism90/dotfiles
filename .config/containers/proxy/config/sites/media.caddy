@@ -2,3 +2,13 @@ jellyfin.nas.lan {
     import tls
     reverse_proxy systemd-jellyfin:8096
 }
+
+qbt.nas.lan {
+    import tls
+    reverse_proxy systemd-qbittorrent:8090
+}
+
+sabnzbd.nas.lan {
+    import tls
+    reverse_proxy systemd-sabnzbd:8080
+}

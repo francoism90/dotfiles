@@ -11,10 +11,10 @@ Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
 Volume=/mnt/media:/media:rw,Z,U
 Network=proxy.network
-PublishPort=8096:8096
-PublishPort=8920:8920
-PublishPort=1900:1900/udp
-PublishPort=7359:7359/udp
+ExposeHostPort=8096
+ExposeHostPort=8920
+ExposeHostPort=1900/udp
+ExposeHostPort=7359/udp
 
 [Service]
 TimeoutStartSec=90

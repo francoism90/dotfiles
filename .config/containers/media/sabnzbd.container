@@ -12,7 +12,8 @@ Volume=/var/mnt/downloads/SABnzbd:/downloads:rw,Z
 Volume=/var/mnt/downloads/SABnzbd/.config:/config:rw,Z,U
 UserNS=keep-id
 Network=media.network
-PublishPort=8080:8080
+Network=proxy.network
+ExposeHostPort=8080
 
 [Service]
 TimeoutStartSec=90

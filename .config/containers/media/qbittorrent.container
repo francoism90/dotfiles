@@ -2,7 +2,7 @@
 Description=qBittorrent container
 
 [Container]
-Image=docker.io/linuxserver/qbittorrent:latest
+Image=docker.io/linuxserver/qbittorrent:5.1.0
 AutoUpdate=registry
 LogDriver=none
 Environment=PUID=1000
@@ -14,7 +14,8 @@ Volume=/var/mnt/downloads/qBittorrent:/downloads:rw,Z
 Volume=/var/mnt/downloads/qBittorrent/.config:/config:rw,Z,U
 UserNS=keep-id
 Network=media.network
-PublishPort=8090:8090
+Network=proxy.network
+ExposeHostPort=8090
 PublishPort=6881:6881
 PublishPort=6881:6881/udp
 
