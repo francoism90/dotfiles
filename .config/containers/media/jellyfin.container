@@ -2,14 +2,14 @@
 Description=Jellyfin container
 
 [Container]
-Image=lscr.io/linuxserver/jellyfin:latest
+Image=docker.io/jellyfin/jellyfin:latest
 AutoUpdate=registry
 LogDriver=none
-UserNS=keep-id
-AddDevice=/dev/dri/:/dev/dri/
 Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
-Volume=/mnt/media:/media:rw,Z,U
+Volume=/mnt/media:/media:ro,z
+UserNS=keep-id
+AddDevice=/dev/dri/:/dev/dri/
 Network=proxy.network
 ExposeHostPort=8096
 ExposeHostPort=8920
