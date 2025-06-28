@@ -7,3 +7,5 @@
 	name = username
 [color]
 	ui = auto
+[pull]
+    ff = only
