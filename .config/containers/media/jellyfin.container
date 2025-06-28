@@ -2,7 +2,7 @@
 Description=Jellyfin container
 
 [Container]
-Image=docker.io/jellyfin/jellyfin:latest
+Image=lscr.io/linuxserver/jellyfin:latest
 AutoUpdate=registry
 LogDriver=none
 UserNS=keep-id

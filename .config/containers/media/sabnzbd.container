@@ -2,7 +2,7 @@
 Description=SABnzbd container
 
 [Container]
-Image=docker.io/linuxserver/sabnzbd:latest
+Image=lscr.io/linuxserver/sabnzbd:latest
 AutoUpdate=registry
 LogDriver=none
 Environment=PUID=1000

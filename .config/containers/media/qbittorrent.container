@@ -2,7 +2,7 @@
 Description=qBittorrent container
 
 [Container]
-Image=docker.io/linuxserver/qbittorrent:5.1.0
+Image=lscr.io/linuxserver/qbittorrent:latest
 AutoUpdate=registry
 LogDriver=none
 Environment=PUID=1000
