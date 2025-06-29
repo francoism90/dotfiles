@@ -29,7 +29,7 @@ To search for packages:
 rpm-ostree search <term>
 ```
 
-To install an overlay packages:
+To install overlay packages:
 
 ```bash
 # rpm-ostree install <package>
@@ -50,15 +50,15 @@ $ flatpak update
 
 ### Firmware
 
-Fedora IoT only has a limited firmware setup.
+> Note: This section will mostly apply only for Fedora IoT and CoreOS.
 
-For AMD/Intel, you may want to install the `ucode` package (with GPU firmware):
+For AMD/Intel, you may want to install the `ucode` and GPU firmware packages:
 
 ```bash
 # rpm-ostree install amd-gpu-firmware amd-ucode-firmware
 ```
 
-If you need `dri` support:
+If you need `dri` (hwaccel) support:
 
 ```bash
 # rpm-ostree install mesa-dri-drivers
