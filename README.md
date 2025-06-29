@@ -29,6 +29,18 @@ To search for packages:
 rpm-ostree search <term>
 ```
 
+To install an overlay packages:
+
+```bash
+rpm-ostree install <package>
+```
+
+To list all installed packages:
+
+```bash
+rpm -qa
+```
+
 ### NVIDIA (Optimus)
 
 > Tip: You may want to apply the steps in Secure Boot subsection first.
