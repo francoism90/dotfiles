@@ -43,7 +43,7 @@ rpm -qa
 
 ### Firmware
 
-Fedora IoT does only come with a limited firmware setup.
+Fedora IoT only has a limited firmware setup.
 
 For AMD/Intel, you may want to install the `ucode` package (with GPU firmware):
 
