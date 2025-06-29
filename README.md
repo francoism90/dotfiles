@@ -174,9 +174,9 @@ Enable the `fstrim` timer:
 
 ### Encryption
 
-If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue.
+If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and trim support.
 
-See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details.
+See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> and <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Discard/TRIM_support_for_solid_state_drives_(SSD)> for details.
 
 ### Btrfs
 
