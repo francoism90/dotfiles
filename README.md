@@ -32,13 +32,20 @@ rpm-ostree search <term>
 To install an overlay packages:
 
 ```bash
-rpm-ostree install <package>
+# rpm-ostree install <package>
 ```
 
 To list all installed packages:
 
 ```bash
 rpm -qa
+```
+
+To update Flatpaks:
+
+```bash
+$ flatpak update
+# flatpak update
 ```
 
 ### Firmware
@@ -48,13 +55,13 @@ Fedora IoT only has a limited firmware setup.
 For AMD/Intel, you may want to install the `ucode` package (with GPU firmware):
 
 ```bash
-rpm-ostree install amd-gpu-firmware amd-ucode-firmware
+# rpm-ostree install amd-gpu-firmware amd-ucode-firmware
 ```
 
 If you need `dri` support:
 
 ```bash
-rpm-ostree install mesa-dri-drivers
+# rpm-ostree install mesa-dri-drivers
 ```
 
 ### NVIDIA (Optimus)
@@ -132,24 +139,28 @@ Next, enable the required initramfs and kernel features. Note that the initramfs
 Then, using the device you identified with 'cryptsetup status' previously, enroll the device:
 
 ```bash
-systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
+# systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
 ```
 
 Reboot; you should not be prompted to enter your LUKS passphrase on boot.
+
+> Tip: You may want to run `systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2` when you need to re-enroll on firmware upgrades.
 
 ### tuned
 
 You may want to install tuned on IoT-matchines:
 
 ```bash
-rpm-ostree install tuned tuned-profiles-atomic
+# rpm-ostree install tuned tuned-profiles-atomic
 ```
+
+> Tip: you change the power-profile using Cockpit.
 
 ### Cockpit
 
 Follow the [installation instructions](https://cockpit-project.org/running.html#coreos).
 
-In addition you want to install `cockpit-networkmanager` and  `cockpit-files`.
+In addition you may want to install `cockpit-networkmanager` and  `cockpit-files`.
 
 ## Filesystem
 
@@ -182,6 +193,15 @@ Enable the timers:
 # systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
+To use [bees](https://github.com/Zygo/bees) (dedupe agent):
+
+```bash
+# rpm-ostree install bees
+# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid-of-btrfs-volume>.conf
+# nano /etc/bees/<uuid-of-btrfs-volume>.conf
+# systemctl start beesd@<uuid-of-btrfs-volume>
+```
+
 ## Software
 
 ### Toolbox
@@ -205,7 +225,13 @@ You can create multiple toolboxes, and even manage them using [Podman Desktop](h
 
 ### Brave
 
-Depending on your hardware, you may need to enable/disable different flags. See <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux> for details.
+Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `~/.var/app/com.brave.Browser/config/brave-flags.conf`.
+The given example forces the usage of VA-API, but it can be unstable and may need to be adjusted for your GPU-vendor(s).
+
+See the following resources for details:
+
+- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
+- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
 
 ### Podman
 
@@ -223,7 +249,7 @@ To learn more about Podman Quadlet, the following resources may be useful:
 To install Docker compatible packages:
 
 ```bash
-rpm-ostree install podman-docker podman-compose
+# rpm-ostree install podman-docker podman-compose
 systemctl reboot
 ```
 
@@ -288,7 +314,12 @@ See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 
 ### Samba
 
-See <https://fedoraproject.org/wiki/SELinux/samba> for details.
+See <https://fedoraproject.org/wiki/SELinux/samba> for details:
+
+```bash
+# rpm-ostree install samba
+# systemctl enable smb --now
+```
 
 ### Fish
 
