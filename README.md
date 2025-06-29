@@ -41,6 +41,22 @@ To list all installed packages:
 rpm -qa
 ```
 
+### Firmware
+
+Fedora IoT does only come with a limited firmware setup.
+
+For AMD/Intel, you may want to install the `ucode` package (with GPU firmware):
+
+```bash
+rpm-ostree install amd-gpu-firmware amd-ucode-firmware
+```
+
+If you need `dri` support:
+
+```bash
+rpm-ostree install mesa-dri-drivers
+```
+
 ### NVIDIA (Optimus)
 
 > Tip: You may want to apply the steps in Secure Boot subsection first.
