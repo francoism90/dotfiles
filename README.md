@@ -293,7 +293,13 @@ See the following guides:
 - <https://github.com/jorchube/devcontainer-definitions>
 - <https://github.com/VSCodium/vscodium/discussions/1487>
 
-You may want to use [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
+Install the VSCode Podman SDK extension:
+
+```bash
+flatpak install com.visualstudio.code.tool.podman//24.08
+```
+
+Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
 
 - Add to `Other files`: `xdg-run/podman`
 - Add to `Other files`: `/tmp`
