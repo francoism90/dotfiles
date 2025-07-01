@@ -277,6 +277,7 @@ To open services and ports:
 ```bash
 # firewall-cmd --get-active-zones
 # firewall-cmd --list-all-zones
+# firewall-cmd --list-all
 # firewall-cmd --permanent --add-service=http
 # firewall-cmd --permanent --add-service=https
 # firewall-cmd --permanent --add-service=http3
