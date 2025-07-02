@@ -5,16 +5,16 @@ Description=Jellyfin container
 Image=docker.io/jellyfin/jellyfin:latest
 AutoUpdate=registry
 LogDriver=none
+AddDevice=/dev/dri/:/dev/dri/
 Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
 Volume=/var/mnt/media:/media:rw,Z,U
 UserNS=keep-id
-AddDevice=/dev/dri/:/dev/dri/
 Network=proxy.network
-ExposeHostPort=8096
-ExposeHostPort=8920
-ExposeHostPort=1900/udp
-ExposeHostPort=7359/udp
+PublishPort=8096:8096
+PublishPort=8920:8920
+PublishPort=1900:1900/udp
+PublishPort=7359:7359/udp
 
 [Service]
 TimeoutStartSec=90
