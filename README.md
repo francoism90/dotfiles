@@ -237,6 +237,10 @@ See the following resources for details:
 - <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
 - <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
 
+# EasyEffects
+
+See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
+
 ### Podman
 
 Enable and use rootless containers:
