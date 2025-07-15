@@ -360,3 +360,13 @@ set -U fish_greeting
 ```
 
 Follow <https://starship.rs/guide/> to enable oh-my-zsh features for fish-shell.
+
+## Troubleshooting
+
+### Error canonicalizing /boot/grub2/grubenv filename: No such file or directory
+
+Create a blank environment block file:
+
+```bash
+# grub2-editenv create
+```
