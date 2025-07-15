@@ -75,7 +75,7 @@ See the following sources for more information:
 - <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
 
 ```bash
-# rpm-ostree install kmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power nvidia-modprobe nvidia-persistenced nvidia-settings
+# rpm-ostree install kmod-nvidia xorg-x11-drv-nvidia nvidia-modprobe nvidia-persistenced nvidia-settings
 # rpm-ostree kargs --append=rd.driver.blacklist=nouveau,nova-core --append=modprobe.blacklist=nouveau,nova-core --append=nvidia-drm.modeset=1 --append=initcall_blacklist=simpledrm_platform_driver_init
 # systemctl enable nvidia-{suspend,resume,hibernate,persistenced}
 systemctl reboot
@@ -282,10 +282,11 @@ To open services and ports:
 # firewall-cmd --get-active-zones
 # firewall-cmd --list-all-zones
 # firewall-cmd --list-all
-# firewall-cmd --permanent --add-service=http
-# firewall-cmd --permanent --add-service=https
-# firewall-cmd --permanent --add-service=http3
-# firewall-cmd --permanent --add-service=samba
+# firewall-cmd --permanent --zone=FedoraServer --add-service=http
+# firewall-cmd --permanent --zone=FedoraServer--add-service=https
+# firewall-cmd --permanent --zone=FedoraServer--add-service=http3
+# firewall-cmd --permanent --zone=FedoraServer --add-service=samba
+# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
 # firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
 # firewall-cmd --reload
 ```
