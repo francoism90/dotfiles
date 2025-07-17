@@ -347,6 +347,12 @@ Install fish:
 # rpm-ostree install fish
 ```
 
+To change the user shell:
+
+```bash
+chsh -s /bin/fish <user>
+```
+
 Add fish path lookups:
 
 ```fish
