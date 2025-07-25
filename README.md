@@ -75,9 +75,9 @@ See the following sources for more information:
 - <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
 
 ```bash
-# rpm-ostree install kmod-nvidia xorg-x11-drv-nvidia nvidia-modprobe nvidia-persistenced nvidia-settings
-# rpm-ostree kargs --append=rd.driver.blacklist=nouveau,nova-core --append=modprobe.blacklist=nouveau,nova-core --append=nvidia-drm.modeset=1 --append=initcall_blacklist=simpledrm_platform_driver_init
-# systemctl enable nvidia-{suspend,resume,hibernate,persistenced}
+# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
+# rpm-ostree kargs --append=rd.driver.blacklist=nouveau,nova_core --append=modprobe.blacklist=nouveau --append=nvidia-drm.modeset=1
+# systemctl enable nvidia-{suspend,resume,hibernate}
 systemctl reboot
 ```
 
