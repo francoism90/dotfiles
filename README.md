@@ -164,6 +164,10 @@ In addition you may want to install `cockpit-networkmanager` and  `cockpit-files
 
 ## Filesystem
 
+### Mount Options
+
+See <https://discussion.fedoraproject.org/t/root-mount-options-are-ignored-in-fedora-atomic-desktops-42/148562> for details.
+
 ### Trim
 
 Enable the `fstrim` timer:
