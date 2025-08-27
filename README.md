@@ -1,6 +1,6 @@
 # dotfiles
 
-This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) installations.
+This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) Atomic installations.
 
 > Note: Commands prepend with `# <command>` should be executed as `root` (`sudo`).
 
@@ -126,7 +126,7 @@ Next, enable the required initramfs and kernel features. Note that the initramfs
 # rpm-ostree initramfs --enable --arg=-a --arg=systemd-pcrphase
 ```
 
-Then, using the device you identified with 'cryptsetup status' previously, enroll the device:
+Identified the disk using `cryptsetup status`, and enroll the key:
 
 ```bash
 # systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
@@ -144,7 +144,7 @@ You may want to install tuned on IoT-matchines:
 # rpm-ostree install tuned tuned-profiles-atomic
 ```
 
-> Tip: you change the power-profile using Cockpit.
+> Tip: You can change the power-profile using Cockpit.
 
 ### Cockpit
 
@@ -330,6 +330,8 @@ See <https://fedoraproject.org/wiki/SELinux/samba> for details:
 # rpm-ostree install samba
 # systemctl enable smb --now
 ```
+
+> Note: You can also use sshfs as an alternative.
 
 ### Fish
 
