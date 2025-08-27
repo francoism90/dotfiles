@@ -85,10 +85,6 @@ systemctl reboot
 
 See <https://github.com/CheariX/silverblue-akmods-keys> for more details:
 
-```bash
-# rpm-ostree install rpmdevtools akmods
-```
-
 Install Machine Owner Key (MOK) - (the key may already exists - you don't have to overwrite):
 
 ```bash
@@ -103,13 +99,7 @@ git clone https://github.com/CheariX/silverblue-akmods-keys
 cd silverblue-akmods-keys
 ```
 
-To allow building with the NVIDIA open driver (recommended if supported):
-
-```bash
-echo "%_with_kmod_nvidia_open 1" >> macros.kmodtool
-```
-
-Build akmods-keys:
+Build and install akmods-keys:
 
 ```bash
 # bash setup.sh
