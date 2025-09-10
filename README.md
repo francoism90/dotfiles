@@ -48,6 +48,22 @@ $ flatpak update
 # flatpak update
 ```
 
+### Modules
+
+Setting `/etc/modprobe/module.conf`  doesn't work on Atomic-releases, instead append them using `rpm-ostree kargs --append "module.parameter=foo"`. To list current kernel parameters, use `rpm-ostree kargs` and `rpm-ostree kargs --editor`  to open an editor.
+
+To disable Realtek RTW98 WiFi parameters (preventing wireless issues):
+
+```bash
+rpm-ostree kargs --append "rtw89_core.disable_ps_mode=Y rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y rtw89_pci.disable_clkreq=Y"
+````
+
+To enable NVIDIA open driver support:
+
+```bash
+rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp nvidia.NVreg_EnableGpuFirmware=0"
+```
+
 ### Firmware
 
 > Note: This section will mostly apply only for Fedora IoT and CoreOS.
