@@ -58,12 +58,6 @@ To disable Realtek RTW98 WiFi parameters (preventing wireless issues):
 rpm-ostree kargs --append "rtw89_core.disable_ps_mode=Y rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y rtw89_pci.disable_clkreq=Y"
 ````
 
-To enable NVIDIA open driver support:
-
-```bash
-rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
-```
-
 ### Firmware
 
 > Note: This section will mostly apply only for Fedora IoT and CoreOS.
@@ -80,7 +74,7 @@ If you need `dri` (hwaccel) support:
 # rpm-ostree install mesa-dri-drivers
 ```
 
-### NVIDIA (Optimus)
+### NVIDIA
 
 > Tip: You may want to apply the steps in Secure Boot subsection first.
 
@@ -92,14 +86,20 @@ See the following sources for more information:
 
 ```bash
 # rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power
-# rpm-ostree kargs --append="nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp nvidia.NVreg_EnableGpuFirmware=0"
+# rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
+```
+
+If the device supports Options:
+
+```bash
+# rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp nvidia.NVreg_EnableGpuFirmware=0"
 # systemctl enable nvidia-{suspend,resume,hibernate}
 systemctl reboot
 ```
 
 #### Secure Boot
 
-See <https://github.com/CheariX/silverblue-akmods-keys> for details:
+To allow the NVIDIA driver to used when using Secure Boot, see <https://github.com/CheariX/silverblue-akmods-keys> for a workaround.
 
 Install Machine Owner Key (MOK) - (the key may already exists - you don't have to overwrite):
 
