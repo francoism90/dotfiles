@@ -89,7 +89,7 @@ See the following sources for more information:
 # rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
 ```
 
-If the device supports Options:
+If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
 # rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp nvidia.NVreg_EnableGpuFirmware=0"
