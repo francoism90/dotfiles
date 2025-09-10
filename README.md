@@ -61,7 +61,7 @@ rpm-ostree kargs --append "rtw89_core.disable_ps_mode=Y rtw89_pci.disable_aspm_l
 To enable NVIDIA open driver support:
 
 ```bash
-rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp nvidia.NVreg_EnableGpuFirmware=0"
+rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
 ```
 
 ### Firmware
@@ -91,15 +91,15 @@ See the following sources for more information:
 - <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
 
 ```bash
-# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
-# rpm-ostree kargs --append=rd.driver.blacklist=nouveau,nova_core --append=modprobe.blacklist=nouveau --append=nvidia-drm.modeset=1
+# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power
+# rpm-ostree kargs --append="nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp nvidia.NVreg_EnableGpuFirmware=0"
 # systemctl enable nvidia-{suspend,resume,hibernate}
 systemctl reboot
 ```
 
 #### Secure Boot
 
-See <https://github.com/CheariX/silverblue-akmods-keys> for more details:
+See <https://github.com/CheariX/silverblue-akmods-keys> for details:
 
 Install Machine Owner Key (MOK) - (the key may already exists - you don't have to overwrite):
 
@@ -108,7 +108,7 @@ Install Machine Owner Key (MOK) - (the key may already exists - you don't have t
 # mokutil --import /etc/pki/akmods/certs/public_key.der
 ```
 
-Clone the silverblue-akmods-keys project:
+Clone the silverblue-akmods-keys project, and follow the instructions:
 
 ```bash
 git clone https://github.com/CheariX/silverblue-akmods-keys
