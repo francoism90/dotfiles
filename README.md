@@ -247,7 +247,7 @@ See the following resources for details:
 - <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
 - <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
 
-# EasyEffects
+### EasyEffects
 
 See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
 
@@ -348,6 +348,16 @@ See <https://fedoraproject.org/wiki/SELinux/samba> for details:
 ```
 
 > Note: You can also use sshfs as an alternative.
+
+### Solaar
+
+To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup and with the window hiding:
+
+```bash
+flatpak run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar --window=hide
+```
+
+> Note: Install the [udev rule](https://github.com/flathub/io.github.pwr_solaar.solaar#udev-rule) for Wayland to `/etc/udev/rules.d/42-logitech-unify-permissions.rules`.
 
 ### Fish
 
