@@ -1,0 +1,8 @@
+#!/bin/sh
+rsync \
+  --archive \
+  --cvs-exclude \
+  --progress \
+  --human-readable \
+  --delete \
+  /mnt/data/media/ -e ssh user@nas:/volume1/data/media/
