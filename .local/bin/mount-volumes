@@ -1,0 +1,4 @@
+#!/bin/sh
+sudo systemctl restart network-online.target \
+&& sudo systemctl start systemd-cryptsetup@data.service var-mnt-backup.mount var-mnt-downloads.mount var-mnt-media.mount \
+&& systemctl --user start proxy jellyfin
