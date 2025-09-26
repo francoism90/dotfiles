@@ -5,5 +5,5 @@ PASSWORD=password
 EXPORT_PATH=/var/mnt/backup/dumps
 EXPORT_FILENAME="dump-$(date +%Y%m%d%H%M%S)"
 
-podman exec -it "systemd-${CONTAINER}" /bin/bash -c "PGPASSWORD=${PASSWORD} pg_dumpall -h localhost -U ${USERNAME}" > "${EXPORT_PATH}/${EXPORT_FILENAME}.sql"
+podman exec -it systemd-${CONTAINER} /bin/bash -c "PGPASSWORD=${PASSWORD} pg_dumpall -h localhost -U ${USERNAME}" > "${EXPORT_PATH}/${EXPORT_FILENAME}.sql"
 podman volume export ${CONTAINER} --output "${EXPORT_PATH}/${EXPORT_FILENAME}.tar"
