@@ -6,6 +6,10 @@ end
 abbr -a -- sc 'sudo systemctl'
 abbr -a -- scu 'systemctl --user'
 
+# toolbox
+abbr -a -- tbe 'toolbox enter'
+abbr -a -- tbr 'toolbox run'
+
 # tmux
 abbr -a -- ta 'tmux attach-session -t'
 
