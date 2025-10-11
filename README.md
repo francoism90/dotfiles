@@ -48,6 +48,13 @@ $ flatpak update
 # flatpak update
 ```
 
+To repair Flatpaks, which may be needed on upgrades:
+
+```bash
+$ flatpak repair --user -vvv
+# flatpak repair --system -vvv
+```
+
 ### Modules
 
 Setting `/etc/modprobe/module.conf`  doesn't work on Atomic-releases, instead append them using `rpm-ostree kargs --append "module.parameter=foo"`. To list current kernel parameters, use `rpm-ostree kargs` and `rpm-ostree kargs --editor`  to open an editor.
@@ -68,7 +75,7 @@ For AMD/Intel, you may want to install the `ucode` and GPU firmware packages:
 # rpm-ostree install amd-gpu-firmware amd-ucode-firmware
 ```
 
-If you need `dri` (hwaccel) support:
+If you need `dri` (video-accel) support:
 
 ```bash
 # rpm-ostree install mesa-dri-drivers
@@ -85,16 +92,16 @@ See the following sources for more information:
 - <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
 
 ```bash
-# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-power
+# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
 # rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
 ```
 
 If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
-# rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp nvidia.NVreg_EnableGpuFirmware=0"
+# rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
+# systemctl reboot
 # systemctl enable nvidia-{suspend,resume,hibernate}
-systemctl reboot
 ```
 
 #### Secure Boot
@@ -390,6 +397,10 @@ set -U fish_greeting
 Follow <https://starship.rs/guide/> to enable oh-my-zsh features for fish-shell.
 
 ## Troubleshooting
+
+### Dark themes not working
+
+See instructions from the Flatpak Breeze-repo: <https://github.com/flathub/org.gtk.Gtk3theme.Breeze>
 
 ### Error canonicalizing /boot/grub2/grubenv filename: No such file or directory
 
