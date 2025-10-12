@@ -305,6 +305,9 @@ To open services and ports:
 # firewall-cmd --permanent --zone=FedoraServer --add-service=samba
 # firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
 # firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
+# firewall-cmd --zone=FedoraServer --remove-service=http
+# firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
+# firewall-cmd --runtime-to-permanent 
 # firewall-cmd --reload
 ```
 
