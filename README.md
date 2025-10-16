@@ -15,6 +15,15 @@ Useful references:
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
 - <https://rpmfusion.org/Howto/OSTree>
 
+### Journal
+
+To get the last boot log:
+
+```bash
+journalctl --list-boots
+journalctl -b -0
+```
+
 ### Package management
 
 To show difference after upgrades:
@@ -79,6 +88,12 @@ If you need `dri` (video-accel) support:
 
 ```bash
 # rpm-ostree install mesa-dri-drivers
+```
+
+If you have `page flip timeouts` (freezing screen):
+
+```bash
+# rpm-ostree kargs --apend "amdgpu.dcdebugmask=0x10"
 ```
 
 ### NVIDIA
