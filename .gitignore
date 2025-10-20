@@ -1,8 +1,5 @@
-_ide_helper.php
 ._*
 .DS_Store
-.env
-.env.backup
 .Spotlight-V100
 .Trashes
 *.7z
@@ -28,7 +25,4 @@ _ide_helper.php
 *.zip
 *~
 ehthumbs.db
-log/
-npm-debug.log
 Thumbs.db
-yarn-error.log
