@@ -3,11 +3,6 @@ _ide_helper.php
 .DS_Store
 .env
 .env.backup
-.idea/
-.php-cs-fixer.cache
-.php_cs.cache
-.phpstorm.meta.php
-.phpunit.result.cache
 .Spotlight-V100
 .Trashes
 *.7z
@@ -19,6 +14,7 @@ _ide_helper.php
 *.gz
 *.iso
 *.jar
+*.key
 *.log
 *.log.*
 *.msi
@@ -32,8 +28,6 @@ _ide_helper.php
 *.zip
 *~
 ehthumbs.db
-Homestead.json
-Homestead.yaml
 log/
 npm-debug.log
 Thumbs.db
