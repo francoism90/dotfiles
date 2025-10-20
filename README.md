@@ -74,11 +74,11 @@ To disable Realtek RTW98 WiFi parameters (preventing wireless issues):
 rpm-ostree kargs --append "rtw89_core.disable_ps_mode=Y rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y rtw89_pci.disable_clkreq=Y"
 ````
 
-### Firmware
+### AMD
 
-> Note: This section will mostly apply only for Fedora IoT and CoreOS.
+> Note: This will only be needed for Fedora IoT and CoreOS.
 
-For AMD/Intel, you may want to install the `ucode` and GPU firmware packages:
+For AMD/Intel, you may want to install firmware packages:
 
 ```bash
 # rpm-ostree install amd-gpu-firmware amd-ucode-firmware
@@ -89,6 +89,8 @@ If you need `dri` (video-accel) support:
 ```bash
 # rpm-ostree install mesa-dri-drivers
 ```
+
+#### Troubleshooting
 
 If you have `page flip timeouts` (freezing screen) on AMD systems:
 
@@ -111,6 +113,10 @@ See the following sources for more information:
 # rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
 ```
 
+#### Optimus
+
+> Note: Also install the `80-nvidia-pm.rules` udev rule, allowing the NVIDIA driver to control it's state.
+
 If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
@@ -118,8 +124,6 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 # systemctl reboot
 # systemctl enable nvidia-{suspend,resume,hibernate} --now
 ```
-
-> Note: Also install the `80-nvidia-pm.rules` udev rule, allowing the NVIDIA driver to control it's state.
 
 #### Secure Boot
 
