@@ -119,6 +119,8 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 # systemctl enable nvidia-{suspend,resume,hibernate}
 ```
 
+> Note: Also add the `80-nvidia-pm.rules` udev rule, allowing the NVIDIA driver to control it's state.
+
 #### Secure Boot
 
 To allow the NVIDIA driver to used when using Secure Boot, see <https://github.com/CheariX/silverblue-akmods-keys> for a workaround.
