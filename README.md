@@ -90,7 +90,7 @@ If you need `dri` (video-accel) support:
 # rpm-ostree install mesa-dri-drivers
 ```
 
-If you have `page flip timeouts` (freezing screen):
+If you have `page flip timeouts` (freezing screen) on AMD systems:
 
 ```bash
 # rpm-ostree kargs --apend "amdgpu.dcdebugmask=0x10"
@@ -116,10 +116,10 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 ```bash
 # rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
 # systemctl reboot
-# systemctl enable nvidia-{suspend,resume,hibernate}
+# systemctl enable nvidia-{suspend,resume,hibernate} --now
 ```
 
-> Note: Also add the `80-nvidia-pm.rules` udev rule, allowing the NVIDIA driver to control it's state.
+> Note: Also install the `80-nvidia-pm.rules` udev rule, allowing the NVIDIA driver to control it's state.
 
 #### Secure Boot
 
