@@ -1,0 +1,9 @@
+# root
+luks-[uuid] none tpm2-device=auto,discard
+
+# data
+hdd0 UUID=[uuid] /etc/cryptsetup-keys.d/foo.key noauto,nofail
+hdd1 UUID=[uuid] /etc/cryptsetup-keys.d/bar.key noauto,nofail
+
+# x
+x UUID=[uuid] /etc/cryptsetup-keys.d/x.key nofail,discard
