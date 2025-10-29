@@ -102,15 +102,41 @@ If you have `page flip timeouts` (freezing screen) on AMD systems:
 
 > Tip: You may want to apply the steps in Secure Boot subsection first.
 
-See the following sources for more information:
+See the following source for more information <https://negativo17.org/nvidia-driver/>.
 
-- <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/#_using_nvidia_drivers>
-- <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#OSTree_.28Silverblue.2FKinoite.2Fetc.29>
-- <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
+Disable the current RPMFusion repo first:
 
 ```bash
-# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
+# sed -ie 's/enabled=1/enabled=0/g' rpmfusion-nonfree-nvidia-driver.repo
 # rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
+```
+
+Add the GPG-key:
+
+```bash
+# cd /etc/pki/rpm-gpg
+# wget https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+```
+
+Add the repo:
+
+```bash
+# cd /etc/yum.repos.d
+# wget https://negativo17.org/repos/fedora-nvidia.repo
+```
+
+Change `gpgkey=` of `/etc/yum.repos.d/fedora-nvidia.repo`, to lookup the GPG locally instead:
+
+```diff
+-gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
++gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-slaanesh
+```
+
+Install the nvidia driver:
+
+```bash
+rpm-ostree refresh-md
+rpm-ostree install nvidia-driver nvidia-settings
 ```
 
 #### Optimus
@@ -328,7 +354,7 @@ To open services and ports:
 # firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
 # firewall-cmd --zone=FedoraServer --remove-service=http
 # firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
-# firewall-cmd --runtime-to-permanent 
+# firewall-cmd --runtime-to-permanent
 # firewall-cmd --reload
 ```
 
