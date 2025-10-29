@@ -99,7 +99,7 @@ If you need Hardware Video Acceleration support, such as when running Jellyfin:
 If you have `page flip timeouts` (freezing screen) on AMD systems, you may want to disable panel refreshing:
 
 ```bash
-# rpm-ostree kargs --apend "amdgpu.dcdebugmask=0x10"
+# rpm-ostree kargs --append "amdgpu.dcdebugmask=0x10"
 ```
 
 #### NVIDIA
@@ -109,8 +109,7 @@ See the following source for more information <https://negativo17.org/nvidia-dri
 Make sure RPMFusion's nvidia repo is disabled first:
 
 ```bash
-# sed -ie 's/enabled=1/enabled=0/g' rpmfusion-nonfree-nvidia-driver.repo
-# rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
+# sed -ie 's/enabled=1/enabled=0/g' /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
 ```
 
 Add the negativo17 GPG-key:
@@ -145,8 +144,15 @@ Install the nvidia driver:
 ```bash
 # rpm-ostree refresh-md
 # rpm-ostree install nvidia-driver nvidia-settings
-systemctl reboot
 ```
+
+Prevent the nouveau driver from loading:
+
+```bash
+# rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
+```
+
+Reboot to load the nvidia driver.
 
 ##### Secure Boot
 
@@ -183,8 +189,7 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
 # rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
-# systemctl reboot
-# systemctl enable nvidia-{suspend,resume,hibernate} --now
+# systemctl enable nvidia-{resume,hibernate,suspend,nvidia-suspend-then-hibernate.service}
 ```
 
 Create `/etc/udev/rules.d/80-nvidia-pm.rules`, allowing the NVIDIA driver to control the power state:
@@ -200,8 +205,10 @@ ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x0302
 
 # Enable runtime PM for NVIDIA VGA/3D controller devices on adding device
 ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
-ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
 ```
+
+Reboot the system to apply the changes.
 
 ### TPM
 
@@ -236,7 +243,7 @@ Reboot; you should not be prompted to enter your LUKS passphrase on boot.
 To re-enroll (which may be needed on firmware upgrades) or wipe the current TPM2 slot:
 
 ```bash
-systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2
+# systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2
 ```
 
 Afterwards, follow the instructions to enroll the key.
