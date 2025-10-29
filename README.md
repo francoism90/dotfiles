@@ -2,7 +2,7 @@
 
 This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) Atomic installations (all are running Fedora 43).
 
-> Note: Commands prepend with `# <command>` should be executed as `root` (`sudo`).
+> Note: Commands prepended with `# <command>` should be executed as `root` (`sudo`).
 
 ## System
 
@@ -26,7 +26,7 @@ journalctl -b -0
 
 ### Package management
 
-To show difference after upgrades:
+To show differences after upgrades:
 
 ```bash
 rpm-ostree db diff -c
@@ -53,20 +53,19 @@ rpm -qa
 To update Flatpaks:
 
 ```bash
-$ flatpak update
-# flatpak update
+flatpak update
 ```
 
 To repair Flatpaks, which may be needed on upgrades:
 
 ```bash
-$ flatpak repair --user -vvv
-# flatpak repair --system -vvv
+flatpak repair --user -vvv
+flatpak repair --system -vvv
 ```
 
 ### Kernel Modules
 
-Setting `/etc/modprobe/module.conf` does not work on Atomic-releases, instead append as kernel entries, using `rpm-ostree kargs --append "module.parameter=foo"`.
+Setting `/etc/modprobe/module.conf` does not work on Atomic releases. Instead, append kernel parameters using `rpm-ostree kargs --append "module.parameter=foo"`.
 
 To list current kernel parameters, use `rpm-ostree kargs` or `rpm-ostree kargs --editor` to open an editor.
 
@@ -104,7 +103,7 @@ If you have `page flip timeouts` (freezing screen) on AMD systems, you may want 
 
 #### NVIDIA
 
-See the following source for more information <https://negativo17.org/nvidia-driver/>.
+See the following source for more information: <https://negativo17.org/nvidia-driver/>.
 
 Make sure RPMFusion's nvidia repo is disabled first:
 
@@ -126,7 +125,7 @@ Add the negativo17 nvidia repo:
 # wget https://negativo17.org/repos/fedora-nvidia.repo
 ```
 
-Change `gpgkey=` of `/etc/yum.repos.d/fedora-nvidia.repo`, to lookup the GPG locally instead:
+Change `gpgkey=` of `/etc/yum.repos.d/fedora-nvidia.repo` to look up the GPG locally instead:
 
 ```diff
 -gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
@@ -156,27 +155,27 @@ Reboot to load the nvidia driver.
 
 ##### Secure Boot
 
-After reboot, the `nvidia` model may reject loading when Secure Boot is enabled.
+After reboot, the `nvidia` module may reject loading when Secure Boot is enabled.
 
 As a workaround, use <https://github.com/CheariX/silverblue-akmods-keys>.
 
-> Tip: This package may also be used for other modules that need signing, such as for VirtualBox.
+> Tip: This package may also be used for other modules that need signing, such as VirtualBox.
 
-Make sure the Machine Owner Key (MOK) is enrolled (the key may already exists and enrolled, do not force):
+Make sure the Machine Owner Key (MOK) is enrolled (the key may already exist and be enrolled; do not force):
 
 ```bash
 # kmodgenca
 # mokutil --import /etc/pki/akmods/certs/public_key.der
 ```
 
-Clone the `silverblue-akmods-keys project`:
+Clone the `silverblue-akmods-keys` project:
 
 ```bash
 git clone https://github.com/CheariX/silverblue-akmods-keys
 cd silverblue-akmods-keys
 ```
 
-Build and install `akmods-keys` package:
+Build and install the `akmods-keys` package:
 
 ```bash
 # bash setup.sh
@@ -214,7 +213,7 @@ Reboot the system to apply the changes.
 
 > Tip: You may want to add a [passphrase](https://wiki.archlinux.org/title/Systemd-cryptenroll#Regular_password) as fallback.
 
-The following resources may be helpful to setup TPM:
+The following resources may be helpful to set up TPM:
 
 - <https://github.com/stenwt/silverblue-docs/blob/patch-1/modules/ROOT/pages/tips-and-tricks.adoc#enabling-tpm2-for-luks>
 - <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
@@ -230,7 +229,7 @@ Next, enable the required initramfs and kernel features. Note that the initramfs
 # rpm-ostree kargs --append=rd.luks.options=tpm2-device=auto
 ```
 
-Identified the disk using `cryptsetup status`, and enroll the key:
+Identify the disk using `cryptsetup status`, and enroll the key:
 
 ```bash
 # systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
@@ -250,19 +249,19 @@ Afterwards, follow the instructions to enroll the key.
 
 ### tuned
 
-You may want to install tuned on IoT-matchines:
+You may want to install tuned on IoT machines:
 
 ```bash
 # rpm-ostree install tuned tuned-profiles-atomic
 ```
 
-> Tip: You can change the power-profile using Cockpit.
+> Tip: You can change the power profile using Cockpit.
 
 ### Cockpit
 
 Follow the [installation instructions](https://cockpit-project.org/running.html#coreos).
 
-In addition you may want to install `cockpit-networkmanager` and  `cockpit-files`.
+In addition, you may want to install `cockpit-networkmanager` and `cockpit-files`.
 
 ## Filesystem
 
@@ -280,7 +279,7 @@ Enable the `fstrim` timer:
 
 ### Encryption
 
-If you are using encryption on a NVMe/SSD, you may want to improve performance by disabling the workqueue and trim support.
+If you are using encryption on an NVMe/SSD, you may want to improve performance by disabling the workqueue and trim support.
 
 See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details:
 
@@ -303,7 +302,7 @@ Enable the timers:
 # systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
-To use [bees](https://github.com/Zygo/bees) (dedupe agent):
+To use [bees](https://github.com/Zygo/bees) (a deduplication agent):
 
 ```bash
 # rpm-ostree install bees
@@ -316,27 +315,27 @@ To use [bees](https://github.com/Zygo/bees) (dedupe agent):
 
 ### Toolbox
 
-It is discourage to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`), and/or [BoxBuddyRS](https://github.com/Dvlv/BoxBuddyRS) as much as possible.
+It is discouraged to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`), and/or [BoxBuddyRS](https://github.com/Dvlv/BoxBuddyRS) as much as possible.
 
-You can pull the latest toolbox, using:
+You can pull the latest toolbox using:
 
 ```bash
 podman pull fedora-toolbox:42
 ```
 
-To update a toolbox:
+To update packages inside a toolbox:
 
 ```bash
 toolbox enter
 sudo dnf update && sudo dnf upgrade
 ```
 
-You can create multiple toolboxes, and even manage them using [Podman Desktop](https://podman-desktop.io/).
+You can create multiple toolboxes and even manage them using [Podman Desktop](https://podman-desktop.io/).
 
 ### Brave
 
 Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `~/.var/app/com.brave.Browser/config/brave-flags.conf`.
-The given example forces the usage of VA-API, but it can be unstable and may need to be adjusted for your GPU-vendor(s).
+The example below forces the use of VA-API, but it can be unstable and may need to be adjusted for your GPU vendor(s).
 
 See the following resources for details:
 
@@ -364,7 +363,7 @@ To install Docker compatible packages:
 
 ```bash
 # rpm-ostree install podman-docker podman-compose
-systemctl reboot
+# systemctl reboot
 ```
 
 Enable linger (e.g. keep containers running after logging out):
@@ -413,14 +412,14 @@ Install the VSCode Podman SDK extension:
 flatpak install com.visualstudio.code.tool.podman//25.08
 ```
 
-Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
+Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overrides:
 
 - Add to `Other files`: `xdg-run/podman`
 - Add to `Other files`: `/tmp`
 
 Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
 
-```bash
+```json
 "dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
 "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
 "dev.containers.logLevel": "info",
@@ -445,11 +444,11 @@ See <https://fedoraproject.org/wiki/SELinux/samba> for details:
 # systemctl enable smb --now
 ```
 
-> Note: You can also use sshfs as an alternative.
+> Note: You can also use SSHFS as an alternative.
 
 ### Solaar
 
-To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup and with the window hiding:
+To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup and with the window hidden:
 
 ```bash
 flatpak run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar --window=hide
@@ -459,7 +458,7 @@ flatpak run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.
 
 ### Fish
 
-> Note: Change the shell to use in terminal application (`/usr/bin/fish`).
+> Note: Set `/usr/bin/fish` as the shell in your terminal application.
 
 Install fish:
 
@@ -467,31 +466,31 @@ Install fish:
 # rpm-ostree install fish
 ```
 
-To change the user shell:
+To change the user's shell:
 
 ```bash
-chsh -s /bin/fish <user>
+chsh -s /usr/bin/fish <user>
 ```
 
-Add fish path lookups:
+Add user-local bin to fish path:
 
 ```fish
 fish_add_path ~/.local/bin
 ```
 
-To disable greeting (welcome message):
+To disable the greeting (welcome message):
 
 ```fish
 set -U fish_greeting
 ```
 
-Follow <https://starship.rs/guide/> to enable oh-my-zsh features for fish-shell.
+Follow <https://starship.rs/guide/> to enable oh-my-zsh-like features for fish-shell.
 
 ## Troubleshooting
 
 ### Dark themes not working
 
-See instructions from the Flatpak Breeze-repo: <https://github.com/flathub/org.gtk.Gtk3theme.Breeze>
+See instructions from the Flatpak Breeze repo: <https://github.com/flathub/org.gtk.Gtk3theme.Breeze>
 
 ### Error canonicalizing /boot/grub2/grubenv filename: No such file or directory
 
