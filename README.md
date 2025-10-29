@@ -1,6 +1,6 @@
 # dotfiles
 
-This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) Atomic installations.
+This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) Atomic installations (all are running Fedora 43).
 
 > Note: Commands prepend with `# <command>` should be executed as `root` (`sudo`).
 
@@ -64,58 +64,120 @@ $ flatpak repair --user -vvv
 # flatpak repair --system -vvv
 ```
 
-### Modules
+### Kernel Modules
 
-Setting `/etc/modprobe/module.conf`  doesn't work on Atomic-releases, instead append them using `rpm-ostree kargs --append "module.parameter=foo"`. To list current kernel parameters, use `rpm-ostree kargs` and `rpm-ostree kargs --editor`  to open an editor.
+Setting `/etc/modprobe/module.conf` does not work on Atomic-releases, instead append as kernel entries, using `rpm-ostree kargs --append "module.parameter=foo"`.
 
-To disable Realtek RTW98 WiFi parameters (preventing wireless issues):
+To list current kernel parameters, use `rpm-ostree kargs` or `rpm-ostree kargs --editor` to open an editor.
+
+#### Realtek RTW89
+
+The Realtek RTW89 has many issues related to power management on Linux. Power management can be disabled by appending:
 
 ```bash
 rpm-ostree kargs --append "rtw89_core.disable_ps_mode=Y rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y rtw89_pci.disable_clkreq=Y"
-````
+```
 
-### AMD
+#### AMD
 
-> Note: This will only be needed for Fedora IoT and CoreOS.
+This section is only relevant for Fedora IoT and CoreOS.
 
-For AMD/Intel, you may want to install firmware packages:
+For latest AMD/Intel hardware support, you may want to install firmware packages:
 
 ```bash
 # rpm-ostree install amd-gpu-firmware amd-ucode-firmware
 ```
 
-If you need `dri` (video-accel) support:
+If you need Hardware Video Acceleration support, such as when running Jellyfin:
 
 ```bash
 # rpm-ostree install mesa-dri-drivers
 ```
 
-#### Troubleshooting
+##### Bug: Page flip timeout
 
-If you have `page flip timeouts` (freezing screen) on AMD systems:
+If you have `page flip timeouts` (freezing screen) on AMD systems, you may want to disable panel refreshing:
 
 ```bash
 # rpm-ostree kargs --apend "amdgpu.dcdebugmask=0x10"
 ```
 
-### NVIDIA
+#### NVIDIA
 
-> Tip: You may want to apply the steps in Secure Boot subsection first.
+See the following source for more information <https://negativo17.org/nvidia-driver/>.
 
-See the following sources for more information:
-
-- <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/#_using_nvidia_drivers>
-- <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#OSTree_.28Silverblue.2FKinoite.2Fetc.29>
-- <https://rpmfusion.org/Howto/NVIDIA?highlight=%28%5CbCategoryHowto%5Cb%29#Kernel_Open>
+Make sure RPMFusion's nvidia repo is disabled first:
 
 ```bash
-# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
+# sed -ie 's/enabled=1/enabled=0/g' rpmfusion-nonfree-nvidia-driver.repo
 # rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
 ```
 
-#### Optimus
+Add the negativo17 GPG-key:
 
-> Note: Also install the `80-nvidia-pm.rules` udev rule, allowing the NVIDIA driver to control it's state.
+```bash
+# cd /etc/pki/rpm-gpg
+# wget https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
+```
+
+Add the negativo17 nvidia repo:
+
+```bash
+# cd /etc/yum.repos.d
+# wget https://negativo17.org/repos/fedora-nvidia.repo
+```
+
+Change `gpgkey=` of `/etc/yum.repos.d/fedora-nvidia.repo`, to lookup the GPG locally instead:
+
+```diff
+-gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
++gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-slaanesh
+```
+
+Remove any cached GPG keys:
+
+```bash
+# rm -rf /var/cache/rpm-ostree/repomd/fedora-nvidia-43-x86_64/RPM-GPG-KEY-slaanesh
+```
+
+Install the nvidia driver:
+
+```bash
+# rpm-ostree refresh-md
+# rpm-ostree install nvidia-driver nvidia-settings
+systemctl reboot
+```
+
+##### Secure Boot
+
+After reboot, the `nvidia` model may reject loading when Secure Boot is enabled.
+
+As a workaround, use <https://github.com/CheariX/silverblue-akmods-keys>.
+
+> Tip: This package may also be used for other modules that need signing, such as for VirtualBox.
+
+Make sure the Machine Owner Key (MOK) is enrolled (the key may already exists and enrolled, do not force):
+
+```bash
+# kmodgenca
+# mokutil --import /etc/pki/akmods/certs/public_key.der
+```
+
+Clone the `silverblue-akmods-keys project`:
+
+```bash
+git clone https://github.com/CheariX/silverblue-akmods-keys
+cd silverblue-akmods-keys
+```
+
+Build and install `akmods-keys` package:
+
+```bash
+# bash setup.sh
+# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
+```
+
+##### Optimus
 
 If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
@@ -125,29 +187,20 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 # systemctl enable nvidia-{suspend,resume,hibernate} --now
 ```
 
-#### Secure Boot
+Create `/etc/udev/rules.d/80-nvidia-pm.rules`, allowing the NVIDIA driver to control the power state:
 
-To allow the NVIDIA driver to used when using Secure Boot, see <https://github.com/CheariX/silverblue-akmods-keys> for a workaround.
+```udev
+# Enable runtime PM for NVIDIA VGA/3D controller devices on driver bind
+ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
 
-Install Machine Owner Key (MOK) - (the key may already exists - you don't have to overwrite):
+# Disable runtime PM for NVIDIA VGA/3D controller devices on driver unbind
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
+ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"
 
-```bash
-# kmodgenca
-# mokutil --import /etc/pki/akmods/certs/public_key.der
-```
-
-Clone the silverblue-akmods-keys project, and follow the instructions:
-
-```bash
-git clone https://github.com/CheariX/silverblue-akmods-keys
-cd silverblue-akmods-keys
-```
-
-Build and install akmods-keys:
-
-```bash
-# bash setup.sh
-# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
+# Enable runtime PM for NVIDIA VGA/3D controller devices on adding device
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
+ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto
 ```
 
 ### TPM
@@ -166,8 +219,8 @@ To set up TPM2 unlocking, first, find the LUKS device you want to enroll. This i
 Next, enable the required initramfs and kernel features. Note that the initramfs command below will overwrite any other initramfs changes you have made:
 
 ```bash
-# rpm-ostree kargs --append=rd.luks.options=tpm2-device=auto
 # rpm-ostree initramfs --enable --arg=-a --arg=systemd-pcrphase
+# rpm-ostree kargs --append=rd.luks.options=tpm2-device=auto
 ```
 
 Identified the disk using `cryptsetup status`, and enroll the key:
@@ -178,7 +231,15 @@ Identified the disk using `cryptsetup status`, and enroll the key:
 
 Reboot; you should not be prompted to enter your LUKS passphrase on boot.
 
-> Tip: You may want to run `systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2` when you need to re-enroll on firmware upgrades.
+#### Firmware upgrades
+
+To re-enroll (which may be needed on firmware upgrades) or wipe the current TPM2 slot:
+
+```bash
+systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2
+```
+
+Afterwards, follow the instructions to enroll the key.
 
 ### tuned
 
@@ -248,7 +309,7 @@ To use [bees](https://github.com/Zygo/bees) (dedupe agent):
 
 ### Toolbox
 
-It is discourage to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`) as much as possible.
+It is discourage to install (large) software on the ostree. Try to use Flatpaks and toolboxes (`toolbox create` and `toolbox enter`), and/or [BoxBuddyRS](https://github.com/Dvlv/BoxBuddyRS) as much as possible.
 
 You can pull the latest toolbox, using:
 
@@ -321,14 +382,13 @@ To open services and ports:
 # firewall-cmd --list-all-zones
 # firewall-cmd --list-all
 # firewall-cmd --permanent --zone=FedoraServer --add-service=http
-# firewall-cmd --permanent --zone=FedoraServer--add-service=https
-# firewall-cmd --permanent --zone=FedoraServer--add-service=http3
+# firewall-cmd --permanent --zone=FedoraServer --add-service=https
+# firewall-cmd --permanent --zone=FedoraServer --add-service=http3
 # firewall-cmd --permanent --zone=FedoraServer --add-service=samba
 # firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
 # firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
 # firewall-cmd --zone=FedoraServer --remove-service=http
 # firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
-# firewall-cmd --runtime-to-permanent 
 # firewall-cmd --reload
 ```
 
@@ -343,7 +403,7 @@ See the following guides:
 Install the VSCode Podman SDK extension:
 
 ```bash
-flatpak install com.visualstudio.code.tool.podman//24.08
+flatpak install com.visualstudio.code.tool.podman//25.08
 ```
 
 Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overwrites:
