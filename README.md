@@ -100,8 +100,6 @@ If you have `page flip timeouts` (freezing screen) on AMD systems:
 
 ### NVIDIA
 
-> Tip: You may want to apply the steps in Secure Boot subsection first.
-
 See the following source for more information <https://negativo17.org/nvidia-driver/>.
 
 Disable the current RPMFusion repo first:
@@ -132,11 +130,47 @@ Change `gpgkey=` of `/etc/yum.repos.d/fedora-nvidia.repo`, to lookup the GPG loc
 +gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-slaanesh
 ```
 
+Remove any cached GPG keys:
+
+```bash
+# rm -rf /var/cache/rpm-ostree/repomd/fedora-nvidia-43-x86_64/RPM-GPG-KEY-slaanesh
+```
+
 Install the nvidia driver:
 
 ```bash
 rpm-ostree refresh-md
 rpm-ostree install nvidia-driver nvidia-settings
+systemctl reboot
+```
+
+#### Secure Boot
+
+After reboot, the `nvidia` model may reject loading when Secure Boot is enabled.
+
+As a workaround, see <https://github.com/CheariX/silverblue-akmods-keys> for details.
+
+> Tip: This package may also be used for other applications that require a signed module, such as VirtualBox.
+
+Make sure the Machine Owner Key (MOK) is enrolled (the key may already exists and enrolled, do not force):
+
+```bash
+# kmodgenca
+# mokutil --import /etc/pki/akmods/certs/public_key.der
+```
+
+Clone the `silverblue-akmods-keys project`:
+
+```bash
+git clone https://github.com/CheariX/silverblue-akmods-keys
+cd silverblue-akmods-keys
+```
+
+Build and install `akmods-keys` package:
+
+```bash
+# bash setup.sh
+# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
 ```
 
 #### Optimus
@@ -149,32 +183,7 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 # rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
 # systemctl reboot
 # systemctl enable nvidia-{suspend,resume,hibernate} --now
-```
-
-#### Secure Boot
-
-To allow the NVIDIA driver to used when using Secure Boot, see <https://github.com/CheariX/silverblue-akmods-keys> for a workaround.
-
-Install Machine Owner Key (MOK) - (the key may already exists - you don't have to overwrite):
-
-```bash
-# kmodgenca
-# mokutil --import /etc/pki/akmods/certs/public_key.der
-```
-
-Clone the silverblue-akmods-keys project, and follow the instructions:
-
-```bash
-git clone https://github.com/CheariX/silverblue-akmods-keys
-cd silverblue-akmods-keys
-```
-
-Build and install akmods-keys:
-
-```bash
-# bash setup.sh
-# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
-```
+``
 
 ### TPM
 
