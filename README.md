@@ -187,8 +187,8 @@ Build and install the `akmods-keys` package:
 If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
-# rpm-ostree kargs --append "nvidia_drm.modeset=0 nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
-# systemctl enable nvidia-{resume,hibernate,suspend,nvidia-suspend-then-hibernate.service}
+# rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
+# systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
 ```
 
 Create `/etc/udev/rules.d/80-nvidia-pm.rules`, allowing the NVIDIA driver to control the power state:
@@ -234,6 +234,8 @@ Identify the disk using `cryptsetup status`, and enroll the key:
 ```bash
 # systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
 ```
+
+> Note: Replace `/dev/nvme0n1p3` with your actual LUKS partition. Using PCRs 0+7 may require re-enrollment after firmware/BIOS updates.
 
 Reboot; you should not be prompted to enter your LUKS passphrase on boot.
 
@@ -284,8 +286,10 @@ If you are using encryption on an NVMe/SSD, you may want to improve performance 
 See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details:
 
 ```bash
-# cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh <uuid-or-name>
+# cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh /dev/mapper/luks-<uuid>
 ```
+
+> Note: Replace `<uuid>` with your LUKS device UUID from `/etc/crypttab`.
 
 ### Btrfs
 
@@ -305,11 +309,14 @@ Enable the timers:
 To use [bees](https://github.com/Zygo/bees) (a deduplication agent):
 
 ```bash
+# btrfs filesystem show /
 # rpm-ostree install bees
-# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid-of-btrfs-volume>.conf
-# nano /etc/bees/<uuid-of-btrfs-volume>.conf
-# systemctl start beesd@<uuid-of-btrfs-volume>
+# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid-from-above>.conf
+# nano /etc/bees/<uuid-from-above>.conf
+# systemctl start beesd@<uuid-from-above>
 ```
+
+> Note: Use the UUID from `btrfs filesystem show` output.
 
 ## Software
 
@@ -320,7 +327,7 @@ It is discouraged to install (large) software on the ostree. Try to use Flatpaks
 You can pull the latest toolbox using:
 
 ```bash
-podman pull fedora-toolbox:42
+podman pull fedora-toolbox:43
 ```
 
 To update packages inside a toolbox:
@@ -379,24 +386,27 @@ To automatically manage container updates:
 systemctl --user enable podman-auto-update.timer --now
 ```
 
-### Firewall(d)
+### Firewalld
 
 To open services and ports:
 
 ```bash
+# firewall-cmd --get-default-zone
 # firewall-cmd --get-active-zones
 # firewall-cmd --list-all-zones
 # firewall-cmd --list-all
-# firewall-cmd --permanent --zone=FedoraServer --add-service=http
-# firewall-cmd --permanent --zone=FedoraServer --add-service=https
-# firewall-cmd --permanent --zone=FedoraServer --add-service=http3
-# firewall-cmd --permanent --zone=FedoraServer --add-service=samba
-# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
-# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
-# firewall-cmd --zone=FedoraServer --remove-service=http
-# firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
+# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http
+# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=https
+# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http3
+# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=samba
+# firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/udp
+# firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/tcp
+# firewall-cmd --zone=FedoraWorkstation --remove-service=http
+# firewall-cmd --zone=FedoraWorkstation --remove-port=9090/tcp
 # firewall-cmd --reload
 ```
+
+> Note: Replace `FedoraWorkstation` with your active zone.
 
 ### VSCodium / VSCode
 
@@ -409,7 +419,7 @@ See the following guides:
 Install the VSCode Podman SDK extension:
 
 ```bash
-flatpak install com.visualstudio.code.tool.podman//25.08
+flatpak install com.visualstudio.code.tool.podman
 ```
 
 Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overrides:
@@ -422,8 +432,10 @@ Use the command to launch `Preferences: Open User Settings (JSON)`, and append t
 ```json
 "dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
 "dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
-"dev.containers.logLevel": "info",
+"dev.containers.logLevel": "info"
 ```
+
+> Note: Replace `1000` with your actual UID (run `id -u` to find it).
 
 #### Wayland
 
