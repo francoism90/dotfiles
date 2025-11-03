@@ -65,7 +65,7 @@ flatpak repair --system -vvv
 
 ### Kernel Modules
 
-Setting `/etc/modprobe/module.conf` does not work on Atomic releases. Instead, append kernel parameters using `rpm-ostree kargs --append "module.parameter=foo"`.
+Setting `/etc/modprobe.d/module.conf` does not work on Atomic releases. Instead, append kernel parameters using `rpm-ostree kargs --append "module.parameter=foo"`.
 
 To list current kernel parameters, use `rpm-ostree kargs` or `rpm-ostree kargs --editor` to open an editor.
 

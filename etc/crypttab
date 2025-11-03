@@ -1,5 +1,5 @@
 # root
-luks-[uuid] none tpm2-device=auto,discard
+luks-[uuid] none tpm2-device=auto,discard,no-read-workqueue,no-write-workqueue
 
 # data
 hdd0 UUID=[uuid] /etc/cryptsetup-keys.d/foo.key noauto,nofail

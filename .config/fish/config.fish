@@ -2,6 +2,9 @@ if status is-interactive
     # Commands to run in interactive sessions can go here
 end
 
+# path
+fish_add_path ~/.local/bin
+
 # system
 abbr -a -- sc 'sudo systemctl'
 abbr -a -- scu 'systemctl --user'
