@@ -18,6 +18,10 @@
     header @origin Access-Control-Max-Age "1728000"
 }
 
+(pwa) {
+	header Service-Worker-Allowed "/"
+}
+
 (tls) {
     tls internal
 }
@@ -26,4 +30,4 @@
     encode zstd gzip
 }
 
-import /etc/caddy/sites/*.caddy
+import /etc/caddy/sites/*.caddyfile

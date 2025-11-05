@@ -11,13 +11,10 @@ Environment=TZ=Europe/Amsterdam
 Volume=/var/mnt/downloads/SABnzbd:/downloads:rw,Z
 Volume=/var/mnt/downloads/SABnzbd/.config:/config:rw,Z,U
 UserNS=keep-id
-Network=media.network
-Network=proxy.network
-ExposeHostPort=8080
+PublishPort=8085:8085
 
 [Service]
+Restart=always
+RestartSec=5
 TimeoutStartSec=90
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
+TimeoutStopSec=30

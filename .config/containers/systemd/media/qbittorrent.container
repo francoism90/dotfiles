@@ -13,15 +13,12 @@ Environment=TORRENTING_PORT=6881
 Volume=/var/mnt/downloads/qBittorrent:/downloads:rw,Z
 Volume=/var/mnt/downloads/qBittorrent/.config:/config:rw,Z,U
 UserNS=keep-id
-Network=media.network
-Network=proxy.network
-ExposeHostPort=8090
+PublishPort=8090:8090
 PublishPort=6881:6881
 PublishPort=6881:6881/udp
 
 [Service]
+Restart=always
+RestartSec=5
 TimeoutStartSec=90
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
+TimeoutStopSec=30

@@ -1,12 +1,11 @@
 [Unit]
-Description=Proxy Caddy container
+Description=Caddy proxy container
 
 [Container]
-Image=docker.io/library/caddy:alpine
+Image=docker.io/library/caddy:latest
 AutoUpdate=registry
-LogDriver=none
 AddCapability=CAP_NET_BIND_SERVICE
-Volume=%h/.config/containers/systemd/proxy/config:/etc/caddy:ro,Z
+Volume=%h/.config/containers/systemd/proxy/config:/etc/caddy:rw,Z,U
 Volume=caddy-data:/data:rw,Z,U
 Volume=caddy-config:/config:rw,Z,U
 Network=proxy.network
@@ -15,8 +14,10 @@ PublishPort=443:443
 PublishPort=443:443/udp
 
 [Service]
+Restart=always
+RestartSec=5
 TimeoutStartSec=90
-Restart=on-failure
+TimeoutStopSec=30
 
 [Install]
 WantedBy=multi-user.target default.target
