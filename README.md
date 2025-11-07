@@ -146,6 +146,18 @@ git clone https://github.com/CheariX/silverblue-akmods-keys
 cd silverblue-akmods-keys
 ```
 
+Install required deps:
+
+```bash
+rpm-ostree install --apply-live rpmdevtools akmods
+```
+
+Make sure to enable support for open kernel driver [https://github.com/CheariX/silverblue-akmods-keys/issues/14]:
+
+```bash
+echo "%_with_kmod_nvidia_open 1" >> macros.kmodtool
+```
+
 Build and install the `akmods-keys` package:
 
 ```bash
