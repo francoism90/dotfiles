@@ -103,46 +103,17 @@ If you have `page flip timeouts` (freezing screen) on AMD systems, you may want 
 
 #### NVIDIA
 
-See the following source for more information: <https://negativo17.org/nvidia-driver/>.
-
-Make sure RPMFusion's nvidia repo is disabled first:
+Make sure RPMFusion's nvidia repo is enabled:
 
 ```bash
-# sed -ie 's/enabled=1/enabled=0/g' /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
-```
-
-Add the negativo17 GPG-key:
-
-```bash
-# cd /etc/pki/rpm-gpg
-# wget https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
-```
-
-Add the negativo17 nvidia repo:
-
-```bash
-# cd /etc/yum.repos.d
-# wget https://negativo17.org/repos/fedora-nvidia.repo
-```
-
-Change `gpgkey=` of `/etc/yum.repos.d/fedora-nvidia.repo` to look up the GPG locally instead:
-
-```diff
--gpgkey=https://negativo17.org/repos/RPM-GPG-KEY-slaanesh
-+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-slaanesh
-```
-
-Remove any cached GPG keys:
-
-```bash
-# rm -rf /var/cache/rpm-ostree/repomd/fedora-nvidia-43-x86_64/RPM-GPG-KEY-slaanesh
+# sed -ie 's/enabled=0/enabled=1/g' /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
 ```
 
 Install the nvidia driver:
 
 ```bash
 # rpm-ostree refresh-md
-# rpm-ostree install nvidia-driver nvidia-settings
+# rpm-ostree install akmod-nvidia
 ```
 
 Prevent the nouveau driver from loading:
