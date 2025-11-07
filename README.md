@@ -104,6 +104,8 @@ If you have `page flip timeouts` (freezing screen) on AMD systems, you may want 
 
 #### NVIDIA
 
+> Tip: You may want to read and perform the steps in Secure Boot first.
+
 Make sure RPMFusion's nvidia repo is enabled:
 
 ```bash
@@ -171,7 +173,7 @@ Build and install the `akmods-keys` package:
 If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
-# rpm-ostree kargs --append "nvidia_drm.modeset=0 nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
+# rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
 # systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
 ```
 
