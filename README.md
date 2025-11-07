@@ -41,6 +41,7 @@ rpm-ostree search <term>
 To install overlay packages:
 
 ```bash
+# rpm-ostree install <package> --dry-run
 # rpm-ostree install <package>
 ```
 
