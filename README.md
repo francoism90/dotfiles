@@ -110,19 +110,19 @@ Make sure RPMFusion's nvidia repo is enabled:
 
 ```bash
 # sed -ie 's/enabled=0/enabled=1/g' /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
+# rpm-ostree refresh-md
 ```
 
 Install the nvidia driver:
 
 ```bash
-# rpm-ostree refresh-md
 # rpm-ostree install akmod-nvidia
 ```
 
-Prevent the nouveau driver from loading:
+Append the required parameters to load the nvidia driver on boot:
 
 ```bash
-# rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
+# rpm-ostree kargs --append "nvidia-drm.modeset=1 nvidia-drm.fbdev=1"
 ```
 
 Reboot to load the nvidia driver.
@@ -167,24 +167,7 @@ Build and install the `akmods-keys` package:
 If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
-# rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
-# systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service
-```
-
-Create `/etc/udev/rules.d/80-nvidia-pm.rules`, allowing the NVIDIA driver to control the power state:
-
-```udev
-# Enable runtime PM for NVIDIA VGA/3D controller devices on driver bind
-ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
-ACTION=="bind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
-
-# Disable runtime PM for NVIDIA VGA/3D controller devices on driver unbind
-ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="on"
-ACTION=="unbind", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="on"
-
-# Enable runtime PM for NVIDIA VGA/3D controller devices on adding device
-ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030000", TEST=="power/control", ATTR{power/control}="auto"
-ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x030200", TEST=="power/control", ATTR{power/control}="auto"
+# systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
 ```
 
 Reboot the system to apply the changes.
