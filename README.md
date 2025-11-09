@@ -119,13 +119,25 @@ Install the nvidia driver:
 # rpm-ostree install akmod-nvidia
 ```
 
-Append the required parameters to load the nvidia driver on boot:
+Append kernel parameters to prevent the nouveau driver from loading:
+
+```bash
+# rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau"
+```
+
+Append kernel parameters to load the nvidia driver on boot:
 
 ```bash
 # rpm-ostree kargs --append "nvidia-drm.modeset=1 nvidia-drm.fbdev=1"
 ```
 
-Reboot to load the nvidia driver.
+Your final kernel parameters args may look something like this:
+
+```bash
+rd.luks.uuid=luks-<uuid> rd.luks.options=tpm2-device=auto rd.driver.blacklist=nouveau,nova_core amdgpu.dcdebugmask=0x10 nvidia-drm.modeset=1 nvidia-drm.fbdev=1 rhgb quiet root=UUID=<uuid> rootflags=subvol=root,compress=zstd:1 vconsole.keymap=us rw
+```
+
+Reboot to load the NVIDIA driver.
 
 ##### Secure Boot
 
