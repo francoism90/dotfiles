@@ -182,6 +182,12 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 # systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
 ```
 
+To make sure the nouveau driver isn't loaded, mask the `nvidia-fallback.service`:
+
+```bash
+# systemctl mask nvidia-fallback
+```
+
 Reboot the system to apply the changes.
 
 ### TPM
