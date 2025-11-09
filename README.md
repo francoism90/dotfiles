@@ -155,12 +155,6 @@ Install required deps:
 rpm-ostree install --apply-live rpmdevtools akmods
 ```
 
-Make sure to enable support for open kernel driver [https://github.com/CheariX/silverblue-akmods-keys/issues/14]:
-
-```bash
-echo "%_with_kmod_nvidia_open 1" >> macros.kmodtool
-```
-
 Build and install the `akmods-keys` package:
 
 ```bash
@@ -174,7 +168,7 @@ If the device supports NVIDIA Optimus (e.g. hybrid graphics):
 
 ```bash
 # rpm-ostree kargs --append "nvidia.NVreg_PreserveVideoMemoryAllocations=1 nvidia.NVreg_TemporaryFilePath=/var/tmp"
-# systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
+# systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service
 ```
 
 Create `/etc/udev/rules.d/80-nvidia-pm.rules`, allowing the NVIDIA driver to control the power state:
