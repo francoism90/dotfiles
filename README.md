@@ -75,7 +75,7 @@ To list current kernel parameters, use `rpm-ostree kargs` or `rpm-ostree kargs -
 The Realtek RTW89 has many issues related to power management on Linux. Power management can be disabled by appending:
 
 ```bash
-rpm-ostree kargs --append "rtw89_core.disable_ps_mode=Y rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y rtw89_pci.disable_clkreq=Y"
+rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y"
 ```
 
 #### AMD
