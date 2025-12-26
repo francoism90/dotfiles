@@ -116,7 +116,7 @@ Make sure RPMFusion's nvidia repo is enabled:
 Install the nvidia driver:
 
 ```bash
-# rpm-ostree install akmod-nvidia
+# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
 ```
 
 Append kernel parameters to prevent the nouveau driver from loading:
