@@ -1,0 +1,22 @@
+[Unit]
+Description=rclone mount for %i
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+Environment="MOUNT_DIR=%h/mnt/%i"
+Environment="REMOTE_PATH=/"
+ExecStartPre=/usr/bin/mkdir -p ${MOUNT_DIR}
+ExecStart=/usr/bin/rclone mount %i:${REMOTE_PATH} ${MOUNT_DIR} \
+  --config=%h/.config/rclone/rclone.conf \
+  --vfs-cache-mode=full \
+  --dir-cache-time=1m \
+  --vfs-cache-max-size=1G \
+  --allow-other
+ExecStop=/bin/fusermount -u ${MOUNT_DIR}
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
