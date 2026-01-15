@@ -18,7 +18,7 @@ PublishPort=6881:6881
 PublishPort=6881:6881/udp
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=90
 TimeoutStopSec=30

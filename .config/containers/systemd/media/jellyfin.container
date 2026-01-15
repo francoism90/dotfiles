@@ -4,8 +4,8 @@ Description=Jellyfin container
 [Container]
 Image=docker.io/jellyfin/jellyfin:latest
 AutoUpdate=registry
-LogDriver=none
 AddDevice=/dev/dri/:/dev/dri/
+LogDriver=none
 Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
 Volume=/var/mnt/media:/media:rw,Z,U
@@ -17,7 +17,7 @@ PublishPort=7359:7359/udp
 
 [Service]
 TimeoutStartSec=90
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=90
 TimeoutStopSec=30

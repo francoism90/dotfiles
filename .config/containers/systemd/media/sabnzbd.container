@@ -8,13 +8,13 @@ LogDriver=none
 Environment=PUID=1000
 Environment=PGID=1000
 Environment=TZ=Europe/Amsterdam
-Volume=/var/mnt/downloads/SABnzbd:/downloads:rw,Z
+Volume=/var/mnt/downloads/SABnzbd:/downloads:rw,Z,U
 Volume=/var/mnt/downloads/SABnzbd/.config:/config:rw,Z,U
 UserNS=keep-id
 PublishPort=8085:8085
 
 [Service]
-Restart=always
+Restart=on-failure
 RestartSec=5
 TimeoutStartSec=90
 TimeoutStopSec=30
