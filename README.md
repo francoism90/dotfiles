@@ -392,10 +392,10 @@ See the following guides:
 -   <https://github.com/jorchube/devcontainer-definitions>
 -   <https://github.com/VSCodium/vscodium/discussions/1487>
 
-Install the VSCode Podman SDK extension:
+Install the VSCode Podman SDK (stable) extension:
 
 ```bash
-flatpak install com.visualstudio.code.tool.podman
+flatpak install --system com.visualstudio.code.tool.podman
 ```
 
 Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overrides:
@@ -432,7 +432,7 @@ See <https://fedoraproject.org/wiki/SELinux/samba> for details:
 # systemctl enable smb --now
 ```
 
-> Note: You can also use SSHFS as an alternative.
+> Note: You can also use SSHFS (rclone) as an alternative.
 
 ### Solaar
 
