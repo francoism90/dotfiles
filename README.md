@@ -1,8 +1,8 @@
 # dotfiles
 
-This is a selection of settings, notes and preferences for my [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), [Fedora Silverblue](https://fedoraproject.org/atomic-desktops/silverblue/) and [Fedora IoT](https://fedoraproject.org/iot/) Atomic installations (all are running Fedora 43).
+This is a selection of settings, notes and preferences for my [ParticleOS](https://github.com/francoism90/particleos), [Fedora Kinoite](https://fedoraproject.org/atomic-desktops/kinoite/), and [Fedora IoT](https://fedoraproject.org/iot/) installations.
 
-> Note: Commands prepended with `# <command>` should be executed as `root` (`sudo`).
+> Note: Commands prepended with `# <command>` should be executed as `root` (`sudo`, `run0`).
 
 ## System
 
@@ -10,10 +10,11 @@ This is a selection of settings, notes and preferences for my [Fedora Kinoite](h
 
 Useful references:
 
-- <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
-- <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
-- <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
-- <https://rpmfusion.org/Howto/OSTree>
+-   <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
+-   <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
+-   <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
+-   <https://rpmfusion.org/Howto/OSTree>
+-   <https://github.com/systemd/particleos>
 
 ### Journal
 
@@ -80,7 +81,7 @@ rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1
 
 #### AMD
 
-This section is only relevant for Fedora IoT and CoreOS.
+> Note: This section is only relevant for Fedora IoT and CoreOS.
 
 For latest AMD/Intel hardware support, you may want to install firmware packages:
 
@@ -190,10 +191,10 @@ Reboot the system to apply the changes.
 
 The following resources may be helpful to set up TPM:
 
-- <https://github.com/stenwt/silverblue-docs/blob/patch-1/modules/ROOT/pages/tips-and-tricks.adoc#enabling-tpm2-for-luks>
-- <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
-- <https://wiki.archlinux.org/title/Systemd-cryptenroll>
-- <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
+-   <https://github.com/stenwt/silverblue-docs/blob/patch-1/modules/ROOT/pages/tips-and-tricks.adoc#enabling-tpm2-for-luks>
+-   <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
+-   <https://wiki.archlinux.org/title/Systemd-cryptenroll>
+-   <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 
 To set up TPM2 unlocking, first, find the LUKS device you want to enroll. This is probably in `/etc/crypttab`. You can also use `cryptsetup status /dev/mapper/luks*` to identify the device.
 
@@ -321,8 +322,8 @@ The example below forces the use of VA-API, but it can be unstable and may need 
 
 See the following resources for details:
 
-- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
-- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
+-   <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
+-   <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
 
 ### EasyEffects
 
@@ -332,14 +333,14 @@ See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
 
 Enable and use rootless containers:
 
-- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
-- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+-   <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
+-   <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 
 To learn more about Podman Quadlet, the following resources may be useful:
 
-- <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
-- <https://www.redhat.com/sysadmin/quadlet-podman>
-- <https://mo8it.com/blog/quadlet/>
+-   <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
+-   <https://www.redhat.com/sysadmin/quadlet-podman>
+-   <https://mo8it.com/blog/quadlet/>
 
 To install Docker compatible packages:
 
@@ -387,9 +388,9 @@ To open services and ports:
 
 See the following guides:
 
-- <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
-- <https://github.com/jorchube/devcontainer-definitions>
-- <https://github.com/VSCodium/vscodium/discussions/1487>
+-   <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
+-   <https://github.com/jorchube/devcontainer-definitions>
+-   <https://github.com/VSCodium/vscodium/discussions/1487>
 
 Install the VSCode Podman SDK extension:
 
@@ -399,8 +400,8 @@ flatpak install com.visualstudio.code.tool.podman
 
 Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overrides:
 
-- Add to `Other files`: `xdg-run/podman`
-- Add to `Other files`: `/tmp`
+-   Add to `Other files`: `xdg-run/podman`
+-   Add to `Other files`: `/tmp`
 
 Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
 
