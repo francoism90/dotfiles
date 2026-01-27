@@ -6,7 +6,6 @@ end
 fish_add_path ~/.local/bin
 
 # particleos
-abbr -a -- sudo 'run0'
 abbr -a -- update 'cd ~/Code/particleos && mkosi -B -ff sysupdate -- update --reboot'
 
 # system
@@ -20,7 +19,6 @@ abbr -a -- tn 'tmux new-session -s'
 abbr -a -- ts 'tmux switch-client -t'
 
 # apps
-abbr -a -- code 'flatpak run com.visualstudio.code .'
 abbr -a -- vsc 'flatpak run com.visualstudio.code .'
 
 # git
