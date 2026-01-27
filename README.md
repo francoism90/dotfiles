@@ -472,6 +472,18 @@ To disable the greeting (welcome message):
 set -U fish_greeting
 ```
 
+Add the following aliases:
+
+```fish
+alias --save sudo 'run0'
+```
+
+For distrobox containers:
+
+```fish
+alias --save arch 'distrobox enter arch -- fish'
+```
+
 Follow <https://starship.rs/guide/> to enable oh-my-zsh-like features for fish-shell.
 
 ## Troubleshooting
