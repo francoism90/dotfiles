@@ -371,6 +371,8 @@ To open services and ports:
 # firewall-cmd --get-active-zones
 # firewall-cmd --list-all-zones
 # firewall-cmd --list-all
+# firewall-cmd --permanent --add-service=kdeconnect
+# firewall-cmd --permanent --add-service=syncthing
 # firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http
 # firewall-cmd --permanent --zone=FedoraWorkstation --add-service=https
 # firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http3
