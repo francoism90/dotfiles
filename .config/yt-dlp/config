@@ -1,4 +1,3 @@
--a ~/Documents/yt.txt
 -o ~/Videos/yt-dlp/%(title)s.%(ext)s
 -f mp4
 --restrict-filenames
