@@ -1,8 +1,0 @@
-[Unit]
-Description=Set Power Profile
-
-[Service]
-ExecStart=tuned-adm profile %i
-
-[Install]
-WantedBy=multi-user.target

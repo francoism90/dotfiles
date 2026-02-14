@@ -5,7 +5,7 @@ Description=Mount private subvolume
 What=UUID=<UUID-OF-CRYPTMAP>
 Where=/var/mnt/private
 Type=btrfs
-Options=defaults,noatime,compress-force=zstd:5,space_cache=v2,commit=120,subvol=@private
+Options=defaults,noatime,compress=zstd:3,space_cache=v2,commit=60,autodefrag,subvol=@private
 TimeoutSec=900
 
 [Install]
