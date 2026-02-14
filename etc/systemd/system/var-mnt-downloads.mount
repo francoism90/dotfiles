@@ -5,7 +5,7 @@ Description=Mount downloads subvolume
 What=UUID=<UUID-OF-CRYPTMAP>
 Where=/var/mnt/downloads
 Type=btrfs
-Options=defaults,noatime,nodatacow,space_cache=v2,commit=120,subvol=@downloads
+Options=defaults,noatime,nodatacow,space_cache=v2,commit=30,discard=async,subvol=@downloads
 TimeoutSec=90
 
 [Install]

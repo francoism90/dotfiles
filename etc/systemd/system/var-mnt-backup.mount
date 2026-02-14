@@ -5,7 +5,7 @@ Description=Mount backup subvolume
 What=UUID=<UUID-OF-CRYPTMAP>
 Where=/var/mnt/backup
 Type=btrfs
-Options=defaults,noatime,compress-force=zstd:5,space_cache=v2,subvol=@backup
+Options=defaults,noatime,compress=zstd:3,discard=async,commit=30,space_cache=v2,subvol=@backup
 TimeoutSec=90
 
 [Install]
