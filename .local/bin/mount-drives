@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Define units in a readable array
+DISK_UNITS=(
+    systemd-cryptsetup@hdd0
+    systemd-cryptsetup@hdd1
+    systemd-cryptsetup@hdd2
+    systemd-cryptsetup@hdd3
+    var-mnt-private.mount
+)
+
+echo "Unlocking and mounting drives..."
+
+# Start all units in the array at once
+sudo systemctl start "${DISK_UNITS[@]}"
+
+if [ $? -eq 0 ]; then
+    echo "Success: All drives are active."
+else
+    echo "Error: One or more units failed to start."
+fi

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# The order matters here: Unmount first, then lock!
+UNITS=(
+    var-mnt-private.mount
+    systemd-cryptsetup@hdd3
+    systemd-cryptsetup@hdd2
+    systemd-cryptsetup@hdd1
+    systemd-cryptsetup@hdd0
+)
+
+echo "Unmounting and locking drives..."
+
+# 'stop' works for both .mount units and cryptsetup units
+sudo systemctl stop "${UNITS[@]}"
+
+if [ $? -eq 0 ]; then
+    echo "Success: All volumes unmounted and encrypted containers locked."
+else
+    echo "Warning: Some units failed to stop. Check 'systemctl status' or 'lsof' for busy files."
+fi

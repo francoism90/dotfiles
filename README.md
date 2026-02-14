@@ -96,10 +96,10 @@ If you have `page flip timeouts` (freezing screen) on AMD systems, you may want 
 
 The following resources may be helpful to set up TPM:
 
--   <https://github.com/stenwt/silverblue-docs/blob/patch-1/modules/ROOT/pages/tips-and-tricks.adoc#enabling-tpm2-for-luks>
--   <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
--   <https://wiki.archlinux.org/title/Systemd-cryptenroll>
--   <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
+- <https://github.com/stenwt/silverblue-docs/blob/patch-1/modules/ROOT/pages/tips-and-tricks.adoc#enabling-tpm2-for-luks>
+- <https://gist.github.com/jdoss/777e8b52c8d88eb87467935769c98a95>
+- <https://wiki.archlinux.org/title/Systemd-cryptenroll>
+- <https://community.frame.work/t/guide-setup-tpm2-autodecrypt/39005>
 
 To set up TPM2 unlocking, first, find the LUKS device you want to enroll. This is probably in `/etc/crypttab`. You can also use `cryptsetup status /dev/mapper/luks*` to identify the device.
 
@@ -174,6 +174,8 @@ See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for
 
 ### Btrfs
 
+#### Maintenance
+
 If you are using Btrfs, you may want to use <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
@@ -186,6 +188,16 @@ Enable the timers:
 ```bash
 # systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
+
+#### Disable CoW
+
+To disable CoW on a specific directory (e.g. for downloads, databases or VMs):
+
+```bash
+# chattr +C /var/mnt/downloads
+```
+
+#### Deduplication
 
 To use [bees](https://github.com/Zygo/bees) (a deduplication agent):
 
@@ -227,8 +239,8 @@ The example below forces the use of VA-API, but it can be unstable and may need 
 
 See the following resources for details:
 
--   <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
--   <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
+- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
+- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
 
 ### EasyEffects
 
@@ -238,14 +250,14 @@ See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
 
 Enable and use rootless containers:
 
--   <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
--   <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
+- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 
 To learn more about Podman Quadlet, the following resources may be useful:
 
--   <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
--   <https://www.redhat.com/sysadmin/quadlet-podman>
--   <https://mo8it.com/blog/quadlet/>
+- <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
+- <https://www.redhat.com/sysadmin/quadlet-podman>
+- <https://mo8it.com/blog/quadlet/>
 
 To install Docker compatible packages:
 
@@ -295,9 +307,9 @@ To open services and ports:
 
 See the following guides:
 
--   <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
--   <https://github.com/jorchube/devcontainer-definitions>
--   <https://github.com/VSCodium/vscodium/discussions/1487>
+- <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
+- <https://github.com/jorchube/devcontainer-definitions>
+- <https://github.com/VSCodium/vscodium/discussions/1487>
 
 Install the VSCode Podman SDK (stable) extension:
 
@@ -307,8 +319,8 @@ flatpak install --system com.visualstudio.code.tool.podman
 
 Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overrides:
 
--   Add to `Other files`: `xdg-run/podman`
--   Add to `Other files`: `/tmp`
+- Add to `Other files`: `xdg-run/podman`
+- Add to `Other files`: `/tmp`
 
 Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
 
