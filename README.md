@@ -290,6 +290,7 @@ To open services and ports:
 # firewall-cmd --list-all
 # firewall-cmd --permanent --add-service=kdeconnect
 # firewall-cmd --permanent --add-service=syncthing
+# firewall-cmd --permanent --add-port=22000/tcp
 # firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http
 # firewall-cmd --permanent --zone=FedoraWorkstation --add-service=https
 # firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http3
@@ -389,12 +390,6 @@ To disable the greeting (welcome message):
 
 ```fish
 set -U fish_greeting
-```
-
-Add the following aliases:
-
-```fish
-alias --save sudo 'run0'
 ```
 
 For distrobox containers:
