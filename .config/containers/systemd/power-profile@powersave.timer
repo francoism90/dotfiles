@@ -1,0 +1,9 @@
+[Unit]
+Description=Switch to powersave profile at 00:30
+
+[Timer]
+OnCalendar=*-*-* 00:30:00
+Unit=power-profile@powersave.service
+
+[Install]
+WantedBy=timers.target
