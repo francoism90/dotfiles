@@ -10,7 +10,7 @@ Environment=PGID=1000
 Environment=TZ=Europe/Amsterdam
 Environment=WEBUI_PORT=8090
 Environment=TORRENTING_PORT=6881
-Volume=/var/mnt/downloads/qBittorrent:/downloads:rw,Z
+Volume=/var/mnt/downloads/qBittorrent:/downloads:rw,Z,U
 Volume=/var/mnt/downloads/qBittorrent/.config:/config:rw,Z,U
 UserNS=keep-id
 PublishPort=8090:8090
@@ -18,7 +18,7 @@ PublishPort=6881:6881
 PublishPort=6881:6881/udp
 
 [Service]
-Restart=on-failure
+Restart=always
 RestartSec=5
 TimeoutStartSec=90
 TimeoutStopSec=30
