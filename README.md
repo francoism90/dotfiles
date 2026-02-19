@@ -55,13 +55,14 @@ To update Flatpaks:
 
 ```bash
 flatpak update
+sudo flatpak update --system
 ```
 
 To repair Flatpaks, which may be needed on upgrades:
 
 ```bash
 flatpak repair --user -vvv
-flatpak repair --system -vvv
+sudo flatpak repair --system -vvv
 ```
 
 ### TPM
@@ -284,7 +285,7 @@ cd silverblue-akmods-keys
 Install required deps:
 
 ```bash
-rpm-ostree install --apply-live rpmdevtools akmods
+sudo rpm-ostree install --apply-live rpmdevtools akmods
 ```
 
 Build and install the `akmods-keys` package:
