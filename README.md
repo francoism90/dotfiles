@@ -2,8 +2,6 @@
 
 This is a selection of settings, notes and preferences for my [Universal Blue](https://github.com/ublue-os) installations.
 
-> Note: Commands prepended with `# <command>` should be executed as `root` (`sudo`, `run0`).
-
 ## System
 
 ### Maintenance
@@ -43,8 +41,8 @@ rpm-ostree search <term>
 To install overlay packages:
 
 ```bash
-# rpm-ostree install <package> --dry-run
-# rpm-ostree install <package>
+sudo rpm-ostree install <package> --dry-run
+sudo rpm-ostree install <package>
 ```
 
 To list all installed packages:
@@ -66,141 +64,6 @@ flatpak repair --user -vvv
 flatpak repair --system -vvv
 ```
 
-### Kernel Modules
-
-Setting `/etc/modprobe.d/module.conf` does not work on Atomic releases. Instead, append kernel parameters using `rpm-ostree kargs --append "module.parameter=foo"`.
-
-To list current kernel parameters, use `rpm-ostree kargs` or `rpm-ostree kargs --editor` to open an editor.
-
-## Hardware
-
-### Realtek RTW89
-
-The Realtek RTW89 has many issues related to power management on Linux. Power management can be disabled by appending:
-
-```bash
-rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y"
-```
-
-### AMDGPU
-
-For latest AMD/Intel hardware support, you may want to install firmware packages:
-
-> Note: This is only relevant for Fedora IoT and CoreOS.
-
-```bash
-# rpm-ostree install amd-gpu-firmware amd-ucode-firmware
-```
-
-#### Bug: Page flip timeout
-
-If you have `page flip timeouts` (freezing screen) on AMD systems, you may want to disable panel refreshing:
-
-```bash
-# rpm-ostree kargs --append "amdgpu.dcdebugmask=0x10"
-```
-
-### Intel
-
-##### Testing the new experimental Xe driver
-
-See <https://wiki.archlinux.org/title/Intel_graphics#Testing_the_new_experimental_Xe_driver> for details.
-
-Note your PCI ID with:
-
-```bash
-$ lspci -nnd ::03xx
-03:00.0 VGA compatible controller [0300]: Intel Corporation DG2 [Arc A310] [8086:56a6] (rev 05)
-```
-
-To test the new experimental Xe driver, append the following kernel parameters:
-
-```bash
-# rpm-ostree kargs --append="i915.force_probe=!56a6" --append="xe.force_probe=56a6"
-```
-
-#### NVIDIA
-
-> Tip: You may want to use Ublue based images instead. These images have the NVIDIA driver pre-installed and configured, and may be more suitable for gaming and other GPU intensive workloads.
-
-Make sure RPMFusion's nvidia repo is enabled:
-
-```bash
-# sed -ie 's/enabled=0/enabled=1/g' /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
-# rpm-ostree refresh-md
-```
-
-Install the nvidia driver:
-
-```bash
-# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
-```
-
-Append kernel parameters to prevent the nouveau driver from loading:
-
-```bash
-# rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau,nova_core"
-```
-
-Your final kernel parameters args may look something like this:
-
-```bash
-rd.luks.uuid=luks-<uuid> rd.luks.options=tpm2-device=auto rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau,nova_core amdgpu.dcdebugmask=0x10 rhgb quiet root=UUID=<uuid> rootflags=subvol=root,compress=zstd:1 vconsole.keymap=us rw
-```
-
-Reboot to load the NVIDIA driver.
-
-##### Secure Boot
-
-After reboot, the `nvidia` module may reject loading when Secure Boot is enabled.
-
-As a workaround, use <https://github.com/CheariX/silverblue-akmods-keys>.
-
-> Tip: This package may also be used for other modules that need signing, such as VirtualBox.
-
-Make sure the Machine Owner Key (MOK) is enrolled (the key may already exist and be enrolled; do not force):
-
-```bash
-# kmodgenca
-# mokutil --import /etc/pki/akmods/certs/public_key.der
-```
-
-Clone the `silverblue-akmods-keys` project:
-
-```bash
-git clone https://github.com/CheariX/silverblue-akmods-keys
-cd silverblue-akmods-keys
-```
-
-Install required deps:
-
-```bash
-rpm-ostree install --apply-live rpmdevtools akmods
-```
-
-Build and install the `akmods-keys` package:
-
-```bash
-# bash setup.sh
-# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
-```
-
-##### Optimus
-
-If the device supports NVIDIA Optimus (e.g. hybrid graphics):
-
-```bash
-# systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
-```
-
-To make sure the nouveau driver isn't loaded, mask the `nvidia-fallback.service`:
-
-```bash
-# systemctl mask nvidia-fallback
-```
-
-Reboot the system to apply the changes.
-
 ### TPM
 
 > Tip: You may want to add a [passphrase](https://wiki.archlinux.org/title/Systemd-cryptenroll#Regular_password) as fallback.
@@ -217,14 +80,14 @@ To set up TPM2 unlocking, first, find the LUKS device you want to enroll. This i
 Next, enable the required initramfs and kernel features. Note that the initramfs command below will overwrite any other initramfs changes you have made:
 
 ```bash
-# rpm-ostree initramfs --enable --arg=-a --arg=systemd-pcrphase
-# rpm-ostree kargs --append=rd.luks.options=tpm2-device=auto
+sudo rpm-ostree initramfs --enable --arg=-a --arg=systemd-pcrphase
+sudo rpm-ostree kargs --append=rd.luks.options=tpm2-device=auto
 ```
 
 Identify the disk using `cryptsetup status`, and enroll the key:
 
 ```bash
-# systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
+sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+7 /dev/nvme0n1p3
 ```
 
 > Note: Replace `/dev/nvme0n1p3` with your actual LUKS partition. Using PCRs 0+7 may require re-enrollment after firmware/BIOS updates.
@@ -236,7 +99,7 @@ Reboot; you should not be prompted to enter your LUKS passphrase on boot.
 To re-enroll (which may be needed on firmware upgrades) or wipe the current TPM2 slot:
 
 ```bash
-# systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2
+sudo systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2
 ```
 
 Afterwards, follow the instructions to enroll the key.
@@ -246,7 +109,7 @@ Afterwards, follow the instructions to enroll the key.
 You may want to install tuned on IoT machines:
 
 ```bash
-# rpm-ostree install tuned tuned-profiles-atomic
+sudo rpm-ostree install tuned tuned-profiles-atomic
 ```
 
 > Tip: You can change the power profile using Cockpit.
@@ -268,7 +131,7 @@ See <https://discussion.fedoraproject.org/t/root-mount-options-are-ignored-in-fe
 Enable the `fstrim` timer:
 
 ```bash
-# systemctl enable fstrim.timer --now
+sudo systemctl enable fstrim.timer --now
 ```
 
 ### Encryption
@@ -278,26 +141,26 @@ If you are using encryption on an NVMe/SSD, you may want to improve performance 
 See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details:
 
 ```bash
-# cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh /dev/mapper/luks-<uuid>
+sudo cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh /dev/mapper/luks-<uuid>
 ```
 
 > Note: Replace `<uuid>` with your LUKS device UUID from `/etc/crypttab`.
 
 ### Btrfs
 
-#### Maintenance
+#### Maintenance Scripts
 
 If you are using Btrfs, you may want to use <https://github.com/kdave/btrfsmaintenance>:
 
 ```bash
-# rpm-ostree install btrfsmaintenance
-# nano /etc/sysconfig/btrfsmaintenance
+sudo rpm-ostree install btrfsmaintenance
+sudo nano /etc/sysconfig/btrfsmaintenance
 ```
 
 Enable the timers:
 
 ```bash
-# systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
+sudo systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
 ```
 
 #### Disable CoW
@@ -305,7 +168,7 @@ Enable the timers:
 To disable CoW on a specific directory (e.g. for downloads, databases or VMs):
 
 ```bash
-# chattr +C /var/mnt/downloads
+sudo chattr +C /var/mnt/downloads
 ```
 
 #### Deduplication
@@ -313,14 +176,147 @@ To disable CoW on a specific directory (e.g. for downloads, databases or VMs):
 To use [bees](https://github.com/Zygo/bees) (a deduplication agent):
 
 ```bash
-# btrfs filesystem show /
-# rpm-ostree install bees
-# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid-from-above>.conf
-# nano /etc/bees/<uuid-from-above>.conf
-# systemctl start beesd@<uuid-from-above>
+sudo btrfs filesystem show /
+sudo pm-ostree install bees
+sudo cp /etc/bees/beesd.conf.sample /etc/bees/<uuid-from-above>.conf
+sudo nano /etc/bees/<uuid-from-above>.conf
+sudo systemctl start beesd@<uuid-from-above>
 ```
 
 > Note: Use the UUID from `btrfs filesystem show` output.
+
+## Hardware
+
+Setting `/etc/modprobe.d/module.conf` does not work on Atomic releases. Instead, append kernel parameters using `rpm-ostree kargs --append "module.parameter=foo"`.
+
+To list current kernel parameters, use `rpm-ostree kargs` or `rpm-ostree kargs --editor` to open an editor.
+
+### AMDGPU
+
+For latest AMD/Intel hardware support, you may want to install firmware packages:
+
+> Note: This is only relevant for Fedora IoT and CoreOS.
+
+```bash
+sudo rpm-ostree install amd-gpu-firmware amd-ucode-firmware
+```
+
+#### Bug: Page flip timeout
+
+If you have `page flip timeouts` (freezing screen) on AMD systems, you may want to disable panel refreshing:
+
+```bash
+sudo rpm-ostree kargs --append "amdgpu.dcdebugmask=0x10"
+```
+
+### Intel
+
+##### Testing the new experimental Xe driver
+
+See <https://wiki.archlinux.org/title/Intel_graphics#Testing_the_new_experimental_Xe_driver> for details.
+
+Note your PCI ID with:
+
+```bash
+$ lspci -nnd ::03xx
+03:00.0 VGA compatible controller [0300]: Intel Corporation DG2 [Arc A310] [8086:56a6] (rev 05)
+```
+
+To test the new experimental Xe driver, append the following kernel parameters:
+
+```bash
+sudo rpm-ostree kargs --append="i915.force_probe=!56a6" --append="xe.force_probe=56a6"
+```
+
+#### NVIDIA
+
+> Tip: You may want to use Ublue based images instead. These images have the NVIDIA driver pre-installed and configured, and may be more suitable for gaming and other GPU intensive workloads.
+
+Make sure RPMFusion's nvidia repo is enabled:
+
+```bash
+sudo sed -ie 's/enabled=0/enabled=1/g' /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
+sudo rpm-ostree refresh-md
+```
+
+Install the nvidia driver:
+
+```bash
+sudo rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
+```
+
+Append kernel parameters to prevent the nouveau driver from loading:
+
+```bash
+sudo rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau,nova_core"
+```
+
+Your final kernel parameters args may look something like this:
+
+```bash
+rd.luks.uuid=luks-<uuid> rd.luks.options=tpm2-device=auto rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau,nova_core amdgpu.dcdebugmask=0x10 rhgb quiet root=UUID=<uuid> rootflags=subvol=root,compress=zstd:1 vconsole.keymap=us rw
+```
+
+Reboot to load the NVIDIA driver.
+
+##### Secure Boot
+
+After reboot, the `nvidia` module may reject loading when Secure Boot is enabled.
+
+As a workaround, use <https://github.com/CheariX/silverblue-akmods-keys>.
+
+> Tip: This package may also be used for other modules that need signing, such as VirtualBox.
+
+Make sure the Machine Owner Key (MOK) is enrolled (the key may already exist and be enrolled; do not force):
+
+```bash
+sudo kmodgenca
+sudo mokutil --import /etc/pki/akmods/certs/public_key.der
+```
+
+Clone the `silverblue-akmods-keys` project:
+
+```bash
+git clone https://github.com/CheariX/silverblue-akmods-keys
+cd silverblue-akmods-keys
+```
+
+Install required deps:
+
+```bash
+rpm-ostree install --apply-live rpmdevtools akmods
+```
+
+Build and install the `akmods-keys` package:
+
+```bash
+sudo bash setup.sh
+sudo rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
+```
+
+##### Optimus
+
+If the device supports NVIDIA Optimus (e.g. hybrid graphics):
+
+```bash
+sudo systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
+```
+
+To make sure the nouveau driver isn't loaded, mask the `nvidia-fallback.service`:
+
+```bash
+sudo systemctl mask nvidia-fallback
+```
+
+Reboot the system to apply the changes.
+
+### Realtek RTW89
+
+The Realtek RTW89 has many issues related to power management on Linux. Power management can be disabled by appending:
+
+```bash
+sudo rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y"
+```
 
 ## Software
 
@@ -373,8 +369,8 @@ To learn more about Podman Quadlet, the following resources may be useful:
 To install Docker compatible packages:
 
 ```bash
-# rpm-ostree install podman-docker podman-compose
-# systemctl reboot
+sudo rpm-ostree install podman-docker podman-compose
+sudo systemctl reboot
 ```
 
 Enable linger (e.g. keep containers running after logging out):
@@ -386,7 +382,7 @@ loginctl enable-linger $USER
 To automatically manage container updates:
 
 ```bash
-# systemctl enable podman-auto-update.timer --now
+sudo systemctl enable podman-auto-update.timer --now
 systemctl --user enable podman-auto-update.timer --now
 ```
 
@@ -395,22 +391,22 @@ systemctl --user enable podman-auto-update.timer --now
 To open services and ports:
 
 ```bash
-# firewall-cmd --get-default-zone
-# firewall-cmd --get-active-zones
-# firewall-cmd --list-all-zones
-# firewall-cmd --list-all
-# firewall-cmd --permanent --add-service=kdeconnect
-# firewall-cmd --permanent --add-service=syncthing
-# firewall-cmd --permanent --add-port=22000/tcp
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=https
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http3
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=samba
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/udp
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/tcp
-# firewall-cmd --zone=FedoraWorkstation --remove-service=http
-# firewall-cmd --zone=FedoraWorkstation --remove-port=9090/tcp
-# firewall-cmd --reload
+sudo firewall-cmd --get-default-zone
+sudo firewall-cmd --get-active-zones
+sudo firewall-cmd --list-all-zones
+sudo firewall-cmd --list-all
+sudo firewall-cmd --permanent --add-service=kdeconnect
+sudo firewall-cmd --permanent --add-service=syncthing
+sudo firewall-cmd --permanent --add-port=22000/tcp
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-service=https
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http3
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-service=samba
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/udp
+sudo firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/tcp
+sudo firewall-cmd --zone=FedoraWorkstation --remove-service=http
+sudo firewall-cmd --zone=FedoraWorkstation --remove-port=9090/tcp
+sudo firewall-cmd --reload
 ```
 
 > Note: Replace `FedoraWorkstation` with your active zone.
@@ -459,8 +455,8 @@ See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 See <https://fedoraproject.org/wiki/SELinux/samba> for details:
 
 ```bash
-# rpm-ostree install samba
-# systemctl enable smb --now
+sudo rpm-ostree install samba
+sudo systemctl enable smb --now
 ```
 
 > Note: You can also use SSHFS (rclone) as an alternative.
@@ -482,7 +478,7 @@ flatpak run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.
 Install fish:
 
 ```bash
-# rpm-ostree install fish
+sudo rpm-ostree install fish
 ```
 
 To change the user's shell:
@@ -522,5 +518,5 @@ See instructions from the Flatpak Breeze repo: <https://github.com/flathub/org.g
 Create a blank environment block file:
 
 ```bash
-# grub2-editenv create
+sudo grub2-editenv create
 ```
