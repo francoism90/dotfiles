@@ -72,7 +72,9 @@ Setting `/etc/modprobe.d/module.conf` does not work on Atomic releases. Instead,
 
 To list current kernel parameters, use `rpm-ostree kargs` or `rpm-ostree kargs --editor` to open an editor.
 
-#### Realtek RTW89
+## Hardware
+
+### Realtek RTW89
 
 The Realtek RTW89 has many issues related to power management on Linux. Power management can be disabled by appending:
 
@@ -80,15 +82,124 @@ The Realtek RTW89 has many issues related to power management on Linux. Power ma
 rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y"
 ```
 
-#### AMDGPU
+### AMDGPU
 
-##### Bug: Page flip timeout
+For latest AMD/Intel hardware support, you may want to install firmware packages:
+
+> Note: This is only relevant for Fedora IoT and CoreOS.
+
+```bash
+# rpm-ostree install amd-gpu-firmware amd-ucode-firmware
+```
+
+#### Bug: Page flip timeout
 
 If you have `page flip timeouts` (freezing screen) on AMD systems, you may want to disable panel refreshing:
 
 ```bash
 # rpm-ostree kargs --append "amdgpu.dcdebugmask=0x10"
 ```
+
+### Intel
+
+##### Testing the new experimental Xe driver
+
+See <https://wiki.archlinux.org/title/Intel_graphics#Testing_the_new_experimental_Xe_driver> for details.
+
+Note your PCI ID with:
+
+```bash
+$ lspci -nnd ::03xx
+03:00.0 VGA compatible controller [0300]: Intel Corporation DG2 [Arc A310] [8086:56a6] (rev 05)
+```
+
+To test the new experimental Xe driver, append the following kernel parameters:
+
+```bash
+# rpm-ostree kargs --append="i915.force_probe=!56a6" --append="xe.force_probe=56a6"
+```
+
+#### NVIDIA
+
+> Tip: You may want to use Ublue based images instead. These images have the NVIDIA driver pre-installed and configured, and may be more suitable for gaming and other GPU intensive workloads.
+
+Make sure RPMFusion's nvidia repo is enabled:
+
+```bash
+# sed -ie 's/enabled=0/enabled=1/g' /etc/yum.repos.d/rpmfusion-nonfree-nvidia-driver.repo
+# rpm-ostree refresh-md
+```
+
+Install the nvidia driver:
+
+```bash
+# rpm-ostree install akmod-nvidia xorg-x11-drv-nvidia
+```
+
+Append kernel parameters to prevent the nouveau driver from loading:
+
+```bash
+# rpm-ostree kargs --append "rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau,nova_core"
+```
+
+Your final kernel parameters args may look something like this:
+
+```bash
+rd.luks.uuid=luks-<uuid> rd.luks.options=tpm2-device=auto rd.driver.blacklist=nouveau,nova_core modprobe.blacklist=nouveau,nova_core amdgpu.dcdebugmask=0x10 rhgb quiet root=UUID=<uuid> rootflags=subvol=root,compress=zstd:1 vconsole.keymap=us rw
+```
+
+Reboot to load the NVIDIA driver.
+
+##### Secure Boot
+
+After reboot, the `nvidia` module may reject loading when Secure Boot is enabled.
+
+As a workaround, use <https://github.com/CheariX/silverblue-akmods-keys>.
+
+> Tip: This package may also be used for other modules that need signing, such as VirtualBox.
+
+Make sure the Machine Owner Key (MOK) is enrolled (the key may already exist and be enrolled; do not force):
+
+```bash
+# kmodgenca
+# mokutil --import /etc/pki/akmods/certs/public_key.der
+```
+
+Clone the `silverblue-akmods-keys` project:
+
+```bash
+git clone https://github.com/CheariX/silverblue-akmods-keys
+cd silverblue-akmods-keys
+```
+
+Install required deps:
+
+```bash
+rpm-ostree install --apply-live rpmdevtools akmods
+```
+
+Build and install the `akmods-keys` package:
+
+```bash
+# bash setup.sh
+# rpm-ostree install akmods-keys-0.0.2-8.fc$(rpm -E %fedora).noarch.rpm
+```
+
+##### Optimus
+
+If the device supports NVIDIA Optimus (e.g. hybrid graphics):
+
+```bash
+# systemctl enable nvidia-resume.service nvidia-hibernate.service nvidia-suspend.service nvidia-suspend-then-hibernate.service
+```
+
+To make sure the nouveau driver isn't loaded, mask the `nvidia-fallback.service`:
+
+```bash
+# systemctl mask nvidia-fallback
+```
+
+Reboot the system to apply the changes.
 
 ### TPM
 
