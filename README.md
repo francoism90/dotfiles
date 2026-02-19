@@ -212,7 +212,7 @@ sudo rpm-ostree kargs --append "amdgpu.dcdebugmask=0x10"
 
 ### Intel
 
-##### Testing the new experimental Xe driver
+#### Xe driver
 
 See <https://wiki.archlinux.org/title/Intel_graphics#Testing_the_new_experimental_Xe_driver> for details.
 
