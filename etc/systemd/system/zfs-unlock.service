@@ -1,0 +1,13 @@
+[Unit]
+Description=Unlock ZFS Datasets
+After=zfs-import.target
+Before=zfs-mount.service
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/zfs load-key -a
+RemainAfterExit=yes
+
+[Install]
+WantedBy=zfs-mount.service
