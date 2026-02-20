@@ -9,6 +9,7 @@ Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
 Volume=/var/mnt/media:/media:rw,Z,U
 UserNS=keep-id
+GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
 PublishPort=8096:8096
 PublishPort=8920:8920
