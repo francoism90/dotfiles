@@ -316,7 +316,7 @@ Reboot the system to apply the changes.
 The Realtek RTW89 has many issues related to power management on Linux. Power management can be disabled by appending:
 
 ```bash
-sudo rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=Y rtw89_pci.disable_aspm_l1ss=Y"
+sudo rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=y rtw89_pci.disable_aspm_l1ss=y"
 ```
 
 ## Software
