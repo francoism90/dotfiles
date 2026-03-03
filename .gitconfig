@@ -1,11 +1,11 @@
 [init]
-	defaultBranch = main
+        defaultBranch = main
 [push]
-	autoSetupRemote = true
+        autoSetupRemote = true
 [user]
-	email = username@users.noreply.github.com
-	name = username
+        email = username@users.noreply.github.com
+        name = username
 [color]
-	ui = auto
+        ui = auto
 [pull]
-    ff = only
+        rebase = true
