@@ -1,15 +1,12 @@
 if status is-interactive
-# Commands to run in interactive sessions can go here
+  # Commands to run in interactive sessions can go here
 end
 
 # path
 fish_add_path ~/.local/bin
 
-# particleos
-abbr -a -- update 'cd ~/Code/particleos && mkosi -B -ff sysupdate -- update --reboot'
-
 # system
-abbr -a -- sc 'run0 systemctl'
+abbr -a -- sc 'sudo systemctl'
 abbr -a -- scu 'systemctl --user'
 
 # tmux
@@ -19,7 +16,7 @@ abbr -a -- tn 'tmux new-session -s'
 abbr -a -- ts 'tmux switch-client -t'
 
 # apps
-abbr -a -- vsc 'flatpak run com.visualstudio.code .'
+abbr -a -- code 'flatpak run com.visualstudio.code --new-window .'
 
 # git
 abbr -a -- ga 'git add'
