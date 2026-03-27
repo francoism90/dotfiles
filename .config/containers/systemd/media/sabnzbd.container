@@ -4,8 +4,6 @@ Description=SABnzbd container
 [Container]
 Image=lscr.io/linuxserver/sabnzbd:latest
 AutoUpdate=registry
-DropCapability=all
-NoNewPrivileges=true
 Memory=2g
 LogDriver=none
 Environment=PUID=1000

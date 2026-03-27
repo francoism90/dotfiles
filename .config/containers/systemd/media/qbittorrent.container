@@ -4,8 +4,6 @@ Description=qBittorrent container
 [Container]
 Image=lscr.io/linuxserver/qbittorrent:latest
 AutoUpdate=registry
-DropCapability=all
-NoNewPrivileges=true
 Memory=1g
 LogDriver=none
 Environment=PUID=1000
