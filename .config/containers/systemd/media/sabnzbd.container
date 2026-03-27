@@ -6,7 +6,7 @@ Image=lscr.io/linuxserver/sabnzbd:latest
 AutoUpdate=registry
 DropCapability=all
 NoNewPrivileges=true
-MemoryLimit=2g
+Memory=2g
 LogDriver=none
 Environment=PUID=1000
 Environment=PGID=1000
