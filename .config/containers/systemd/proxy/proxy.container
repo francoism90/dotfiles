@@ -4,14 +4,12 @@ Description=Caddy proxy container
 [Container]
 Image=docker.io/library/caddy:latest
 AutoUpdate=registry
-DropCapability=all
+DropCapability=ALL
 AddCapability=CAP_NET_BIND_SERVICE
 NoNewPrivileges=true
 ReadOnly=true
-Tmpfs=/tmp
-MemoryLimit=256m
-LogDriver=none
-Volume=%h/.config/containers/systemd/proxy/config:/etc/caddy:rw,Z,U
+Memory=256m
+Volume=%h/.config/containers/systemd/proxy/config:/etc/caddy:ro,Z
 Volume=caddy-data:/data:rw,Z,U
 Volume=caddy-config:/config:rw,Z,U
 Network=proxy.network
