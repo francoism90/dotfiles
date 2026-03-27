@@ -1,4 +1,0 @@
-syncthing.core.test {
-    import compress
-    reverse_proxy systemd-syncthing:8384
-}
