@@ -4,6 +4,9 @@ Description=Syncthing Container
 [Container]
 Image=docker.io/syncthing/syncthing:latest
 AutoUpdate=registry
+DropCapability=all
+NoNewPrivileges=true
+MemoryLimit=1g
 LogDriver=none
 UserNS=keep-id
 Volume=syncthing-config:/var/syncthing/config:rw,Z,U
