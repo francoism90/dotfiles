@@ -4,7 +4,7 @@ fish_add_path ~/.local/bin
 if status is-interactive
 
     # AI (Cursor at the placeholder for your prompt/input)
-    abbr -a ai 'ramalama run ollama://qwen3.5:9b'
+    abbr -a ai --set-cursor 'ramalama run ollama://qwen2.5-coder:7b %'
 
     # System Control (Cursor after the command to type the service name)
     abbr -a sc --set-cursor 'sudo systemctl %'
@@ -22,10 +22,6 @@ if status is-interactive
     abbr -a gl 'git pull'
     abbr -a gp 'git push'
     abbr -a gco --set-cursor 'git checkout %'
-
-    # Laravel Helpers
-    abbr -a pa --set-cursor 'php artisan %'
-    abbr -a mfs 'php artisan migrate:fresh --seed'
 
     # Initialize Starship Prompt (Placed at the end)
     starship init fish | source
