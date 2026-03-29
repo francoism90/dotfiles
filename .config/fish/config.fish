@@ -1,28 +1,34 @@
-if status is-interactive
-  # Commands to run in interactive sessions can go here
-end
-
-# path
+# System & User Binaries
 fish_add_path ~/.local/bin
 
-# system
-abbr -a -- sc 'sudo systemctl'
-abbr -a -- scu 'systemctl --user'
+if status is-interactive
 
-# tmux
-abbr -a -- ta 'tmux attach-session -t'
-abbr -a -- tl 'tmux list-sessions'
-abbr -a -- tn 'tmux new-session -s'
-abbr -a -- ts 'tmux switch-client -t'
+    # AI (Cursor at the placeholder for your prompt/input)
+    abbr -a ai 'ramalama run ollama://qwen3.5:9b'
 
-# apps
-abbr -a -- code 'flatpak run com.visualstudio.code --new-window .'
+    # System Control (Cursor after the command to type the service name)
+    abbr -a sc --set-cursor 'sudo systemctl %'
+    abbr -a scu --set-cursor 'systemctl --user %'
 
-# git
-abbr -a -- ga 'git add'
-abbr -a -- gc 'git commit'
-abbr -a -- gl 'git pull'
-abbr -a -- gp 'git push'
-abbr -a -- gco 'git checkout'
+    # Tmux Management
+    abbr -a ta --set-cursor 'tmux attach-session -t %'
+    abbr -a tl 'tmux list-sessions'
+    abbr -a tn --set-cursor 'tmux new-session -s %'
+    abbr -a ts --set-cursor 'tmux switch-client -t %'
 
-starship init fish | source
+    # Git Workflow
+    abbr -a ga --set-cursor 'git add %'
+    abbr -a gc --set-cursor 'git commit -m "%"'
+    abbr -a gl 'git pull'
+    abbr -a gp 'git push'
+    abbr -a gco --set-cursor 'git checkout %'
+
+    # Laravel Helpers
+    abbr -a pa --set-cursor 'php artisan %'
+    abbr -a mfs 'php artisan migrate:fresh --seed'
+
+    # Initialize Starship Prompt (Placed at the end)
+    starship init fish | source
+
+end
+
