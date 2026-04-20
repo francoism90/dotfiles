@@ -2,6 +2,7 @@
 Description=Set Power Profile
 
 [Service]
+Type=oneshot
 ExecStart=tuned-adm profile %i
 
 [Install]

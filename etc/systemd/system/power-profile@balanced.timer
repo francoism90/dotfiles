@@ -1,8 +1,0 @@
-[Unit]
-Description=Switch to balanced profile at 07:30
-
-[Timer]
-OnCalendar=*-*-* 07:30:00
-
-[Install]
-WantedBy=timers.target
