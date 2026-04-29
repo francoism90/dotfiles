@@ -4,7 +4,6 @@ Description=SABnzbd container
 [Container]
 Image=lscr.io/linuxserver/sabnzbd:latest
 AutoUpdate=registry
-Memory=2g
 LogDriver=none
 Environment=PUID=1000
 Environment=PGID=1000
@@ -12,7 +11,7 @@ Environment=TZ=Europe/Amsterdam
 Volume=/var/mnt/downloads/SABnzbd:/downloads:rw,Z,U
 Volume=/var/mnt/downloads/SABnzbd/.config:/config:rw,Z,U
 UserNS=keep-id
-PublishPort=8085:8085
+Network=host
 
 [Service]
 Restart=always
