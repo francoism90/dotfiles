@@ -4,9 +4,6 @@ Description=Jellyfin container
 [Container]
 Image=docker.io/jellyfin/jellyfin:latest
 AutoUpdate=registry
-DropCapability=all
-NoNewPrivileges=true
-Memory=4g
 LogDriver=none
 Volume=jellyfin-config:/config:rw,Z,U
 Volume=jellyfin-cache:/cache:rw,Z,U
@@ -14,10 +11,7 @@ Volume=/var/mnt/media:/media:rw,Z,U
 UserNS=keep-id
 GroupAdd=keep-groups
 AddDevice=/dev/dri/:/dev/dri/
-PublishPort=8096:8096
-PublishPort=8920:8920
-PublishPort=1900:1900/udp
-PublishPort=7359:7359/udp
+Network=host
 
 [Service]
 Restart=always
