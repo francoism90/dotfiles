@@ -2,7 +2,7 @@
 Description=Automount for NFS NAS Mount
 
 [Automount]
-Where=/var/mnt/nas     
+Where=/var/mnt/nas
 TimeoutIdleSec=900
 
 [Install]
