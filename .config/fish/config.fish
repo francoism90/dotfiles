@@ -3,12 +3,15 @@ fish_add_path ~/.local/bin
 
 if status is-interactive
 
+    # System Administration
+    abbr -a sudo --set-cursor 'run0 %'
+    abbr -a sc --set-cursor 'run0 systemctl %'
+    abbr -a scu --set-cursor 'systemctl --user %'
+    abbr -a scl --set-cursor 'run0 journalctl -u %.service -f'
+    abbr -a jf --set-cursor 'journalctl -xf -n 100 %'
+
     # AI (Cursor at the placeholder for your prompt/input)
     abbr -a ai --set-cursor 'ramalama run ollama://qwen2.5-coder:7b %'
-
-    # System Control (Cursor after the command to type the service name)
-    abbr -a sc --set-cursor 'sudo systemctl %'
-    abbr -a scu --set-cursor 'systemctl --user %'
 
     # Tmux Management
     abbr -a ta --set-cursor 'tmux attach-session -t %'
@@ -27,4 +30,3 @@ if status is-interactive
     starship init fish | source
 
 end
-
