@@ -10,8 +10,10 @@ if status is-interactive
     abbr -a scl --set-cursor 'run0 journalctl -u %.service -f'
     abbr -a jf --set-cursor 'journalctl -xf -n 100 %'
 
-    # AI (Cursor at the placeholder for your prompt/input)
+    # Applications
+    abbr -a bup --set-cursor 'brew update; and brew upgrade; and brew cleanup %'
     abbr -a ai --set-cursor 'ramalama run ollama://qwen2.5-coder:7b %'
+    abbr -a vsc --set-cursor 'flatpak run com.visualstudio.code . %'
 
     # Tmux Management
     abbr -a ta --set-cursor 'tmux attach-session -t %'
