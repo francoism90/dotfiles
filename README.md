@@ -323,13 +323,9 @@ See the following guides:
 Install the VSCode Podman SDK (stable) extension:
 
 ```bash
-$ flatpak install --system com.visualstudio.code.tool.podman
+$ flatpak install --user com.visualstudio.code.tool.podman
+$ flatpak override --user --filesystem=xdg-run/podman:ro com.visualstudio.code
 ```
-
-Use Flatpak Permissions in Settings or [Flatseal](https://flathub.org/apps/com.github.tchx84.Flatseal), and set the following overrides:
-
-- Add to `Other files`: `xdg-run/podman`
-- Add to `Other files`: `/tmp`
 
 Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
 
