@@ -352,10 +352,10 @@ See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
 
 Install the [udev rule](https://github.com/flathub/io.github.pwr_solaar.solaar#udev-rule) for Wayland to `/etc/udev/rules.d/42-logitech-unify-permissions.rules`.
 
-To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup and with the window hidden:
+To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup (autostart) and with the window hidden:
 
 ```bash
-flatpak run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar --window=hide
+run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar --window=hide
 ```
 
 ### Fish
