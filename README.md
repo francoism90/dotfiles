@@ -263,6 +263,7 @@ On Secureblue (rootless) container images may be blocked by the policy, to allow
 ```bash
 mkdir -p $HOME/.config/containers && \
 jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] | 
+    .transports.docker["lscr.io"] = [{"type": "insecureAcceptAnything"}] | 
     .transports.docker["localhost"] = [{"type": "insecureAcceptAnything"}] | 
     .transports["containers-storage"] = {"": [{"type": "insecureAcceptAnything"}]}' \
     /usr/etc/containers/policy.json > $HOME/.config/containers/policy.json
