@@ -5,6 +5,7 @@ if status is-interactive
 
     # System Administration
     abbr -a sudo --set-cursor 'run0 %'
+    abbr -a su --set-cursor 'run0 -i %'
     abbr -a sc --set-cursor 'run0 systemctl %'
     abbr -a scu --set-cursor 'systemctl --user %'
     abbr -a scl --set-cursor 'run0 journalctl -u %.service -f'
