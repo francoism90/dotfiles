@@ -290,28 +290,26 @@ $ systemctl --user enable podman-auto-update.timer --now
 
 ### Firewalld
 
-To open services and ports:
+To open services and ports, replace `FedoraServer` with the target zone:
 
 ```bash
 $ firewall-cmd --get-default-zone
 $ firewall-cmd --get-active-zones
 # firewall-cmd --list-all-zones
 # firewall-cmd --list-all
-# firewall-cmd --permanent --add-service=kdeconnect
-# firewall-cmd --permanent --add-service=syncthing
-# firewall-cmd --permanent --add-port=22000/tcp
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=https
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=http3
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-service=samba
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/udp
-# firewall-cmd --permanent --zone=FedoraWorkstation --add-port=9090/tcp
-# firewall-cmd --zone=FedoraWorkstation --remove-service=http
-# firewall-cmd --zone=FedoraWorkstation --remove-port=9090/tcp
+# firewall-cmd --permanent --zone=FedoraServer --add-service=kdeconnect
+# firewall-cmd --permanent --zone=FedoraServer --add-service=syncthing
+# firewall-cmd --permanent --zone=FedoraServer --add-service=nfs
+# firewall-cmd --permanent --zone=FedoraServer --add-service=http
+# firewall-cmd --permanent --zone=FedoraServer --add-service=https
+# firewall-cmd --permanent --zone=FedoraServer --add-service=http3
+# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
+# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
+# firewall-cmd --permanent --zone=FedoraServer --add-port=22000/tcp
+# firewall-cmd --zone=FedoraServer --remove-service=http
+# firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
 # firewall-cmd --reload
 ```
-
-> Note: Replace `FedoraWorkstation` with your active zone.
 
 ### VSCodium / VSCode
 
