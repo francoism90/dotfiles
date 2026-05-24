@@ -122,6 +122,27 @@ See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for
 
 > Note: Replace `<uuid>` with your LUKS device UUID from `/etc/crypttab`.
 
+### Swap
+
+On Fedore CoreOS swap is disabled by default. To enable it:
+
+```bash
+# tee /etc/systemd/zram-generator.conf << 'EOF'
+[zram0]
+zram-size = 8192
+compression-algorithm = zstd
+swap-priority = 100
+fs-type = swap
+EOF
+```
+
+Reboot, or force-reload the `systemd-zram-setup` service:
+
+```bash
+# systemctl daemon-reload
+# systemctl restart systemd-zram-setup@zram0.service
+```
+
 ### Btrfs
 
 #### Maintenance Scripts
