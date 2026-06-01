@@ -9,7 +9,7 @@ if status is-interactive
     abbr -a sc --set-cursor 'run0 systemctl %'
     abbr -a scu --set-cursor 'systemctl --user %'
     abbr -a scl --set-cursor 'run0 journalctl -u %.service -f'
-    abbr -a jf --set-cursor 'journalctl -xf -n 200 %'
+    abbr -a jf --set-cursor 'journalctl -xf -n 1000 %'
 
     # Applications
     abbr -a bup --set-cursor 'brew update; and brew upgrade; and brew cleanup %'
