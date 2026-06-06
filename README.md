@@ -359,13 +359,17 @@ Use the command to launch `Preferences: Open User Settings (JSON)`, and append t
 
 #### Wayland
 
-To enable Wayland support:
+To enable Wayland support (<https://github.com/flathub/com.visualstudio.code/issues/471>):
 
 ```bash
 $ flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
 ```
 
-See <https://github.com/flathub/com.visualstudio.code/issues/471> for details.
+To enable KDE KWallet6 support for online account syncing:
+
+```bash
+$ flatpak override --user --talk-name=org.kde.kwalletd6 com.visualstudio.code
+```
 
 ### Solaar
 
