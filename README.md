@@ -165,7 +165,11 @@ Enable the timers:
 To disable CoW on a specific directory (e.g. for downloads, databases or VMs):
 
 ```bash
-# chattr +C /var/mnt/downloads
+$ mkdir -p /var/mnt/downloads/appdata/qbittorrent
+$ mkdir -p /var/mnt/downloads/data/torrents
+# chattr +C /var/mnt/downloads/appdata/qbittorrent
+# chattr +C /var/mnt/downloads/data/torrents
+$ lsattr -d /var/mnt/downloads/appdata/* /var/mnt/downloads/data/*
 ```
 
 #### Deduplication
