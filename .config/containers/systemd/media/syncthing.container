@@ -7,7 +7,6 @@ AutoUpdate=registry
 DropCapability=all
 NoNewPrivileges=true
 Memory=1g
-LogDriver=none
 UserNS=keep-id
 Volume=syncthing-config:/var/syncthing/config:rw,Z,U
 Volume=/var/mnt/backup/sync:/var/syncthing/Sync:rw,Z,U
