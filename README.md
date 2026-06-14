@@ -21,8 +21,8 @@ Useful references:
 To get the last boot log:
 
 ```bash
-$ journalctl --list-boots
-$ journalctl -b -0
+journalctl --list-boots
+journalctl -b -0
 ```
 
 ### Package management
@@ -30,25 +30,25 @@ $ journalctl -b -0
 To upgrade on ublue images:
 
 ```bash
-$ ujust update-system
+ujust update-system
 ```
 
 To upgrade on CoreOS images:
 
 ```bash
-$ rpm-ostree upgrade
+rpm-ostree upgrade
 ```
 
 To show a changelog after upgrades:
 
 ```bash
-$ rpm-ostree db diff -c
+rpm-ostree db diff -c
 ```
 
 To search for packages:
 
 ```bash
-$ rpm-ostree search <term>
+rpm-ostree search <term>
 ```
 
 To install overlay packages (only when needed, e.g. kernel modules):
@@ -61,7 +61,7 @@ To install overlay packages (only when needed, e.g. kernel modules):
 To list all current installed packages:
 
 ```bash
-$ rpm -qa
+rpm -qa
 ```
 
 To update Flatpaks:
@@ -87,13 +87,13 @@ brew update; brew upgrade; brew cleanup
 ### LUKS TPM unlock
 
 ```bash
-$ ujust setup-luks-tpm-unlock
+ujust setup-luks-tpm-unlock
 ```
 
 ### Upgrade firmwares
 
 ```bash
-$ ujust update-firmware
+ujust update-firmware
 ```
 
 ## Filesystem
@@ -246,7 +246,7 @@ It is discouraged to install (large) software on the ostree. Try to use Flatpaks
 You can pull the latest toolbox using:
 
 ```bash
-$ podman pull fedora-toolbox:44
+podman pull fedora-toolbox:44
 ```
 
 To update packages inside a toolbox:
@@ -287,9 +287,9 @@ On Secureblue (rootless) container images may be blocked by the policy, to allow
 
 ```bash
 mkdir -p $HOME/.config/containers && \
-jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] | 
-    .transports.docker["lscr.io"] = [{"type": "insecureAcceptAnything"}] | 
-    .transports.docker["localhost"] = [{"type": "insecureAcceptAnything"}] | 
+jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] |
+    .transports.docker["lscr.io"] = [{"type": "insecureAcceptAnything"}] |
+    .transports.docker["localhost"] = [{"type": "insecureAcceptAnything"}] |
     .transports["containers-storage"] = {"": [{"type": "insecureAcceptAnything"}]}' \
     /usr/etc/containers/policy.json > $HOME/.config/containers/policy.json
 ```
@@ -297,13 +297,13 @@ jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] |
 To install Docker compatible packages:
 
 ```bash
-$ ujust install-docker
+ujust install-docker
 ```
 
 Enable linger (e.g. keep containers running after logging out):
 
 ```bash
-$ loginctl enable-linger $USER
+loginctl enable-linger $USER
 ```
 
 To automatically manage container updates:
@@ -347,8 +347,8 @@ See the following guides:
 Install the VSCode Podman SDK (stable) extension:
 
 ```bash
-$ flatpak install --user com.visualstudio.code.tool.podman
-$ flatpak override --user --filesystem=xdg-run/podman:ro com.visualstudio.code
+flatpak install --user com.visualstudio.code.tool.podman
+flatpak override --user --filesystem=xdg-run/podman:ro com.visualstudio.code
 ```
 
 Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
@@ -366,13 +366,13 @@ Use the command to launch `Preferences: Open User Settings (JSON)`, and append t
 To enable Wayland support (<https://github.com/flathub/com.visualstudio.code/issues/471>):
 
 ```bash
-$ flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
+flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
 ```
 
 To enable KDE KWallet6 support for online account syncing:
 
 ```bash
-$ flatpak override --user --talk-name=org.kde.kwalletd6 com.visualstudio.code
+flatpak override --user --talk-name=org.kde.kwalletd6 com.visualstudio.code
 ```
 
 ### Solaar
@@ -387,12 +387,16 @@ run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar -
 
 ### Fish
 
-> Note: Set `/usr/bin/fish` as the shell in your terminal application.
-
 Install fish:
 
 ```bash
-$ brew install fish
+brew install fish fastfetch
+```
+
+Install Nerd Fonts:
+
+```bash
+mkdir -p ~/.local/share/fonts/FiraCode/ && curl -fLo /tmp/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip && unzip -o /tmp/FiraCode.zip -d ~/.local/share/fonts/FiraCode/ && fc-cache -fv
 ```
 
 Edit Current Konsole Profile, and with the Homebrew Fish path:
@@ -404,19 +408,25 @@ Edit Current Konsole Profile, and with the Homebrew Fish path:
 Add user-local bin to fish path:
 
 ```fish
-$ fish_add_path ~/.local/bin
+fish_add_path ~/.local/bin
+```
+
+Apply the [Nerd Font symbols preset](https://starship.rs/presets/nerd-font) for Starship:
+
+```fish
+starship preset nerd-font-symbols -o ~/.config/starship.toml
 ```
 
 To disable the greeting (welcome message):
 
 ```fish
-$ set -U fish_greeting
+set -U fish_greeting
 ```
 
 For distrobox containers:
 
 ```fish
-$ alias --save arch 'distrobox enter arch -- fish'
+alias --save arch 'distrobox enter arch -- fish'
 ```
 
 Follow <https://starship.rs/guide/> to enable oh-my-zsh-like features for fish-shell.
