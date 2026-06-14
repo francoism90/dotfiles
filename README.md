@@ -395,10 +395,10 @@ Install fish:
 $ brew install fish
 ```
 
-To change the user's shell (set the default shell in Konsole instead):
+Edit Current Konsole Profile, and with the Homebrew Fish path:
 
 ```bash
-$ chsh -s /usr/bin/fish <user>
+/home/linuxbrew/.linuxbrew/bin/fish
 ```
 
 Add user-local bin to fish path:
