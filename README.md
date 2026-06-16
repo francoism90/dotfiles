@@ -405,6 +405,12 @@ Edit Current Konsole Profile, and with the Homebrew Fish path:
 /home/linuxbrew/.linuxbrew/bin/fish
 ```
 
+or change the user shell:
+
+```bash
+usermod -s /bin/fish <user>
+```
+
 Add user-local bin to fish path:
 
 ```fish
