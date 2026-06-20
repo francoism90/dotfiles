@@ -1,5 +1,6 @@
 [Unit]
-Description=rclone mount for %i
+Description=Rclone network mount for %i
+Documentation=man:rclone(1)
 After=network-online.target
 Wants=network-online.target
 
@@ -8,13 +9,21 @@ Type=notify
 Environment="MOUNT_DIR=%h/mnt/%i"
 Environment="REMOTE_PATH=/"
 ExecStartPre=/usr/bin/mkdir -p ${MOUNT_DIR}
-ExecStart=/usr/bin/rclone mount %i:${REMOTE_PATH} ${MOUNT_DIR} \
+ExecStart=/home/linuxbrew/.linuxbrew/bin/rclone mount %i:${REMOTE_PATH} ${MOUNT_DIR} \
   --config=%h/.config/rclone/rclone.conf \
   --vfs-cache-mode=full \
-  --dir-cache-time=1m \
-  --vfs-cache-max-size=1G \
-  --allow-other
-ExecStop=/bin/fusermount -u ${MOUNT_DIR}
+  --vfs-cache-max-size=50G \
+  --vfs-cache-max-age=24h \
+  --dir-cache-time=72h \
+  --attr-timeout=72h \
+  --buffer-size=16M \
+  --vfs-read-chunk-size=32M \
+  --vfs-read-chunk-size-limit=2G \
+  --vfs-read-ahead=512M \
+  --default-time=2000-01-01T00:00:00Z \
+  --async-read=true \
+  --no-modtime
+ExecStop=/usr/bin/fusermount3 -u ${MOUNT_DIR}
 Restart=on-failure
 RestartSec=10
 

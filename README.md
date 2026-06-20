@@ -51,7 +51,7 @@ To search for packages:
 rpm-ostree search <term>
 ```
 
-To install overlay packages (only when needed, e.g. kernel modules):
+To install overlay packages (only when needed, e.g. `lm_sensors`):
 
 ```bash
 # rpm-ostree install <package> --dry-run
@@ -210,9 +210,9 @@ If you have `page flip timeouts` (freezing screen) on AMD systems, you may want 
 # rpm-ostree kargs --append "amdgpu.dcdebugmask=0x10"
 ```
 
-### Intel
+### Intel GPU
 
-#### Xe driver
+#### Intel Xe driver
 
 See <https://wiki.archlinux.org/title/Intel_graphics#Testing_the_new_experimental_Xe_driver> for details.
 
@@ -239,9 +239,11 @@ The Realtek RTW89 module may have issues related to power management on Linux. P
 
 ## Software
 
-### Toolbox
+### Containers
 
-It is discouraged to install (large) software on the ostree. Try to use Flatpaks, Distroboxes and toolboxes (`toolbox create` and `toolbox enter`) as alternatives.
+It is discouraged to install software on the ostree. Try to use Flatpaks, Distrobox and Toolbox as alternatives.
+
+> Note: Images based on Ublue, may also allow Homebrew to install packages.
 
 You can pull the latest toolbox using:
 
@@ -255,6 +257,16 @@ To update packages inside a toolbox:
 $ toolbox enter
 # dnf update && dnf upgrade
 ```
+
+### Rclone
+
+It is possible to use SFTP instead of the traditional NFS/CIFS solutions.
+
+Install Rclone using Homebrew, overlay or container.
+
+A rclone config can be created using `rclone config`, or by placing it manually in `.config/rclone/rclone.conf`.
+
+> Tip: Checkout the given `rclone.conf` example and user systemd for mounting to `~/mnt/<server>`.
 
 ### Brave
 
@@ -324,7 +336,6 @@ $ firewall-cmd --get-active-zones
 # firewall-cmd --list-all
 # firewall-cmd --permanent --zone=FedoraServer --add-service=kdeconnect
 # firewall-cmd --permanent --zone=FedoraServer --add-service=syncthing
-# firewall-cmd --permanent --zone=FedoraServer --add-service=nfs
 # firewall-cmd --permanent --zone=FedoraServer --add-service=http
 # firewall-cmd --permanent --zone=FedoraServer --add-service=https
 # firewall-cmd --permanent --zone=FedoraServer --add-service=http3
