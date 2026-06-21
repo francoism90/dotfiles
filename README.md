@@ -264,9 +264,9 @@ It is possible to use SFTP instead of the traditional NFS/CIFS solutions.
 
 Install Rclone using Homebrew, overlay or container.
 
-A rclone config can be created using `rclone config`, or by placing it manually in `.config/rclone/rclone.conf`.
+A rclone config can be created using `rclone config`, or by placing it manually in `.config/rclone/rclone.conf`. Rclone also supports `alias`, allowing path mounts.
 
-> Tip: Checkout the given `rclone.conf` example and user systemd for mounting to `~/mnt/<server>`.
+> Tip: Checkout the given `rclone.conf` example and user systemd for mounting to `~/mnt/<server>`: `systemctl --user enable rclone@server-media.service --now`
 
 ### Brave
 
