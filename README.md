@@ -2,28 +2,16 @@
 
 This is a selection of settings, notes and preferences for my devices.
 
-## System
-
-### Maintenance
-
-Useful references:
+Useful sources and references:
 
 - <https://secureblue.dev/>
-- <https://docs.getaurora.dev/>
 - <https://github.com/ublue-os/ucore>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
 - <https://rpmfusion.org/Howto/OSTree>
 
-### Journal
-
-To get the last boot log:
-
-```bash
-journalctl --list-boots
-journalctl -b -0
-```
+## System
 
 ### Package management
 
@@ -37,6 +25,12 @@ To upgrade on CoreOS images:
 
 ```bash
 rpm-ostree upgrade
+```
+
+To upgrade system firmware:
+
+```bash
+ujust update-firmware
 ```
 
 To show a changelog after upgrades:
@@ -84,16 +78,19 @@ To upgrade Homebrew packages on ublue images:
 brew update; brew upgrade; brew cleanup
 ```
 
+### Journal
+
+To get the last boot log:
+
+```bash
+journalctl --list-boots
+journalctl -b -0
+```
+
 ### LUKS TPM unlock
 
 ```bash
 ujust setup-luks-tpm-unlock
-```
-
-### Upgrade firmwares
-
-```bash
-ujust update-firmware
 ```
 
 ## Filesystem
@@ -258,143 +255,6 @@ $ toolbox enter
 # dnf update && dnf upgrade
 ```
 
-### Rclone
-
-It is possible to use SFTP instead of the traditional NFS/CIFS solutions.
-
-Install Rclone using Homebrew, overlay or container.
-
-A rclone config can be created using `rclone config`, or by placing it manually in `.config/rclone/rclone.conf`. Rclone also supports `alias`, allowing path mounts.
-
-> Tip: Checkout the given `rclone.conf` example and user systemd for mounting to `~/mnt/<server>`: `systemctl --user enable rclone@server-media.service --now`
-
-### Brave
-
-Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `~/.var/app/com.brave.Browser/config/brave-flags.conf`.
-The example below forces the use of VA-API, but it can be unstable and may need to be adjusted for your GPU vendor(s).
-
-See the following resources for details:
-
-- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
-- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
-
-### EasyEffects
-
-See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
-
-### Podman
-
-Enable and use rootless containers:
-
-- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
-- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
-
-To learn more about Podman Quadlet, the following resources may be useful:
-
-- <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
-- <https://www.redhat.com/sysadmin/quadlet-podman>
-- <https://mo8it.com/blog/quadlet/>
-
-On Secureblue (rootless) container images may be blocked by the policy, to allow everything (insecure):
-
-```bash
-mkdir -p $HOME/.config/containers && \
-jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] |
-    .transports.docker["lscr.io"] = [{"type": "insecureAcceptAnything"}] |
-    .transports.docker["localhost"] = [{"type": "insecureAcceptAnything"}] |
-    .transports["containers-storage"] = {"": [{"type": "insecureAcceptAnything"}]}' \
-    /usr/etc/containers/policy.json > $HOME/.config/containers/policy.json
-```
-
-To install Docker compatible packages:
-
-```bash
-ujust install-docker
-```
-
-Enable linger (e.g. keep containers running after logging out):
-
-```bash
-loginctl enable-linger $USER
-```
-
-To automatically manage container updates:
-
-```bash
-# systemctl enable podman-auto-update.timer --now
-$ systemctl --user enable podman-auto-update.timer --now
-```
-
-### Firewalld
-
-To open services and ports, replace `FedoraServer` with the target zone:
-
-```bash
-$ firewall-cmd --get-default-zone
-$ firewall-cmd --get-active-zones
-# firewall-cmd --list-all-zones
-# firewall-cmd --list-all
-# firewall-cmd --permanent --zone=FedoraServer --add-service=kdeconnect
-# firewall-cmd --permanent --zone=FedoraServer --add-service=syncthing
-# firewall-cmd --permanent --zone=FedoraServer --add-service=http
-# firewall-cmd --permanent --zone=FedoraServer --add-service=https
-# firewall-cmd --permanent --zone=FedoraServer --add-service=http3
-# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
-# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
-# firewall-cmd --permanent --zone=FedoraServer --add-port=22000/tcp
-# firewall-cmd --zone=FedoraServer --remove-service=http
-# firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
-# firewall-cmd --reload
-```
-
-### VSCodium / VSCode
-
-See the following guides:
-
-- <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
-- <https://github.com/jorchube/devcontainer-definitions>
-- <https://github.com/VSCodium/vscodium/discussions/1487>
-
-Install the VSCode Podman SDK (stable) extension:
-
-```bash
-flatpak install --user com.visualstudio.code.tool.podman
-flatpak override --user --filesystem=xdg-run/podman:ro com.visualstudio.code
-```
-
-Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
-
-```json
-"dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
-"dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
-"dev.containers.logLevel": "info"
-```
-
-> Note: Replace `1000` with your actual UID (run `id -u` to find it).
-
-#### Wayland
-
-To enable Wayland support (<https://github.com/flathub/com.visualstudio.code/issues/471>):
-
-```bash
-flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
-```
-
-To enable KDE KWallet6 support for online account syncing:
-
-```bash
-flatpak override --user --talk-name=org.kde.kwalletd6 com.visualstudio.code
-```
-
-### Solaar
-
-Install the [udev rule](https://github.com/flathub/io.github.pwr_solaar.solaar#udev-rule) for Wayland to `/etc/udev/rules.d/42-logitech-unify-permissions.rules`.
-
-To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup (autostart) and with the window hidden:
-
-```bash
-run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar --window=hide
-```
 
 ### Fish
 
@@ -447,6 +307,146 @@ alias --save arch 'distrobox enter arch -- fish'
 ```
 
 Follow <https://starship.rs/guide/> to enable oh-my-zsh-like features for fish-shell.
+
+### Podman
+
+Enable and use rootless containers:
+
+- <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
+- <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
+
+To learn more about Podman Quadlet, the following resources may be useful:
+
+- <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
+- <https://www.redhat.com/sysadmin/quadlet-podman>
+- <https://mo8it.com/blog/quadlet/>
+
+On Secureblue (rootless) container images may be blocked by the policy, to allow everything (insecure):
+
+```bash
+mkdir -p $HOME/.config/containers && \
+jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] |
+    .transports.docker["lscr.io"] = [{"type": "insecureAcceptAnything"}] |
+    .transports.docker["localhost"] = [{"type": "insecureAcceptAnything"}] |
+    .transports["containers-storage"] = {"": [{"type": "insecureAcceptAnything"}]}' \
+    /usr/etc/containers/policy.json > $HOME/.config/containers/policy.json
+```
+
+To install Docker compatible packages:
+
+```bash
+ujust install-docker
+```
+
+Enable linger (e.g. keep containers running after logging out):
+
+```bash
+loginctl enable-linger $USER
+```
+
+To automatically manage container updates:
+
+```bash
+# systemctl enable podman-auto-update.timer --now
+$ systemctl --user enable podman-auto-update.timer --now
+```
+
+### VSCode / VSCodium
+
+See the following guides:
+
+- <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
+- <https://github.com/jorchube/devcontainer-definitions>
+- <https://github.com/VSCodium/vscodium/discussions/1487>
+
+> Tip: <https://github.com/francoism90/org.freedesktop.Sdk.Extension.podman> offers `podman`, `podman-compose` and `podman-remote`.
+
+Install the VSCode Podman SDK (stable) extension:
+
+```bash
+flatpak install --user com.visualstudio.code.tool.podman
+flatpak override --user --filesystem=xdg-run/podman:ro com.visualstudio.code
+```
+
+Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
+
+```json
+"dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
+"dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
+"dev.containers.logLevel": "info"
+```
+
+> Note: Replace `1000` with your actual UID (run `id -u` to find it).
+
+#### Wayland
+
+To enable Wayland support (<https://github.com/flathub/com.visualstudio.code/issues/471>):
+
+```bash
+flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
+```
+
+To enable KDE KWallet6 support for online account syncing:
+
+```bash
+flatpak override --user --talk-name=org.kde.kwalletd6 com.visualstudio.code
+```
+
+### Firewalld
+
+To open services and ports, replace `FedoraServer` with the target zone:
+
+```bash
+$ firewall-cmd --get-default-zone
+$ firewall-cmd --get-active-zones
+# firewall-cmd --list-all-zones
+# firewall-cmd --list-all
+# firewall-cmd --permanent --zone=FedoraServer --add-service=kdeconnect
+# firewall-cmd --permanent --zone=FedoraServer --add-service=syncthing
+# firewall-cmd --permanent --zone=FedoraServer --add-service=http
+# firewall-cmd --permanent --zone=FedoraServer --add-service=https
+# firewall-cmd --permanent --zone=FedoraServer --add-service=http3
+# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
+# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
+# firewall-cmd --permanent --zone=FedoraServer --add-port=22000/tcp
+# firewall-cmd --zone=FedoraServer --remove-service=http
+# firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
+# firewall-cmd --reload
+```
+
+### Rclone
+
+It is possible to use SFTP instead of the traditional NFS/CIFS solutions.
+
+Install Rclone using Homebrew, overlay or container.
+
+A rclone config can be created using `rclone config`, or by placing it manually in `.config/rclone/rclone.conf`. Rclone also supports `alias`, allowing path mounts.
+
+> Tip: Checkout the given `rclone.conf` example and user systemd for mounting to `~/mnt/<server>`: `systemctl --user enable rclone@server-media.service --now`
+
+### Brave
+
+Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `~/.var/app/com.brave.Browser/config/brave-flags.conf`.
+The example below forces the use of VA-API, but it can be unstable and may need to be adjusted for your GPU vendor(s).
+
+See the following resources for details:
+
+- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
+- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
+
+### EasyEffects
+
+See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
+
+### Solaar
+
+Install the [udev rule](https://github.com/flathub/io.github.pwr_solaar.solaar#udev-rule) for Wayland to `/etc/udev/rules.d/42-logitech-unify-permissions.rules`.
+
+To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup (autostart) and with the window hidden:
+
+```bash
+run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar --window=hide
+```
 
 ## Troubleshooting
 
