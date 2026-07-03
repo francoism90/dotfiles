@@ -15,15 +15,15 @@ ExecStart=/home/linuxbrew/.linuxbrew/bin/rclone mount %i:${REMOTE_PATH} ${MOUNT_
   --umask 0022 \
   --vfs-cache-mode full \
   --vfs-cache-max-size 50G \
-  --vfs-cache-max-age 8h \
+  --vfs-cache-min-free-space 10G \
   --vfs-handle-caching 0s \
-  --dir-cache-time 24h \
-  --attr-timeout 24h \
+  --vfs-fast-fingerprint \
+  --dir-cache-time 30s \
+  --poll-interval 30s \
   --buffer-size 64M \
-  --vfs-read-chunk-size 32M \
-  --vfs-read-chunk-size-limit 1G \
-  --vfs-read-ahead 128M \
   --no-seek \
+  --no-modtime \
+  --fast-list \
   --async-read=true
 ExecStop=/usr/bin/fusermount3 -uz ${MOUNT_DIR}
 Restart=on-failure
