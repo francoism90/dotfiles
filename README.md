@@ -18,13 +18,13 @@ Useful sources and references:
 To upgrade on ublue images:
 
 ```bash
-$ ujust update-system
+$ ujust update
 ```
 
-To upgrade on CoreOS images:
+To check configuration differences:
 
 ```bash
-$ rpm-ostree upgrade
+# ostree admin config-diff
 ```
 
 To upgrade system firmware:
