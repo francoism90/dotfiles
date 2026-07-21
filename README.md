@@ -15,16 +15,16 @@ Useful sources and references:
 
 ### Package management
 
-To upgrade on ublue images:
+To upgrade on ublue images (including Flatpaks):
 
 ```bash
-$ ujust update
+$ blujust update
 ```
 
 To upgrade system firmware:
 
 ```bash
-$ ujust update-firmware
+$ blujust update-firmware
 ```
 
 To show a changelog after upgrades:
@@ -90,7 +90,7 @@ $ journalctl -b -0
 ### LUKS TPM unlock
 
 ```bash
-$ ujust setup-luks-tpm-unlock
+$ blujust setup-luks-tpm-unlock
 ```
 
 ## Filesystem
@@ -269,7 +269,7 @@ Install Nerd Fonts:
 $ mkdir -p ~/.local/share/fonts/FiraCode/ && curl -fLo /tmp/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip && unzip -o /tmp/FiraCode.zip -d ~/.local/share/fonts/FiraCode/ && fc-cache -fv
 ```
 
-Edit Current Konsole Profile, and with the Homebrew Fish path:
+When using Brew, edit Current Konsole Profile, and with the Homebrew Fish path:
 
 ```bash
 /home/linuxbrew/.linuxbrew/bin/fish
@@ -333,12 +333,6 @@ jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] |
     /usr/etc/containers/policy.json > $HOME/.config/containers/policy.json
 ```
 
-To install Docker compatible (in most cases not needed):
-
-```bash
-$ ujust install-docker
-```
-
 Enable linger (keep containers running after logging out):
 
 ```bash
@@ -352,46 +346,14 @@ To automatically manage container updates:
 $ systemctl --user enable podman-auto-update.timer --now
 ```
 
-### VSCode / VSCodium
+### VSCode / VSCodium / Zed
 
-See the following guides:
+See the following resources for details:
 
+- <https://github.com/francoism90/org.freedesktop.Sdk.Extension.podman>
 - <https://github.com/flathub/com.visualstudio.code/issues/426#issuecomment-2076130911>
 - <https://github.com/jorchube/devcontainer-definitions>
 - <https://github.com/VSCodium/vscodium/discussions/1487>
-
-> Tip: <https://github.com/francoism90/org.freedesktop.Sdk.Extension.podman> offers `podman`, `podman-compose` and `podman-remote`.
-
-Install the VSCode Podman SDK (stable) extension:
-
-```bash
-$ flatpak install --user com.visualstudio.code.tool.podman
-$ flatpak override --user --filesystem=xdg-run/podman:ro com.visualstudio.code
-```
-
-Use the command to launch `Preferences: Open User Settings (JSON)`, and append the following:
-
-```json
-"dev.containers.dockerPath": "/app/tools/podman/bin/podman-remote",
-"dev.containers.dockerSocketPath": "/run/user/1000/podman/podman.sock",
-"dev.containers.logLevel": "info"
-```
-
-> Note: Replace `1000` with your actual UID (run `id -u` to find it).
-
-#### Wayland
-
-To enable Wayland support (<https://github.com/flathub/com.visualstudio.code/issues/471>):
-
-```bash
-$ flatpak override --user --socket=wayland --socket=fallback-x11 --env=ELECTRON_OZONE_PLATFORM_HINT=auto com.visualstudio.code
-```
-
-To enable KDE KWallet6 support for online account syncing:
-
-```bash
-$ flatpak override --user --talk-name=org.kde.kwalletd6 com.visualstudio.code
-```
 
 ### Firewalld
 
@@ -419,7 +381,7 @@ $ firewall-cmd --get-active-zones
 
 It is possible to use SFTP instead of the traditional NFS/CIFS solutions.
 
-Install Rclone using Homebrew, overlay or container.
+Install Rclone using in your image, overlay or container.
 
 A rclone config can be created using `rclone config`, or by placing it manually in `.config/rclone/rclone.conf`. Rclone also supports `alias`, allowing path mounts.
 
