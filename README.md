@@ -4,8 +4,8 @@ This is a selection of settings, notes and preferences for my devices.
 
 Useful sources and references:
 
+- <https://github.com/francoism90/personal-os>
 - <https://secureblue.dev/>
-- <https://github.com/ublue-os/ucore>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
