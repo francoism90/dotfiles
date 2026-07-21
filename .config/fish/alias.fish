@@ -1,9 +1,7 @@
 # System Administration
-abbr -a sudo 'run0'
-abbr -a su 'run0 -i'
-abbr -a sc 'run0 systemctl'
+abbr -a sc 'sudo systemctl'
 abbr -a scu 'systemctl --user'
-abbr -a scl 'run0 journalctl -u.service -f'
+abbr -a scl 'sudo journalctl -u.service -f'
 abbr -a jf 'journalctl -xf -n 1000'
 
 # Applications
@@ -20,7 +18,7 @@ abbr -a ts 'tmux switch-client -t'
 # Git Workflow
 abbr -a gs 'git status'
 abbr -a ga 'git add'
-abbr -a gc 'git commit -m'
+abbr -a gc 'git commit'
 abbr -a gca 'git commit --amend'
 abbr -a gcl 'git clone'
 abbr -a gco 'git checkout'
