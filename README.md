@@ -21,12 +21,6 @@ To upgrade on ublue images:
 $ ujust update
 ```
 
-To check configuration differences:
-
-```bash
-# ostree admin config-diff
-```
-
 To upgrade system firmware:
 
 ```bash
@@ -56,6 +50,12 @@ To list all current installed packages:
 
 ```bash
 rpm -qa
+```
+
+To check configuration differences:
+
+```bash
+# ostree admin config-diff
 ```
 
 To update Flatpaks:
