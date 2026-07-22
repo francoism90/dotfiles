@@ -1,5 +1,5 @@
 # Agents
-toolbox run --container claude-agent claude
+abbr -a claude 'toolbox run --container claude-agent claude'
 
 # Applications
 abbr -a vsc 'flatpak run com.visualstudio.code .'
