@@ -4,7 +4,6 @@ This is a selection of settings, notes and preferences for my devices.
 
 Useful sources and references:
 
-- <https://github.com/francoism90/personal-os>
 - <https://secureblue.dev/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
@@ -18,25 +17,25 @@ Useful sources and references:
 To upgrade on ublue images (including Flatpaks):
 
 ```bash
-$ blujust update
+ujust update
 ```
 
 To upgrade system firmware:
 
 ```bash
-$ blujust update-firmware
+ujust update-firmware
 ```
 
 To show a changelog after upgrades:
 
 ```bash
-$ rpm-ostree db diff -c
+rpm-ostree db diff -c
 ```
 
 To search for packages:
 
 ```bash
-$ rpm-ostree search <term>
+rpm-ostree search <term>
 ```
 
 To install overlay packages (only when needed, e.g. `lm_sensors`):
@@ -75,7 +74,7 @@ $ flatpak repair --user -vvv
 To upgrade Homebrew packages on ublue images:
 
 ```bash
-$ brew update; brew upgrade; brew cleanup
+brew update; brew upgrade; brew cleanup
 ```
 
 ### Journal
@@ -83,14 +82,14 @@ $ brew update; brew upgrade; brew cleanup
 To get the last boot log:
 
 ```bash
-$ journalctl --list-boots
-$ journalctl -b -0
+journalctl --list-boots
+journalctl -b -0
 ```
 
 ### LUKS TPM unlock
 
 ```bash
-$ blujust setup-luks-tpm-unlock
+ujust setup-luks-tpm-unlock
 ```
 
 ## Filesystem
@@ -126,7 +125,7 @@ On Fedore CoreOS swap is disabled by default. To enable it:
 ```bash
 # tee /etc/systemd/zram-generator.conf << 'EOF'
 [zram0]
-zram-size = 8192
+zram-size = ram
 compression-algorithm = zstd
 swap-priority = 100
 fs-type = swap
@@ -245,7 +244,7 @@ It is discouraged to install software on the ostree. Try to use Flatpaks, Distro
 You can pull the latest toolbox using:
 
 ```bash
-$ podman pull fedora-toolbox:44
+podman pull fedora-toolbox:44
 ```
 
 To update packages inside a toolbox:
@@ -260,13 +259,13 @@ $ toolbox enter
 Install fish:
 
 ```bash
-$ brew install fish fastfetch
+brew install fish fastfetch
 ```
 
 Install Nerd Fonts:
 
 ```bash
-$ mkdir -p ~/.local/share/fonts/FiraCode/ && curl -fLo /tmp/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip && unzip -o /tmp/FiraCode.zip -d ~/.local/share/fonts/FiraCode/ && fc-cache -fv
+mkdir -p ~/.local/share/fonts/FiraCode/ && curl -fLo /tmp/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip && unzip -o /tmp/FiraCode.zip -d ~/.local/share/fonts/FiraCode/ && fc-cache -fv
 ```
 
 When using Brew, edit Current Konsole Profile, and with the Homebrew Fish path:
@@ -278,31 +277,31 @@ When using Brew, edit Current Konsole Profile, and with the Homebrew Fish path:
 or change the user shell:
 
 ```bash
-$ usermod -s /bin/fish <user>
+usermod -s /bin/fish <user>
 ```
 
 Add user-local bin to fish path:
 
 ```fish
-$ fish_add_path ~/.local/bin
+fish_add_path ~/.local/bin
 ```
 
 Apply the [Nerd Font symbols preset](https://starship.rs/presets/nerd-font) for Starship:
 
 ```fish
-$ starship preset nerd-font-symbols -o ~/.config/starship.toml
+starship preset nerd-font-symbols -o ~/.config/starship.toml
 ```
 
 To disable the greeting (welcome message):
 
 ```fish
-$ set -U fish_greeting
+set -U fish_greeting
 ```
 
 For distrobox containers:
 
 ```fish
-$ alias --save arch 'distrobox enter arch -- fish'
+alias --save arch 'distrobox enter arch -- fish'
 ```
 
 Follow <https://starship.rs/guide/> to enable oh-my-zsh-like features for fish-shell.
@@ -336,7 +335,7 @@ jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] |
 Enable linger (keep containers running after logging out):
 
 ```bash
-$ loginctl enable-linger $USER
+loginctl enable-linger $USER
 ```
 
 To automatically manage container updates:
