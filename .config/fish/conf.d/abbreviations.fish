@@ -10,15 +10,15 @@ if status is-interactive
     abbr -a sudo 'run0 -i'
     abbr -a sc 'run0 systemctl'
     abbr -a scu 'systemctl --user'
-    abbr -a scl 'sudo journalctl -f -u' # Fixed spacing for trailing service name
+    abbr -a scl 'run0 -i journalctl -f -u' # Fixed spacing for trailing service name
     abbr -a jf 'journalctl -xf -n 1000'
-    abbr -a jc 'sudo -i journalctl --vacuum-size=1B'
+    abbr -a jc 'run0 -i journalctl --vacuum-size=1B'
 
     # rpm-ostree / Fedora Atomic
     abbr -a rpmst 'rpm-ostree status'
     abbr -a rpmup 'rpm-ostree upgrade'
     abbr -a rpmrb 'rpm-ostree rollback'
-    abbr -a rpmclean 'sudo rpm-ostree cleanup -p'
+    abbr -a rpmclean 'run0 -i rpm-ostree cleanup -p'
 
     # Flatpak
     abbr -a fpl 'flatpak list'
