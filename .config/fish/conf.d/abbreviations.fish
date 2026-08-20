@@ -18,7 +18,7 @@ if status is-interactive
     abbr -a rpmst 'rpm-ostree status'
     abbr -a rpmup 'rpm-ostree upgrade'
     abbr -a rpmrb 'rpm-ostree rollback'
-    abbr -a rpmclean 'run0 -i rpm-ostree cleanup -p'
+    abbr -a rpmclean 'run0 rpm-ostree cleanup -p'
 
     # Flatpak
     abbr -a fpl 'flatpak list'
