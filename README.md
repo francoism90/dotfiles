@@ -400,6 +400,12 @@ See the following resources for details:
 
 See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
 
+Install the plugins:
+
+```bash
+flatpak install flathub org.freedesktop.LinuxAudio.Plugins.Calf//25.08 org.freedesktop.LinuxAudio.Plugins.LSP//25.08 org.freedesktop.LinuxAudio.Plugins.ZamPlugins//25.08 org.freedesktop.LinuxAudio.Plugins.MDA//25.08
+```
+
 ### Solaar
 
 Install the [udev rule](https://github.com/flathub/io.github.pwr_solaar.solaar#udev-rule) for Wayland to `/etc/udev/rules.d/42-logitech-unify-permissions.rules`.
