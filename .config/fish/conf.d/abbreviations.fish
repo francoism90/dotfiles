@@ -7,7 +7,6 @@ if status is-interactive
 
     # System Administration
     abbr -a su 'run0 -i'
-    abbr -a sudo 'run0'
     abbr -a sc 'run0 systemctl'
     abbr -a scu 'systemctl --user'
     abbr -a scl 'run0 journalctl -f -u' # Fixed spacing for trailing service name
