@@ -1,12 +1,13 @@
 [Unit]
 Description=Mount media subvolume
+ConditionPathIsDevice=/dev/disk/by-uuid/XXX
 
 [Mount]
-What=UUID=<UUID-OF-CRYPTMAP>
+What=UUID=XXX
 Where=/var/mnt/media
 Type=btrfs
 Options=defaults,noatime,compress=zstd:1,discard=async,commit=30,space_cache=v2,subvol=@media
-TimeoutSec=90
+TimeoutSec=30
 
 [Install]
 WantedBy=multi-user.target
