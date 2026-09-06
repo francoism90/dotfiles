@@ -6,26 +6,25 @@ Wants=network-online.target
 
 [Service]
 Type=notify
-Environment="MOUNT_DIR=%h/mnt/%i"
 Environment="REMOTE_PATH=/"
-ExecStartPre=/usr/bin/mkdir -p ${MOUNT_DIR}
-ExecStart=/home/linuxbrew/.linuxbrew/bin/rclone mount %i:${REMOTE_PATH} ${MOUNT_DIR} \
+# Using native systemd specifiers directly ensures reliable evaluation on Secureblue
+ExecStartPre=/usr/bin/mkdir -p %h/mnt/%i
+ExecStart=/usr/bin/rclone mount %i:${REMOTE_PATH} %h/mnt/%i \
   --config=%h/.config/rclone/rclone.conf \
-  --allow-other \
   --umask 0022 \
   --vfs-cache-mode full \
   --vfs-cache-max-size 50G \
   --vfs-cache-min-free-space 10G \
-  --vfs-handle-caching 0s \
   --vfs-fast-fingerprint \
-  --dir-cache-time 30s \
-  --poll-interval 30s \
-  --buffer-size 64M \
+  --dir-cache-time 1m \
+  --vfs-cache-max-age 15s \
   --no-seek \
-  --no-modtime \
-  --fast-list \
-  --async-read=true
-ExecStop=/usr/bin/fusermount3 -uz ${MOUNT_DIR}
+  --async-read=true \
+  --buffer-size 32M \
+  --sftp-concurrency 4 \
+  --sftp-chunk-size 32k \
+  --sftp-ciphers="aes128-gcm@openssh.com aes256-gcm@openssh.com"
+ExecStop=/usr/bin/fusermount3 -uz %h/mnt/%i
 Restart=on-failure
 RestartSec=10
 
