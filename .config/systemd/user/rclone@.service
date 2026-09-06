@@ -7,7 +7,6 @@ Wants=network-online.target
 [Service]
 Type=notify
 Environment="REMOTE_PATH=/"
-# Using native systemd specifiers directly ensures reliable evaluation on Secureblue
 ExecStartPre=/usr/bin/mkdir -p %h/mnt/%i
 ExecStart=/usr/bin/rclone mount %i:${REMOTE_PATH} %h/mnt/%i \
   --config=%h/.config/rclone/rclone.conf \
