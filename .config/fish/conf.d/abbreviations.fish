@@ -11,7 +11,7 @@ if status is-interactive
     abbr -a scu 'systemctl --user'
     abbr -a scl 'run0 journalctl -f -u' # Fixed spacing for trailing service name
     abbr -a jf 'journalctl -xf -n 1000'
-    abbr -a jc 'run0 journalctl --vacuum-size=1B'
+    abbr -a jc 'run0 -i journalctl --vacuum-size=1B'
 
     # rpm-ostree / Fedora Atomic
     abbr -a rpmst 'rpm-ostree status'
