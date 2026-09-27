@@ -277,7 +277,7 @@ When using Brew, edit Current Konsole Profile, and with the Homebrew Fish path:
 or change the user shell:
 
 ```bash
-usermod -s /bin/fish <user>
+sudo usermod --shell /bin/fish $USER
 ```
 
 Add user-local bin to fish path:
