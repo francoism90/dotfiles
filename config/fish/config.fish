@@ -1,3 +1,5 @@
+set -g fish_greeting
+
 fish_add_path -g ~/.local/bin
 
 if status is-interactive

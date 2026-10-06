@@ -1,10 +1,11 @@
 # dotfiles
 
-This is a selection of settings, notes and preferences for my devices.
+This is a selection of settings, notes and preferences for my Linux devices.
 
 Useful sources and references:
 
-- <https://secureblue.dev/>
+- <https://github.com/francoism90/personal-os/>
+- <https://blue-build.org/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/tips-and-tricks/>
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
@@ -35,40 +36,17 @@ install_config <path relative to config/> <destination>
 install_config yt-dlp/config ~/.config/yt-dlp/config
 ```
 
-## System
+## Administration
+
+### Shell
+
+To change the user shell:
+
+```bash
+sudo usermod --shell /bin/fish $USER
+```
 
 ### Package management
-
-To upgrade on ublue images (including Flatpaks):
-
-```bash
-ujust update
-```
-
-To upgrade system firmware:
-
-```bash
-ujust update-firmware
-```
-
-To show a changelog after upgrades:
-
-```bash
-rpm-ostree db diff -c
-```
-
-To search for packages:
-
-```bash
-rpm-ostree search <term>
-```
-
-To install overlay packages (only when needed, e.g. `lm_sensors`):
-
-```bash
-# rpm-ostree install <package> --dry-run
-# rpm-ostree install <package>
-```
 
 To list all current installed packages:
 
@@ -96,12 +74,6 @@ $ flatpak repair --user -vvv
 # flatpak repair --system -vvv
 ```
 
-To upgrade Homebrew packages on ublue images:
-
-```bash
-brew update; brew upgrade; brew cleanup
-```
-
 ### Journal
 
 To get the last boot log:
@@ -111,226 +83,6 @@ journalctl --list-boots
 journalctl -b -0
 ```
 
-### LUKS TPM unlock
-
-```bash
-ujust setup-luks-tpm-unlock
-```
-
-## Filesystem
-
-### Mount Options
-
-See <https://discussion.fedoraproject.org/t/root-mount-options-are-ignored-in-fedora-atomic-desktops-42/148562> for details.
-
-### Trim
-
-Enable the `fstrim` timer:
-
-```bash
-# systemctl enable fstrim.timer --now
-```
-
-### Encryption
-
-If you are using encryption on an NVMe/SSD, you may want to improve performance by disabling the workqueue and trim support.
-
-See <https://wiki.archlinux.org/title/Dm-crypt/Specialties#Disable_workqueue_for_increased_solid_state_drive_(SSD)_performance> for details:
-
-```bash
-# cryptsetup --allow-discards --perf-no_read_workqueue --perf-no_write_workqueue --persistent refresh /dev/mapper/luks-<uuid>
-```
-
-> Note: Replace `<uuid>` with your LUKS device UUID from `/etc/crypttab`.
-
-### Swap
-
-On Fedore CoreOS swap is disabled by default. To enable it:
-
-```bash
-# tee /etc/systemd/zram-generator.conf << 'EOF'
-[zram0]
-zram-size = ram
-compression-algorithm = zstd
-swap-priority = 100
-fs-type = swap
-EOF
-```
-
-Reboot, or force-reload the `systemd-zram-setup` service:
-
-```bash
-# systemctl daemon-reload
-# systemctl restart systemd-zram-setup@zram0.service
-```
-
-### Btrfs
-
-#### Maintenance Scripts
-
-If you are using Btrfs, you may want to use <https://github.com/kdave/btrfsmaintenance>:
-
-```bash
-# rpm-ostree install btrfsmaintenance
-# nano /etc/sysconfig/btrfsmaintenance
-```
-
-Enable the timers:
-
-```bash
-# systemctl enable btrfs-balance.timer btrfs-defrag.timer btrfs-scrub.timer btrfs-trim.timer --now
-```
-
-#### Disable CoW
-
-To disable CoW on a specific directory (e.g. for downloads, databases or VMs):
-
-```bash
-$ mkdir -p /var/mnt/downloads/appdata/qbittorrent
-$ mkdir -p /var/mnt/downloads/data/torrents
-# chattr +C /var/mnt/downloads/appdata/qbittorrent
-# chattr +C /var/mnt/downloads/data/torrents
-$ lsattr -d /var/mnt/downloads/appdata/* /var/mnt/downloads/data/*
-```
-
-#### Deduplication
-
-To use [bees](https://github.com/Zygo/bees) (a deduplication agent):
-
-```bash
-# btrfs filesystem show /
-# rpm-ostree install bees
-# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid-from-above>.conf
-# nano /etc/bees/<uuid-from-above>.conf
-# systemctl start beesd@<uuid-from-above>
-```
-
-> Note: Use the UUID from `btrfs filesystem show` output.
-
-## Hardware
-
-Setting `/etc/modprobe.d/module.conf` does not work on Atomic releases. Instead, append kernel parameters using `rpm-ostree kargs --append "module.parameter=foo"`.
-
-To list current kernel parameters, use `rpm-ostree kargs` and `rpm-ostree kargs --editor` to open an editor.
-
-### AMDGPU
-
-For latest AMD/Intel hardware support, you may want to install firmware packages:
-
-> Note: This is only relevant for Fedora IoT and CoreOS.
-
-```bash
-# rpm-ostree install amd-gpu-firmware amd-ucode-firmware
-```
-
-#### Bug: Page flip timeout
-
-If you have `page flip timeouts` (freezing screen) on AMD systems, you may want to disable panel refreshing:
-
-```bash
-# rpm-ostree kargs --append "amdgpu.dcdebugmask=0x10"
-```
-
-### Intel GPU
-
-#### Intel Xe driver
-
-See <https://wiki.archlinux.org/title/Intel_graphics#Testing_the_new_experimental_Xe_driver> for details.
-
-Note your PCI ID with:
-
-```bash
-$ lspci -nnd ::03xx
-03:00.0 VGA compatible controller [0300]: Intel Corporation DG2 [Arc A310] [8086:56a6] (rev 05)
-```
-
-To test the new experimental Xe driver, append the following kernel parameters:
-
-```bash
-# rpm-ostree kargs --append="i915.force_probe=foo" --append="xe.force_probe=56a6"
-```
-
-### Realtek RTW89
-
-The Realtek RTW89 module may have issues related to power management on Linux. Power management can be disabled by appending:
-
-```bash
-# rpm-ostree kargs --append "rtw89_pci.disable_aspm_l1=y rtw89_pci.disable_aspm_l1ss=y"
-```
-
-## Software
-
-### Containers
-
-It is discouraged to install software on the ostree. Try to use Flatpaks, Distrobox and Toolbox as alternatives.
-
-> Note: Images based on Ublue, may also allow Homebrew to install packages.
-
-You can pull the latest toolbox using:
-
-```bash
-podman pull fedora-toolbox:44
-```
-
-To update packages inside a toolbox:
-
-```bash
-$ toolbox enter
-# dnf update && dnf upgrade
-```
-
-### Fish
-
-Install fish:
-
-```bash
-brew install fish fastfetch
-```
-
-Install Nerd Fonts:
-
-```bash
-mkdir -p ~/.local/share/fonts/FiraCode/ && curl -fLo /tmp/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraCode.zip && unzip -o /tmp/FiraCode.zip -d ~/.local/share/fonts/FiraCode/ && fc-cache -fv
-```
-
-When using Brew, edit Current Konsole Profile, and with the Homebrew Fish path:
-
-```bash
-/home/linuxbrew/.linuxbrew/bin/fish
-```
-
-or change the user shell:
-
-```bash
-sudo usermod --shell /bin/fish $USER
-```
-
-Add user-local bin to fish path:
-
-```fish
-fish_add_path ~/.local/bin
-```
-
-Apply the [Nerd Font symbols preset](https://starship.rs/presets/nerd-font) for Starship:
-
-```fish
-starship preset nerd-font-symbols -o ~/.config/starship.toml
-```
-
-To disable the greeting (welcome message):
-
-```fish
-set -U fish_greeting
-```
-
-For distrobox containers:
-
-```fish
-alias --save arch 'distrobox enter arch -- fish'
-```
-
-Follow <https://starship.rs/guide/> to enable oh-my-zsh-like features for fish-shell.
-
 ### Podman
 
 Enable and use rootless containers:
@@ -338,24 +90,11 @@ Enable and use rootless containers:
 - <https://github.com/containers/podman/blob/main/docs/tutorials/rootless_tutorial.md>
 - <https://wiki.archlinux.org/title/Podman#Rootless_Podman>
 
-To learn more about Podman Quadlet, the following resources may be useful:
+Following resources may be useful for Podman Quadlet:
 
 - <https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html>
 - <https://www.redhat.com/sysadmin/quadlet-podman>
 - <https://mo8it.com/blog/quadlet/>
-
-On Secureblue (rootless) container images may be blocked by the policy, to allow everything (insecure):
-
-```bash
-$ mkdir -p $HOME/.config/containers && \
-jq '.transports.docker["docker.io"] = [{"type": "insecureAcceptAnything"}] |
-    .transports.docker["quay.io"] = [{"type": "insecureAcceptAnything"}] |
-    .transports.docker["ghcr.io"] = [{"type": "insecureAcceptAnything"}] |
-    .transports.docker["lscr.io"] = [{"type": "insecureAcceptAnything"}] |
-    .transports.docker["localhost"] = [{"type": "insecureAcceptAnything"}] |
-    .transports["containers-storage"] = {"": [{"type": "insecureAcceptAnything"}]}' \
-    /usr/etc/containers/policy.json > $HOME/.config/containers/policy.json
-```
 
 Enable linger (keep containers running after logging out):
 
@@ -388,58 +127,78 @@ $ firewall-cmd --get-default-zone
 $ firewall-cmd --get-active-zones
 # firewall-cmd --list-all-zones
 # firewall-cmd --list-all
-# firewall-cmd --permanent --zone=FedoraServer --add-service=kdeconnect
-# firewall-cmd --permanent --zone=FedoraServer --add-service=syncthing
+# firewall-cmd --permanent --add-service=kdeconnect
+# firewall-cmd --permanent --add-service=syncthing
+# firewall-cmd --permanent --add-port=9090/tcp
+# firewall-cmd --permanent --add-port=9090/udp
 # firewall-cmd --permanent --zone=FedoraServer --add-service=http
 # firewall-cmd --permanent --zone=FedoraServer --add-service=https
 # firewall-cmd --permanent --zone=FedoraServer --add-service=http3
-# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/tcp
-# firewall-cmd --permanent --zone=FedoraServer --add-port=9090/udp
-# firewall-cmd --permanent --zone=FedoraServer --add-port=22000/tcp
 # firewall-cmd --zone=FedoraServer --remove-service=http
 # firewall-cmd --zone=FedoraServer --remove-port=9090/tcp
 # firewall-cmd --reload
 ```
 
-### Rclone
+## System
 
-It is possible to use SFTP instead of the traditional NFS/CIFS solutions.
+### Kernel arguments
 
-Install Rclone using in your image, overlay or container.
+Setting `/etc/modprobe.d/module.conf` does not work on Atomic releases.
+Instead, append kernel parameters using `rpm-ostree kargs --append "module.parameter=foo"`.
 
-A rclone config can be created using `rclone config`, or by placing it manually in `.config/rclone/rclone.conf`. Rclone also supports `alias`, allowing path mounts.
+To list current kernel parameters, use `rpm-ostree kargs` and `rpm-ostree kargs --editor` to open an editor.
 
-> Tip: Checkout the given `rclone.conf` example and user systemd for mounting to `~/mnt/<server>`: `systemctl --user enable rclone@server-media.service --now`
+### Mount Options
 
-### Brave
+See <https://discussion.fedoraproject.org/t/root-mount-options-are-ignored-in-fedora-atomic-desktops-42/148562> for details.
 
-Depending on your hardware, you may want to enable VA-API and/or Vulkan flags in `~/.var/app/com.brave.Browser/config/brave-flags.conf`.
-The example below forces the use of VA-API, but it can be unstable and may need to be adjusted for your GPU vendor(s).
+### Swap
 
-See the following resources for details:
-
-- <https://chromium.googlesource.com/chromium/src/+/refs/heads/main/docs/gpu/vaapi.md#vaapi-on-linux>
-- <https://wiki.archlinux.org/title/Chromium#Hardware_video_acceleration>
-
-### EasyEffects
-
-See <https://github.com/JackHack96/EasyEffects-Presets> for additional presets.
-
-Install the plugins:
+On Fedore CoreOS swap is disabled by default. To enable it:
 
 ```bash
-flatpak install flathub org.freedesktop.LinuxAudio.Plugins.Calf//25.08 org.freedesktop.LinuxAudio.Plugins.LSP//25.08 org.freedesktop.LinuxAudio.Plugins.ZamPlugins//25.08 org.freedesktop.LinuxAudio.Plugins.MDA//25.08
+# tee /etc/systemd/zram-generator.conf << 'EOF'
+[zram0]
+zram-size = ram
+compression-algorithm = zstd
+swap-priority = 100
+fs-type = swap
+EOF
 ```
 
-### Solaar
-
-Install the [udev rule](https://github.com/flathub/io.github.pwr_solaar.solaar#udev-rule) for Wayland to `/etc/udev/rules.d/42-logitech-unify-permissions.rules`.
-
-To start [Solaar](https://flathub.org/en/apps/io.github.pwr_solaar.solaar) on startup (autostart) and with the window hidden:
+Reboot, or force-reload the `systemd-zram-setup` service:
 
 ```bash
-run --branch=stable --arch=x86_64 --command=solaar io.github.pwr_solaar.solaar --window=hide
+# systemctl daemon-reload
+# systemctl restart systemd-zram-setup@zram0.service
 ```
+
+### Btrfs
+
+#### Disable CoW
+
+To disable CoW on a specific directory (e.g. for downloads, databases or VMs):
+
+```bash
+$ mkdir -p /var/mnt/downloads/appdata/qbittorrent
+$ mkdir -p /var/mnt/downloads/data/torrents
+# chattr +C /var/mnt/downloads/appdata/qbittorrent
+# chattr +C /var/mnt/downloads/data/torrents
+$ lsattr -d /var/mnt/downloads/appdata/* /var/mnt/downloads/data/*
+```
+
+#### Deduplication
+
+To use [bees](https://github.com/Zygo/bees) (a deduplication agent):
+
+```bash
+# btrfs filesystem show /
+# cp /etc/bees/beesd.conf.sample /etc/bees/<uuid-from-above>.conf
+# nano /etc/bees/<uuid-from-above>.conf
+# systemctl start beesd@<uuid-from-above>
+```
+
+> Note: Use the UUID from `btrfs filesystem show` output.
 
 ## Troubleshooting
 

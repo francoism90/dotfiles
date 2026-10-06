@@ -3,11 +3,11 @@
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-# Nano
-install_config nano/nanorc ~/.nanorc
-
 # Bash
 install_config bash/aliases.sh ~/.bashrc.d/aliases.sh
+
+# Nano
+install_config nano/nanorc ~/.nanorc
 
 # Git
 install_config git/gitconfig ~/.gitconfig
