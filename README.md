@@ -10,6 +10,31 @@ Useful sources and references:
 - <https://docs.fedoraproject.org/en-US/fedora-silverblue/troubleshooting/>
 - <https://rpmfusion.org/Howto/OSTree>
 
+## Installation
+
+The files in `config/` are installed with the scripts in `bin/`. They can be run from any directory:
+
+```bash
+git clone https://github.com/francoism90/dotfiles.git ~/Code/dotfiles
+~/Code/dotfiles/bin/install-dotfiles
+```
+
+| Script                    | Installs                                                      |
+| ------------------------- | ------------------------------------------------------------- |
+| `bin/install-dotfiles`    | Bash aliases, Git, Fish, Nano and Flatpak app configuration   |
+| `bin/install-claude-code` | Claude Code settings and `AGENTS.md`, then Claude Code itself |
+
+> Note: Existing files at the destination are overwritten. Directories are merged, files that are not in this repository are kept.
+
+To install an additional file or directory, add a line to one of the scripts:
+
+```bash
+install_config <path relative to config/> <destination>
+
+# e.g.
+install_config yt-dlp/config ~/.config/yt-dlp/config
+```
+
 ## System
 
 ### Package management
