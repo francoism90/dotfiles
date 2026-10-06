@@ -189,7 +189,7 @@ $ lsattr -d /var/mnt/downloads/appdata/* /var/mnt/downloads/data/*
 
 #### Deduplication
 
-To use [bees](https://github.com/Zygo/bees) (a deduplication agent):
+To use deduplication agent [bees](https://github.com/Zygo/bees):
 
 ```bash
 # btrfs filesystem show /
