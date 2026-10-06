@@ -1,4 +1,5 @@
 {
+    "theme": "dark",
     "autoContinueAtUsageLimit": false,
     "enabledPlugins": {
         "telemetry@builtin": false
@@ -58,6 +59,5 @@
             "Read(~/.codex/config.toml)",
             "Read(**/.env)"
         ]
-    },
-    "theme": "dark"
+    }
 }
