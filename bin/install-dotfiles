@@ -3,12 +3,12 @@
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-# Bash aliases
-install_config bash/.bashrc.d/aliases.sh ~/.bashrc.d/aliases.sh
+# Bash
+install_config bash/aliases.sh ~/.bashrc.d/aliases.sh
 
-# Git configuration
-install_config git/.gitconfig ~/.gitconfig
-install_config git/.gitignore ~/.gitignore
+# Git
+install_config git/gitconfig ~/.gitconfig
+install_config git/gitignore ~/.gitignore
 
 # Fish
 install_config fish ~/.config/fish
@@ -16,5 +16,5 @@ install_config fish ~/.config/fish
 # Nano
 install_config nano/.nanorc ~/.nanorc
 
-# Flatpak app configuration
-install_config flatpak/.var ~/.var
+# Flatpak
+install_config flatpak/app ~/.var/app

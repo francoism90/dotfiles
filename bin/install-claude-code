@@ -3,7 +3,9 @@
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
+# Claude Configuration
 install_config claude/settings.json ~/.claude/settings.json
 install_config claude/AGENTS.md ~/.claude/AGENTS.md
 
+# Install Claude
 curl -fsSL https://claude.ai/install.sh | bash

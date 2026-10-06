@@ -1,15 +1,12 @@
 {
     "autoContinueAtUsageLimit": false,
-    "cleanupPeriodDays": 365,
     "enabledPlugins": {
         "telemetry@builtin": false
     },
     "permissions": {
+        "defaultMode": "auto",
         "allow": [
             "Bash(gh:*)",
-            "Bash(flare:*)",
-            "Bash(there-there:*)",
-            "Bash(mailcoach:*)",
             "Bash(curl:*)",
             "Bash(composer:*)",
             "Bash(vendor/bin/phpunit:*)",
@@ -59,10 +56,8 @@
             "Read(~/.aws/**)",
             "Read(~/.claude/.credentials.json)",
             "Read(~/.codex/config.toml)",
-            "Read(**/.env)",
-            "Read(**/.env.*)"
-        ],
-        "defaultMode": "auto"
+            "Read(**/.env)"
+        ]
     },
     "theme": "dark"
 }

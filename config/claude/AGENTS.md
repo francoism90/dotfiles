@@ -14,8 +14,6 @@ Never use em dashes (—) or en dashes (–) as punctuation. Rephrase with perio
 
 For Laravel and PHP work, always use the spatie-guidelines skill.
 
-Use the agent-browser skill for browser automation.
-
 ## GitHub
 
 Use the gh CLI for GitHub questions and operations.
