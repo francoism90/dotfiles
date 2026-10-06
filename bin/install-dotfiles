@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
+
+# bash
+install_config bash/aliases.sh ~/.bashrc.d/aliases.sh
+
+# fish
+install_config fish ~/.config/fish
+
+# flatpak
+install_config flatpak/app ~/.var/app
+
+# git
+install_config git/gitconfig ~/.gitconfig
+install_config git/gitignore ~/.gitignore
+
+# nano
+install_config nano/nanorc ~/.nanorc

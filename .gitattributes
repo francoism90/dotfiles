@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+*.html diff=html
+*.md diff=markdown
+*.sh diff=bash
+
+/.github export-ignore
+CHANGELOG.md export-ignore

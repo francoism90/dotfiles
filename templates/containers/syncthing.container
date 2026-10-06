@@ -1,0 +1,19 @@
+[Unit]
+Description=Syncthing Container
+
+[Container]
+Image=docker.io/syncthing/syncthing:latest
+AutoUpdate=registry
+UserNS=keep-id
+Volume=syncthing-config:/var/syncthing/config:rw,Z,U
+Volume=/var/mnt/backup/sync:/var/syncthing/Sync:rw,Z,U
+Network=host
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=90
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
