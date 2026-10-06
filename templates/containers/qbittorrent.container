@@ -4,6 +4,7 @@ Description=qBittorrent container
 [Container]
 Image=lscr.io/linuxserver/qbittorrent:latest
 AutoUpdate=registry
+UserNS=keep-id
 Environment=PUID=1000
 Environment=PGID=1000
 Environment=TZ=Europe/Amsterdam
@@ -11,7 +12,6 @@ Environment=WEBUI_PORT=8090
 Environment=TORRENTING_PORT=6881
 Volume=/var/mnt/downloads/appdata/qbittorrent:/config:rw,Z,U
 Volume=/var/mnt/downloads/data/torrents:/downloads:rw,Z,U
-UserNS=keep-id
 Network=host
 
 [Service]

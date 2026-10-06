@@ -3,18 +3,18 @@
 set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
-# Bash
+# bash
 install_config bash/aliases.sh ~/.bashrc.d/aliases.sh
 
-# Nano
-install_config nano/nanorc ~/.nanorc
+# fish
+install_config fish ~/.config/fish
 
-# Git
+# flatpak
+install_config flatpak/app ~/.var/app
+
+# git
 install_config git/gitconfig ~/.gitconfig
 install_config git/gitignore ~/.gitignore
 
-# Fish
-install_config fish ~/.config/fish
-
-# Flatpak
-install_config flatpak/app ~/.var/app
+# nano
+install_config nano/nanorc ~/.nanorc
