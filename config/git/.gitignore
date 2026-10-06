@@ -4,6 +4,9 @@
 .Trashes
 .idea/
 .vscode/
+.ai/
+.idea/
+.vscode/
 .claude/
 *.7z
 *.class
