@@ -4,7 +4,18 @@
     "enabledPlugins": {
         "telemetry@builtin": false
     },
+    "attribution": {
+        "commit": "",
+        "pr": ""
+    },
     "permissions": {
-        "defaultMode": "auto"
+        "defaultMode": "auto",
+        "ask": [
+            "Read(~/.ssh/**)",
+            "Read(~/.aws/**)",
+            "Read(~/.claude/.credentials.json)",
+            "Read(~/.codex/config.toml)",
+            "Read(**/.env)"
+        ]
     }
 }
