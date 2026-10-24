@@ -57,13 +57,6 @@ if status is-interactive
     abbr -a tbr 'toolbox run'
     abbr -a dbe 'distrobox enter'
 
-    # Listing Dependencies
-    # Fedora Fish defaults include 'll', but explicit definition ensures
-    # safety inside minimal Distrobox/Toolbox containers.
-    if not functions -q ll
-        alias ll='ls -l'
-    end
-
     # Listing
     abbr -a la 'll -hA'
     abbr -a llh 'll -h'
