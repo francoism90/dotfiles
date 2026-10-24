@@ -18,6 +18,8 @@
             "Read(**/.env)",
             "Read(**/.env.*)",
             "Read(~/.config/gh/hosts.yml)",
+            "Read(~/.git-credentials)",
+            "Read(~/.config/git/credentials)",
             "Read(~/.config/containers/auth.json)",
             "Read(/run/user/*/containers/auth.json)",
             "Read(~/.gnupg/**)"
