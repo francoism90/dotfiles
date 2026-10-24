@@ -126,9 +126,9 @@ $ sudo usermod -aG render,video $USER
 Large data bind mounts (Jellyfin media, Immich photos) skip `Z,U`, as relabeling and chowning them on every start is slow. Set the SELinux label and ownership once instead:
 
 ```bash
-# semanage fcontext -a -t container_file_t '/var/mnt/media(/.*)?'
-# semanage fcontext -a -t container_file_t '/var/mnt/photos(/.*)?'
-# restorecon -R /var/mnt/media /var/mnt/photos
+# semanage fcontext -a -t container_file_t '/mnt/media(/.*)?'
+# semanage fcontext -a -t container_file_t '/mnt/photos(/.*)?'
+# restorecon -RF /var/mnt/media /var/mnt/photos
 $ sudo chown -R $USER:$USER /var/mnt/media /var/mnt/photos
 ```
 
