@@ -19,6 +19,7 @@
             "Read(**/.env.*)",
             "Read(~/.config/gh/hosts.yml)",
             "Read(~/.config/containers/auth.json)",
+            "Read(/run/user/*/containers/auth.json)",
             "Read(~/.gnupg/**)"
         ]
     }
