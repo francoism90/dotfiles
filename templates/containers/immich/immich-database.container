@@ -4,7 +4,7 @@ Description=Immich database container
 [Container]
 Image=ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
 Pod=immich.pod
-EnvironmentFile=%h/.config/containers/systemd/immich.env
+EnvironmentFile=%h/.config/containers/systemd/immich/immich.env
 Volume=immich-database:/var/lib/postgresql/data:rw,Z,U
 ShmSize=128m
 Notify=healthy

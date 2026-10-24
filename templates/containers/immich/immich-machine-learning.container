@@ -5,7 +5,7 @@ Description=Immich machine learning container
 Image=ghcr.io/immich-app/immich-machine-learning:release
 AutoUpdate=registry
 Pod=immich.pod
-EnvironmentFile=%h/.config/containers/systemd/immich.env
+EnvironmentFile=%h/.config/containers/systemd/immich/immich.env
 Volume=immich-model-cache:/cache:rw,Z,U
 
 [Service]
