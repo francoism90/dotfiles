@@ -1,9 +1,12 @@
 # System Administration
 alias sc='sudo systemctl'
 alias scu='systemctl --user'
-alias scl='sudo journalctl -u.service -f'
+alias scl='sudo journalctl -f -u'
 alias jf='journalctl -xf -n 1000'
 alias cjf='sudo journalctl --vacuum-size=1B'
+
+# Relabel moved files for their destination (SELinux)
+alias mv='mv -Z'
 
 # rpm-ostree / Fedora Atomic
 alias rpmst='rpm-ostree status'
