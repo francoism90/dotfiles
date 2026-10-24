@@ -6,7 +6,7 @@ Keep answers short. Get to the point. Give more detail only when I ask.
 
 ## Environment
 
-Run commands in the current environment first. In a devcontainer, stay inside it and install missing tools there.
+Run commands in the current environment first. In a devcontainer, stay inside it. If a tool is missing, suggest adding it to the image.
 
 In the VS Code flatpak sandbox (`/.flatpak-info` exists), run host-only tools like `gh` and `podman` with `flatpak-spawn --host --directory=$PWD <cmd>`. Ask before running anything else on the host.
 
