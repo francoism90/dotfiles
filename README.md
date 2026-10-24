@@ -109,6 +109,29 @@ To automatically manage container updates:
 $ systemctl --user enable podman-auto-update.timer --now
 ```
 
+#### Container templates
+
+[`templates/containers/`](templates/containers/) has quadlets grouped per service. Copy a group, replace placeholders (e.g. `changeme` in `immich.env`) and start it:
+
+```bash
+$ mkdir -p ~/.config/containers/systemd
+$ cp -r templates/containers/immich ~/.config/containers/systemd/
+$ systemctl --user daemon-reload
+$ systemctl --user start immich-pod.service
+```
+
+Containers using `/dev/dri` (Jellyfin, Immich) need GPU access on the host:
+
+```bash
+# setsebool -P container_use_dri_devices on
+# usermod -aG render,video $USER
+```
+
+Networking:
+
+- Bridge (default): use `PublishPort=` for each port. Keeps containers isolated and is the right choice for most services.
+- Host (`Network=host`): use when a service needs LAN discovery (broadcast or multicast, e.g. Syncthing local discovery, DLNA) or many dynamic ports. Ports below 1024 still need root or `net.ipv4.ip_unprivileged_port_start`.
+
 ### VSCode / VSCodium / Zed
 
 See the following resources for details:

@@ -2,7 +2,7 @@
 Description=Immich redis container
 
 [Container]
-Image=docker.io/valkey/valkey:8-bookworm
+Image=docker.io/valkey/valkey:9
 Pod=immich.pod
 Volume=immich-redis:/data:rw,Z,U
 Notify=healthy
