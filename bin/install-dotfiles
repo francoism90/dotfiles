@@ -13,8 +13,7 @@ install_config fish ~/.config/fish
 install_config flatpak/app ~/.var/app
 
 # git
-install_config git/gitconfig ~/.gitconfig
-install_config git/gitignore ~/.gitignore
+install_config git ~/.config/git
 
 # nano
 install_config nano/nanorc ~/.nanorc
