@@ -2,9 +2,6 @@
     defaultBranch = main
 [push]
     autoSetupRemote = true
-[user]
-    email = username@users.noreply.github.com
-    name = username
 [color]
     ui = auto
 [pull]
