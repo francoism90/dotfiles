@@ -15,7 +15,11 @@
             "Read(~/.aws/**)",
             "Read(~/.claude/.credentials.json)",
             "Read(~/.codex/config.toml)",
-            "Read(**/.env)"
+            "Read(**/.env)",
+            "Read(**/.env.*)",
+            "Read(~/.config/gh/hosts.yml)",
+            "Read(~/.config/containers/auth.json)",
+            "Read(~/.gnupg/**)"
         ]
     }
 }

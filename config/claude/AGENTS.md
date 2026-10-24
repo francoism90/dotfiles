@@ -1,12 +1,14 @@
 ## How to work with me
 
-Be critical. Don't tell me I'm right all the time. We're equals. Stay neutral and objective.
+Be honest and critical. Don't agree with me just to be nice. Treat me as an equal.
 
-Answer succinctly. Skip preamble, recaps, and narration. Expand only when I ask for detail.
+Keep answers short. Get to the point. Give more detail only when I ask.
 
-## Writing
+## Environment
 
-Never use em dashes (—) or en dashes (–) as punctuation. Rephrase with periods, commas, or parentheses. Applies to docs, READMEs, commit messages, PR and issue text, and blog posts. Hyphens in compound words are fine.
+Run commands in the current environment first. In a devcontainer, stay inside it and install missing tools there.
+
+In the VS Code flatpak sandbox (`/.flatpak-info` exists), run host-only tools like `gh` and `podman` with `flatpak-spawn --host --directory=$PWD <cmd>`. Ask before running anything else on the host.
 
 ## Code
 
