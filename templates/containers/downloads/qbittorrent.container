@@ -19,3 +19,6 @@ Restart=always
 RestartSec=5
 TimeoutStartSec=90
 TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

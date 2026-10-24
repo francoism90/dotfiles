@@ -1,0 +1,23 @@
+[Unit]
+Description=Immich database container
+
+[Container]
+Image=ghcr.io/immich-app/postgres:18-vectorchord1.1.1
+Pod=immich.pod
+EnvironmentFile=%h/.config/containers/systemd/immich/immich.env
+Volume=immich-database:/var/lib/postgresql:rw,Z,U
+ShmSize=128m
+Notify=healthy
+HealthCmd=pg_isready -U immich -d immich
+HealthInterval=30s
+HealthStartupCmd=pg_isready -U immich -d immich
+HealthStartupInterval=2s
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

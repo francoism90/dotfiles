@@ -102,12 +102,31 @@ Enable linger (keep containers running after logging out):
 loginctl enable-linger $USER
 ```
 
-To automatically manage container updates:
+Container updates (`podman-auto-update.timer`) are enabled for system and user on personal-os images.
+
+#### Container templates
+
+[`templates/containers/`](templates/containers/) has quadlets grouped per service. Copy a group, replace placeholders (e.g. `changeme` in `immich.env`) and start it:
 
 ```bash
-# systemctl enable podman-auto-update.timer --now
-$ systemctl --user enable podman-auto-update.timer --now
+$ mkdir -p ~/.config/containers/systemd
+$ cp -r templates/containers/immich ~/.config/containers/systemd/
+$ systemctl --user daemon-reload
+$ systemctl --user start immich-pod.service
 ```
+
+Containers using `/dev/dri` (Jellyfin, Immich) need GPU access on the host:
+
+```bash
+# setsebool -P container_use_dri_devices on
+# bash -c 'for g in render video; do grep -q "^$g:" /etc/group || grep "^$g:" /usr/lib/group >> /etc/group; done'
+$ sudo usermod -aG render,video $USER
+```
+
+Networking:
+
+- Bridge (default): use `PublishPort=` for each port. Keeps containers isolated and is the right choice for most services.
+- Host (`Network=host`): use when a service needs LAN discovery (broadcast or multicast, e.g. Syncthing local discovery, DLNA), many dynamic ports, or high throughput and many connections (e.g. qBittorrent, SABnzbd). Rootless bridge traffic goes through a userspace process (`pasta`), which costs CPU per packet. Ports below 1024 still need root or `net.ipv4.ip_unprivileged_port_start`.
 
 ### VSCode / VSCodium / Zed
 
@@ -154,24 +173,7 @@ See <https://discussion.fedoraproject.org/t/root-mount-options-are-ignored-in-fe
 
 ### Swap
 
-On Fedore CoreOS swap is disabled by default. To enable it:
-
-```bash
-# tee /etc/systemd/zram-generator.conf << 'EOF'
-[zram0]
-zram-size = ram
-compression-algorithm = zstd
-swap-priority = 100
-fs-type = swap
-EOF
-```
-
-Reboot, or force-reload the `systemd-zram-setup` service:
-
-```bash
-# systemctl daemon-reload
-# systemctl restart systemd-zram-setup@zram0.service
-```
+[personal-os](https://github.com/francoism90/personal-os) images ship zram swap as a drop-in (`/usr/lib/systemd/zram-generator.conf.d/90-personal-os.conf`). Override it per host in `/etc/systemd/zram-generator.conf.d/`.
 
 ### Btrfs
 
