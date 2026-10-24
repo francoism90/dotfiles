@@ -137,6 +137,37 @@ Networking:
 - Bridge (default): use `PublishPort=` for each port. Keeps containers isolated and is the right choice for most services.
 - Host (`Network=host`): use when a service needs LAN discovery (broadcast or multicast, e.g. Syncthing local discovery, DLNA), many dynamic ports, or high throughput and many connections (e.g. qBittorrent, SABnzbd). Rootless bridge traffic goes through a userspace process (`pasta`), which costs CPU per packet. Ports below 1024 still need root or `net.ipv4.ip_unprivileged_port_start`.
 
+#### Proxy
+
+Caddy (`caddy/`) is a reverse proxy with wildcard certificates through the Cloudflare DNS challenge, so no ports have to be opened to the internet. Replace `example.com` in `config/Caddyfile` and point the hostnames to the server in your local DNS.
+
+Create a Cloudflare API token with `Zone:Zone:Read` and `Zone:DNS:Edit`, scoped to the zone, and store it as a Podman secret. Start the command with a space to keep the token out of your shell history:
+
+```bash
+$  printf '%s' '<token>' | podman secret create cloudflare-api-token -
+$  printf '%s' '<token>' | podman secret create --replace cloudflare-api-token -
+$ podman secret ls
+```
+
+Allow rootless containers to bind port 443, open the firewall and start Caddy:
+
+```bash
+# echo 'net.ipv4.ip_unprivileged_port_start=443' > /etc/sysctl.d/99-unprivileged-ports.conf
+# sysctl --system
+# firewall-cmd --permanent --zone=FedoraServer --add-service=https --add-service=http3
+# firewall-cmd --reload
+$ cp -r templates/containers/caddy ~/.config/containers/systemd/
+$ systemctl --user daemon-reload
+$ systemctl --user start caddy.service
+```
+
+The image is built locally, so `podman auto-update` skips it. It is rebuilt on every start, pulling a newer Caddy base image when available. To update, or to apply `Caddyfile` changes without downtime:
+
+```bash
+$ systemctl --user restart caddy.service
+$ systemctl --user reload caddy.service
+```
+
 ### VSCode / VSCodium / Zed
 
 See the following resources for details:

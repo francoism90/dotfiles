@@ -1,0 +1,8 @@
+[Unit]
+Description=Caddy image with Cloudflare DNS
+
+[Build]
+ImageTag=localhost/caddy-cloudflare:latest
+File=Containerfile
+SetWorkingDirectory=unit
+Pull=newer
