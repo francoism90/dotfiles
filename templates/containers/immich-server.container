@@ -1,0 +1,28 @@
+[Unit]
+Description=Immich server container
+Requires=immich-database.service immich-redis.service
+After=immich-database.service immich-redis.service
+
+[Container]
+Image=ghcr.io/immich-app/immich-server:release
+AutoUpdate=registry
+Pod=immich.pod
+EnvironmentFile=%h/.config/containers/systemd/immich.env
+Volume=/var/mnt/photos:/data:rw,Z,U
+Volume=/etc/localtime:/etc/localtime:ro
+AddDevice=/dev/dri/:/dev/dri/
+Notify=healthy
+HealthCmd=immich-healthcheck
+HealthInterval=5m
+HealthStartupCmd=immich-healthcheck
+HealthStartupInterval=2s
+HealthStartupTimeout=10s
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

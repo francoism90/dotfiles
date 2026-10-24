@@ -1,0 +1,19 @@
+[Unit]
+Description=Immich redis container
+
+[Container]
+Image=docker.io/valkey/valkey:8-bookworm
+Pod=immich.pod
+Volume=immich-redis:/data:rw,Z,U
+Notify=healthy
+HealthCmd=valkey-cli ping
+HealthInterval=30s
+HealthStartupCmd=valkey-cli ping
+HealthStartupInterval=1s
+
+[Service]
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
