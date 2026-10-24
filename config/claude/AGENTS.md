@@ -12,7 +12,7 @@ In the VS Code flatpak sandbox (`/.flatpak-info` exists), run host-only tools li
 
 ## Code
 
-For Laravel and PHP work, follow the Spatie guidelines skills (`spatie-laravel-php`, `spatie-javascript`, `spatie-version-control`, `spatie-security`) from <https://github.com/spatie/guidelines-skills>. If they aren't installed, use <https://spatie.be/guidelines>.
+For Laravel, PHP, JavaScript and TypeScript work, follow the Spatie guidelines skills (`spatie-laravel-php`, `spatie-javascript`, `spatie-version-control`, `spatie-security`) from <https://github.com/spatie/guidelines-skills>. If they aren't installed, use <https://spatie.be/guidelines>.
 
 ## GitHub
 
