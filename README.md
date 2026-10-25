@@ -139,7 +139,13 @@ Networking:
 
 #### Proxy
 
-Caddy (`caddy/`) is a reverse proxy with wildcard certificates through the Cloudflare DNS challenge, so no ports have to be opened to the internet. Replace `example.com` in `config/Caddyfile` and point the hostnames to the server in your local DNS.
+Caddy (`caddy/`) is a reverse proxy with wildcard certificates through the Cloudflare DNS challenge, so no ports have to be opened to the internet. Replace `example.com` in `config/Caddyfile` and `config/sites/` and point the hostnames to the server in your local DNS.
+
+Each site lives in its own file in `config/sites/`, imported by the `Caddyfile`. Remove the sites you don't use, and replace `192.168.1.10` with the address of your NAS. Matcher names (e.g. `@jellyfin`) must be unique across all files. Validate before reloading:
+
+```bash
+$ podman exec systemd-caddy caddy validate --config /etc/caddy/Caddyfile
+```
 
 Immich, Jellyfin and the Syncthing GUI only listen on `127.0.0.1`, so they are reachable through Caddy only. In Jellyfin, add `127.0.0.1` to Dashboard → Networking → Known proxies, so it sees the real client addresses. Set a GUI password in Syncthing.
 
