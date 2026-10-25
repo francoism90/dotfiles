@@ -1,0 +1,8 @@
+@nas host nas.home.example.com
+handle @nas {
+	reverse_proxy https://192.168.1.10:5001 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
