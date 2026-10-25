@@ -154,7 +154,7 @@ Allow rootless containers to bind ports 80 (HTTP to HTTPS redirects) and 443, op
 ```bash
 # echo 'net.ipv4.ip_unprivileged_port_start=80' > /etc/sysctl.d/99-unprivileged-ports.conf
 # sysctl --system
-# firewall-cmd --permanent --zone=FedoraServer --add-service=http --add-service=https --add-service=http3
+# firewall-cmd --permanent --add-service=http --add-service=https --add-service=http3
 # firewall-cmd --reload
 $ cp -r templates/containers/caddy ~/.config/containers/systemd/
 $ systemctl --user daemon-reload
