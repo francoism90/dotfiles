@@ -149,12 +149,12 @@ $  printf '%s' '<token>' | podman secret create --replace cloudflare-api-token -
 $ podman secret ls
 ```
 
-Allow rootless containers to bind port 443, open the firewall and start Caddy:
+Allow rootless containers to bind ports 80 (HTTP to HTTPS redirects) and 443, open the firewall and start Caddy:
 
 ```bash
-# echo 'net.ipv4.ip_unprivileged_port_start=443' > /etc/sysctl.d/99-unprivileged-ports.conf
+# echo 'net.ipv4.ip_unprivileged_port_start=80' > /etc/sysctl.d/99-unprivileged-ports.conf
 # sysctl --system
-# firewall-cmd --permanent --zone=FedoraServer --add-service=https --add-service=http3
+# firewall-cmd --permanent --zone=FedoraServer --add-service=http --add-service=https --add-service=http3
 # firewall-cmd --reload
 $ cp -r templates/containers/caddy ~/.config/containers/systemd/
 $ systemctl --user daemon-reload
