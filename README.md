@@ -143,6 +143,11 @@ Caddy (`caddy/`) is a reverse proxy with wildcard certificates through the Cloud
 
 Immich, Jellyfin and the Syncthing GUI only listen on `127.0.0.1`, so they are reachable through Caddy only. In Jellyfin, add `127.0.0.1` to Dashboard → Networking → Known proxies, so it sees the real client addresses. Set a GUI password in Syncthing.
 
+qBittorrent and SABnzbd use host networking, so set their listen address in the apps themselves. Change the address last, as the web UI is only reachable through Caddy afterwards:
+
+- qBittorrent (Tools → Options → Web UI): enable reverse proxy support with `127.0.0.1` as trusted proxy, and set the IP address to `127.0.0.1`.
+- SABnzbd: add the hostname (e.g. `sabnzbd.home.example.com`) to Config → Special → `host_whitelist`, and set Config → General → SABnzbd Host to `127.0.0.1`.
+
 Create a Cloudflare API token with `Zone:Zone:Read` and `Zone:DNS:Edit`, scoped to the zone, and store it as a Podman secret. Start the command with a space to keep the token out of your shell history:
 
 ```bash
