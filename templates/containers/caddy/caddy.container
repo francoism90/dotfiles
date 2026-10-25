@@ -1,0 +1,20 @@
+[Unit]
+Description=Caddy container
+
+[Container]
+Image=caddy.build
+Volume=caddy-data:/data:rw,Z,U
+Volume=caddy-config:/config:rw,Z,U
+Volume=%h/.config/containers/systemd/caddy/config:/etc/caddy:ro,Z
+Secret=cloudflare-api-token,type=env,target=CLOUDFLARE_API_TOKEN
+Network=host
+
+[Service]
+ExecReload=/usr/bin/podman exec systemd-%N caddy reload --config /etc/caddy/Caddyfile --force
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

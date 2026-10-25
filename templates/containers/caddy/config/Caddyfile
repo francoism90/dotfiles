@@ -1,0 +1,32 @@
+{
+	admin unix//config/admin.sock
+	email changeme@example.com
+}
+
+*.home.example.com {
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+		resolvers 1.1.1.1
+	}
+
+	@photos host photos.home.example.com
+	handle @photos {
+		reverse_proxy 127.0.0.1:2283
+	}
+
+	@media host media.home.example.com
+	handle @media {
+		reverse_proxy 127.0.0.1:8096
+	}
+
+	@sync host sync.home.example.com
+	handle @sync {
+		reverse_proxy 127.0.0.1:8384 {
+			header_up Host {upstream_hostport}
+		}
+	}
+
+	handle {
+		abort
+	}
+}
