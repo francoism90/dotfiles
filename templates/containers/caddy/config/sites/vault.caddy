@@ -1,0 +1,7 @@
+@vault host vault.home.example.com
+handle @vault {
+	reverse_proxy 192.168.1.10:8080 {
+		header_up X-Real-IP {remote_host}
+		stream_close_delay 5m
+	}
+}

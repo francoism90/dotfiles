@@ -149,6 +149,8 @@ $ podman exec systemd-caddy caddy validate --config /etc/caddy/Caddyfile
 
 Immich, Jellyfin and the Syncthing GUI only listen on `127.0.0.1`, so they are reachable through Caddy only. In Jellyfin, add `127.0.0.1` to Dashboard → Networking → Known proxies, so it sees the real client addresses. Set a GUI password in Syncthing.
 
+Vaultwarden (`vault.caddy`, e.g. running on the NAS) gets the client address in `X-Real-IP`, so failed logins are logged with the real IP. Set `DOMAIN=https://vault.home.example.com` in Vaultwarden. `stream_close_delay` keeps its WebSocket connections open for a while after a Caddy reload, instead of closing them right away.
+
 qBittorrent and SABnzbd use host networking, so set their listen address in the apps themselves. Change the address last, as the web UI is only reachable through Caddy afterwards:
 
 - qBittorrent (Tools → Options → Web UI): enable reverse proxy support with `127.0.0.1` as trusted proxy, and set the IP address to `127.0.0.1`.
