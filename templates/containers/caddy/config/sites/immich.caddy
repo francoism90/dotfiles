@@ -1,4 +1,6 @@
 @photos host photos.home.example.com
 handle @photos {
-	reverse_proxy 127.0.0.1:2283
+	reverse_proxy 127.0.0.1:2283 {
+		stream_close_delay 5m
+	}
 }

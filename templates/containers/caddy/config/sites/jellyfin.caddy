@@ -1,4 +1,6 @@
 @jellyfin host jellyfin.home.example.com
 handle @jellyfin {
-	reverse_proxy 127.0.0.1:8096
+	reverse_proxy 127.0.0.1:8096 {
+		stream_close_delay 5m
+	}
 }
