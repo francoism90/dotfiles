@@ -19,6 +19,13 @@
 		reverse_proxy 127.0.0.1:8096
 	}
 
+	@sync host sync.home.example.com
+	handle @sync {
+		reverse_proxy 127.0.0.1:8384 {
+			header_up Host {upstream_hostport}
+		}
+	}
+
 	handle {
 		abort
 	}

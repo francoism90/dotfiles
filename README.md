@@ -141,6 +141,8 @@ Networking:
 
 Caddy (`caddy/`) is a reverse proxy with wildcard certificates through the Cloudflare DNS challenge, so no ports have to be opened to the internet. Replace `example.com` in `config/Caddyfile` and point the hostnames to the server in your local DNS.
 
+Immich, Jellyfin and the Syncthing GUI only listen on `127.0.0.1`, so they are reachable through Caddy only. In Jellyfin, add `127.0.0.1` to Dashboard → Networking → Known proxies, so it sees the real client addresses. Set a GUI password in Syncthing.
+
 Create a Cloudflare API token with `Zone:Zone:Read` and `Zone:DNS:Edit`, scoped to the zone, and store it as a Podman secret. Start the command with a space to keep the token out of your shell history:
 
 ```bash
