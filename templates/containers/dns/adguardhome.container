@@ -1,0 +1,20 @@
+[Unit]
+Description=AdGuard Home container
+
+[Container]
+Image=docker.io/adguard/adguardhome:latest
+AutoUpdate=registry
+Volume=adguardhome-work:/opt/adguardhome/work:rw,Z,U
+Volume=adguardhome-conf:/opt/adguardhome/conf:rw,Z,U
+PublishPort=53:53/tcp
+PublishPort=53:53/udp
+PublishPort=127.0.0.1:3000:3000
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
