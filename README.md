@@ -149,7 +149,7 @@ $ podman exec systemd-caddy caddy validate --config /etc/caddy/Caddyfile
 
 Immich, Jellyfin and the Syncthing GUI only listen on `127.0.0.1`, so they are reachable through Caddy only. In Jellyfin, add `127.0.0.1` to Dashboard → Networking → Known proxies, so it sees the real client addresses. Set a GUI password in Syncthing.
 
-Vaultwarden (`vault.caddy`, e.g. running on the NAS) gets the client address in `X-Real-IP`, so failed logins are logged with the real IP. Set `DOMAIN=https://vault.home.example.com` in Vaultwarden. `stream_close_delay` keeps its WebSocket connections open for a while after a Caddy reload, instead of closing them right away.
+Vaultwarden (`vault.caddy`) gets the client address in `X-Real-IP`, so failed logins are logged with the real IP. `stream_close_delay` keeps its WebSocket connections open for a while after a Caddy reload, instead of closing them right away.
 
 qBittorrent and SABnzbd use host networking, so set their listen address in the apps themselves. Change the address last, as the web UI is only reachable through Caddy afterwards:
 
@@ -204,6 +204,18 @@ $ systemctl --user start adguardhome.service
 ```
 
 Open `https://adguard.home.example.com` and keep the admin interface on port `3000` in the setup wizard. Add a DNS rewrite for `*.home.example.com` to the server address, and point your router's DHCP DNS to the server.
+
+#### Vaultwarden
+
+Vaultwarden (`vault/`) only listens on `127.0.0.1`, so it is reachable through Caddy only (`vault.caddy`). Replace `example.com` in `DOMAIN` and start it:
+
+```bash
+$ cp -r templates/containers/vault ~/.config/containers/systemd/
+$ systemctl --user daemon-reload
+$ systemctl --user start vaultwarden.service
+```
+
+Open `https://vault.home.example.com` and create your account. Then set `SIGNUPS_ALLOWED=false` and restart the service, so nobody else can sign up.
 
 ### VSCode / VSCodium / Zed
 

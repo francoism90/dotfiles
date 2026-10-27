@@ -1,0 +1,19 @@
+[Unit]
+Description=Vaultwarden container
+
+[Container]
+Image=docker.io/vaultwarden/server:latest
+AutoUpdate=registry
+Volume=vaultwarden-data:/data:rw,Z,U
+Environment=DOMAIN=https://vault.home.example.com
+Environment=SIGNUPS_ALLOWED=true
+PublishPort=127.0.0.1:8222:80
+
+[Service]
+Restart=always
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
