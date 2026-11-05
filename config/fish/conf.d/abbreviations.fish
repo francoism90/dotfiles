@@ -25,10 +25,10 @@ if status is-interactive
     abbr -a bcrb 'sudo bootc rollback'
     abbr -a bcsw 'sudo bootc switch'
 
-    # BlueBuild
-    abbr -a bu 'blujust'
-    abbr -a bup 'blujust update'
-    abbr -a upd 'blujust update'
+    # Universal Blue
+    abbr -a bu 'ujust'
+    abbr -a bup 'ujust update'
+    abbr -a upd 'ujust update'
 
     # Flatpak
     abbr -a fpl 'flatpak list'

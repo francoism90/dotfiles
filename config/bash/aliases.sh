@@ -21,10 +21,10 @@ alias bcup='sudo bootc upgrade'
 alias bcrb='sudo bootc rollback'
 alias bcsw='sudo bootc switch'
 
-# BlueBuild
-alias bu='blujust'
-alias bup='blujust update'
-alias upd='blujust update'
+# Universal Blue
+alias bu='ujust'
+alias bup='ujust update'
+alias upd='ujust update'
 
 # Flatpak
 alias fpl='flatpak list'
