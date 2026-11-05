@@ -1,6 +1,6 @@
 # Dotfiles
 
-`config/` is installed by `bin/install-dotfiles` and `bin/install-claude-code` (overwrites destinations). Edit files here, not in `~`.
+`home/` is the chezmoi source directory (`.chezmoiroot`). Edit files here, not in `~`, and use chezmoi source names (`dot_`, `private_`). Check with `chezmoi diff`.
 
 `templates/` are copied by hand, never installed by a script.
 
