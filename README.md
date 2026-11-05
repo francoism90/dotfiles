@@ -20,8 +20,6 @@ git clone https://github.com/francoism90/dotfiles.git ~/Code/dotfiles
 chezmoi init --source ~/Code/dotfiles --apply
 ```
 
-This also installs Claude Code once, using `home/run_once_after_install-claude-code.sh`.
-
 Edit files in `~/Code/dotfiles/home/`, then preview and apply:
 
 ```bash

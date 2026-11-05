@@ -1,6 +1,6 @@
 # Dotfiles
 
-`home/` is the chezmoi source directory (`.chezmoiroot`). Edit files here, not in `~`, and use chezmoi source names (`dot_`, `private_`, `run_once_`). Check with `chezmoi diff`.
+`home/` is the chezmoi source directory (`.chezmoiroot`). Edit files here, not in `~`, and use chezmoi source names (`dot_`, `private_`). Check with `chezmoi diff`.
 
 `templates/` are copied by hand, never installed by a script.
 
