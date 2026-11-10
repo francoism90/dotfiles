@@ -10,7 +10,8 @@ Environment=SIGNUPS_ALLOWED=true
 PublishPort=127.0.0.1:8222:80
 
 [Service]
-Restart=always
+Restart=on-failure
+SuccessExitStatus=143
 RestartSec=5
 TimeoutStartSec=300
 TimeoutStopSec=30

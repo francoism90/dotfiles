@@ -12,7 +12,8 @@ HealthStartupCmd=valkey-cli ping
 HealthStartupInterval=1s
 
 [Service]
-Restart=always
+Restart=on-failure
+SuccessExitStatus=143
 RestartSec=5
 
 [Install]

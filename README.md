@@ -228,7 +228,7 @@ $ systemctl --user daemon-reload
 $ systemctl --user start homarr.service
 ```
 
-Open `https://homarr.home.example.com` and create your account. Add the Docker integration to list, start and stop containers. For other integrations, use `http://169.254.1.3:<port>` (e.g. `:8096` for Jellyfin): it maps to the host's `127.0.0.1`, so Homarr reaches services directly, without DNS or Caddy. The `*.home.example.com` names don't resolve inside the container, as its DNS doesn't know AdGuard's rewrites. Socket access gives Homarr full control over all rootless containers; remove the socket `Volume=` and `SecurityLabelDisable=true` if you don't need it. Containers stopped from Homarr are restarted by systemd (`Restart=always`), and removed ones come back on the next daemon-reload.
+Open `https://homarr.home.example.com` and create your account. Add the Docker integration to list, start and stop containers. For other integrations, use `http://169.254.1.3:<port>` (e.g. `:8096` for Jellyfin): it maps to the host's `127.0.0.1`, so Homarr reaches services directly, without DNS or Caddy. The `*.home.example.com` names don't resolve inside the container, as its DNS doesn't know AdGuard's rewrites. Socket access gives Homarr full control over all rootless containers; remove the socket `Volume=` and `SecurityLabelDisable=true` if you don't need it. Containers use `Restart=on-failure` with `SuccessExitStatus=143`, so a stop from Homarr sticks while crashes still restart. Removed containers come back on the next daemon-reload.
 
 ### VSCode / VSCodium / Zed
 

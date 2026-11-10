@@ -22,7 +22,8 @@ HealthTimeout=15s
 HealthRetries=3
 
 [Service]
-Restart=always
+Restart=on-failure
+SuccessExitStatus=143
 RestartSec=5
 TimeoutStartSec=300
 TimeoutStopSec=30
