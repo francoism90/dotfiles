@@ -1,0 +1,4 @@
+@memos host memos.home.example.com
+handle @memos {
+	reverse_proxy 127.0.0.1:5230
+}

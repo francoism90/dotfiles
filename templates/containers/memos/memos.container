@@ -1,0 +1,18 @@
+[Unit]
+Description=Memos container
+
+[Container]
+Image=docker.io/neosmemo/memos:stable
+AutoUpdate=registry
+Volume=memos-data:/var/opt/memos:rw,Z,U
+PublishPort=127.0.0.1:5230:5230
+
+[Service]
+Restart=on-failure
+SuccessExitStatus=143
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target
