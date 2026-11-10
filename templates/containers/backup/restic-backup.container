@@ -1,0 +1,34 @@
+[Unit]
+Description=Restic backup container
+StartLimitIntervalSec=4h
+StartLimitBurst=6
+
+[Container]
+Image=docker.io/restic/restic:latest
+# Runs only from the timer, so registry auto-update never sees it running
+Pull=newer
+# Reads volumes of other containers without relabeling them
+SecurityLabelDisable=true
+HostName=restic-backup
+Volume=vaultwarden-data:/source/vaultwarden:ro
+Volume=memos-data:/source/memos:ro
+Volume=homarr-appdata:/source/homarr:ro
+Volume=/var/mnt/photos:/source/photos:ro
+Volume=restic-cache:/root/.cache/restic:rw
+Secret=restic-password,type=env,target=RESTIC_PASSWORD
+Secret=restic-ssh-key,type=mount,target=/root/.ssh/id_ed25519,mode=0600
+Secret=restic-known-hosts,type=mount,target=/root/.ssh/known_hosts,mode=0644
+Environment=RESTIC_REPOSITORY=sftp:restic@nas.home.example.com:/backup/restic
+Entrypoint=/bin/sh
+Exec=-c "restic backup --exclude /source/photos/thumbs --exclude /source/photos/encoded-video /source && restic forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6"
+
+[Service]
+Type=oneshot
+# Fail early (and retry) while the NAS is off, without stopping anything
+ExecStartPre=/usr/bin/bash -c "exec 3<>/dev/tcp/nas.home.example.com/22"
+# SQLite databases are copied while their apps are stopped
+ExecStartPre=/usr/bin/systemctl --user stop vaultwarden.service memos.service homarr.service
+ExecStopPost=/usr/bin/systemctl --user start vaultwarden.service memos.service homarr.service
+Restart=on-failure
+RestartSec=30min
+TimeoutStartSec=12h
