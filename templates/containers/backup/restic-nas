@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Run restic against the NAS repository, with the same secrets as restic-backup.container.
+# RESTIC_MOUNT=<volume or dir>:/target mounts a restore target.
+set -euo pipefail
+
+args=()
+[[ -t 0 ]] && args+=(-t)
+[[ -n "${RESTIC_MOUNT:-}" ]] && args+=(-v "$RESTIC_MOUNT")
+
+exec podman run --rm -i --security-opt label=disable \
+  --hostname restic-backup \
+  --secret restic-password,type=env,target=RESTIC_PASSWORD \
+  --secret restic-ssh-key,type=mount,target=/root/.ssh/id_ed25519,mode=0600 \
+  --secret restic-known-hosts,type=mount,target=/root/.ssh/known_hosts,mode=0644 \
+  -e RESTIC_REPOSITORY=sftp:restic@nas.home.example.com:/backup/restic \
+  -v restic-cache:/root/.cache/restic \
+  "${args[@]}" \
+  docker.io/restic/restic:latest "$@"

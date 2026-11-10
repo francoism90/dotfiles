@@ -83,30 +83,17 @@ $ podman secret inspect --showsecret --format '{{.SecretData}}' restic-password
 
 ## Install
 
-Replace `nas.home.example.com` in `restic-backup.container` (two places). If you don't run all three apps, remove the missing ones from the `systemctl` lines, otherwise the run fails. Then copy the files. Quadlet doesn't handle timers, so the timer goes into the regular systemd directory:
+Replace `nas.home.example.com` in `restic-backup.container` (two places) and `restic-nas` (one place). If you don't run all three apps, remove the missing ones from the `systemctl` lines, otherwise the run fails. Then copy the files. Quadlet doesn't handle timers, so the timer goes into the regular systemd directory. `restic-nas` is a helper for manual restic commands, with the same secrets and repository as the service:
 
 ```bash
-$ mkdir -p ~/.config/containers/systemd ~/.config/systemd/user
+$ mkdir -p ~/.config/containers/systemd ~/.config/systemd/user ~/.local/bin
 $ cp -r templates/containers/backup ~/.config/containers/systemd/
 $ mv ~/.config/containers/systemd/backup/restic-backup.timer ~/.config/systemd/user/
+$ mv ~/.config/containers/systemd/backup/restic-nas ~/.local/bin/
 $ systemctl --user daemon-reload
 ```
 
-Add a shell helper for manual restic commands. It uses the same secrets and repository as the service, and `RESTIC_MOUNT` optionally mounts a volume or directory for restores. Put it in `~/.bashrc` to keep it:
-
-```bash
-restic-nas() {
-  podman run --rm -it --security-opt label=disable \
-    --hostname restic-backup \
-    --secret restic-password,type=env,target=RESTIC_PASSWORD \
-    --secret restic-ssh-key,type=mount,target=/root/.ssh/id_ed25519,mode=0600 \
-    --secret restic-known-hosts,type=mount,target=/root/.ssh/known_hosts,mode=0644 \
-    -e RESTIC_REPOSITORY=sftp:restic@nas.home.example.com:/backup/restic \
-    -v restic-cache:/root/.cache/restic \
-    ${RESTIC_MOUNT:+-v "$RESTIC_MOUNT"} \
-    docker.io/restic/restic:latest "$@"
-}
-```
+`RESTIC_MOUNT` optionally mounts a volume or directory at `/target`, for restores (see below). This also works in fish 3.1 and later.
 
 Create the repository on the NAS (once):
 
