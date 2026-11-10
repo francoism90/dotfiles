@@ -1,13 +1,15 @@
 {
-	admin unix//config/admin.sock
+	admin unix//config/admin.sock|0600
 	email changeme@example.com
+    acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
 }
 
 *.home.example.com {
 	tls {
-		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
 		resolvers 1.1.1.1
 	}
+
+	encode zstd gzip
 
 	import sites/*.caddy
 
