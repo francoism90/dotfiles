@@ -1,0 +1,4 @@
+@homarr host homarr.home.example.com
+handle @homarr {
+	reverse_proxy 127.0.0.1:7575
+}

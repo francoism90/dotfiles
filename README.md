@@ -216,6 +216,20 @@ $ systemctl --user start vaultwarden.service
 
 Open `https://vault.home.example.com` and create your account. Then set `SIGNUPS_ALLOWED=false` and restart the service, so nobody else can sign up.
 
+#### Homarr
+
+Homarr (`dashboard/`) only listens on `127.0.0.1`, so it is reachable through Caddy only (`homarr.caddy`). Its Docker integration uses the Podman API socket. Create the encryption key (keep it, Homarr can't decrypt its data without it) and start it:
+
+```bash
+$ systemctl --user enable --now podman.socket
+$ openssl rand -hex 32 | podman secret create homarr-encryption-key -
+$ cp -r templates/containers/dashboard ~/.config/containers/systemd/
+$ systemctl --user daemon-reload
+$ systemctl --user start homarr.service
+```
+
+Open `https://homarr.home.example.com` and create your account. Add the Docker integration to list, start and stop containers. Socket access gives Homarr full control over all rootless containers; remove the socket `Volume=` and `SecurityLabelDisable=true` if you don't need it. Containers stopped from Homarr are restarted by systemd (`Restart=always`), and removed ones come back on the next daemon-reload.
+
 ### VSCode / VSCodium / Zed
 
 See the following resources for details:
