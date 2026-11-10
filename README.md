@@ -222,7 +222,7 @@ Homarr (`dashboard/`) only listens on `127.0.0.1`, so it is reachable through Ca
 
 ```bash
 $ systemctl --user enable --now podman.socket
-$ openssl rand -hex 32 | podman secret create homarr-encryption-key -
+$ openssl rand -hex 32 | tr -d "\n" | podman secret create homarr-encryption-key -
 $ cp -r templates/containers/dashboard ~/.config/containers/systemd/
 $ systemctl --user daemon-reload
 $ systemctl --user start homarr.service
