@@ -218,17 +218,16 @@ Open `https://vault.home.example.com` and create your account. Then set `SIGNUPS
 
 #### Homarr
 
-Homarr (`dashboard/`) only listens on `127.0.0.1`, so it is reachable through Caddy only (`homarr.caddy`). Its Docker integration uses the Podman API socket. Create the encryption key (keep it, Homarr can't decrypt its data without it) and start it:
+Homarr (`dashboard/`) only listens on `127.0.0.1`, so it is reachable through Caddy only (`homarr.caddy`). Create the encryption key (keep it, Homarr can't decrypt its data without it) and start it:
 
 ```bash
-$ systemctl --user enable --now podman.socket
 $ openssl rand -hex 32 | tr -d "\n" | podman secret create homarr-encryption-key -
 $ cp -r templates/containers/dashboard ~/.config/containers/systemd/
 $ systemctl --user daemon-reload
 $ systemctl --user start homarr.service
 ```
 
-Open `https://homarr.home.example.com` and create your account. Add the Docker integration to list, start and stop containers. For other integrations, use `http://169.254.1.3:<port>` (e.g. `:8096` for Jellyfin): it maps to the host's `127.0.0.1`, so Homarr reaches services directly, without DNS or Caddy. The `*.home.example.com` names don't resolve inside the container, as its DNS doesn't know AdGuard's rewrites. Socket access gives Homarr full control over all rootless containers; remove the socket `Volume=` and `SecurityLabelDisable=true` if you don't need it. Containers use `Restart=on-failure` with `SuccessExitStatus=143`, so a stop from Homarr sticks while crashes still restart. Removed containers come back on the next daemon-reload.
+Open `https://homarr.home.example.com` and create your account. For integrations, use `http://169.254.1.3:<port>` (e.g. `:8096` for Jellyfin): it maps to the host's `127.0.0.1`, so Homarr reaches services directly, without DNS or Caddy. The `*.home.example.com` names don't resolve inside the container, as its DNS doesn't know AdGuard's rewrites. Homarr has no access to the Podman socket. To manage containers, add Cockpit as an app (`https://cockpit.home.example.com/podman`, needs cockpit-podman). Containers use `Restart=on-failure` with `SuccessExitStatus=143`, so a stop from Cockpit sticks while crashes still restart.
 
 ### VSCode / VSCodium / Zed
 
