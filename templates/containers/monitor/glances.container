@@ -1,0 +1,22 @@
+[Unit]
+Description=Glances container
+
+[Container]
+Image=docker.io/nicolargo/glances:latest
+AutoUpdate=registry
+Environment=GLANCES_OPT="-w -B 127.0.0.1"
+Volume=/usr/lib/os-release:/etc/os-release:ro
+# Disk usage: mount data disks read-only, e.g.
+# Volume=/var/mnt/media:/var/mnt/media:ro
+PodmanArgs=--pid=host
+Network=host
+
+[Service]
+Restart=on-failure
+SuccessExitStatus=143
+RestartSec=5
+TimeoutStartSec=300
+TimeoutStopSec=30
+
+[Install]
+WantedBy=default.target

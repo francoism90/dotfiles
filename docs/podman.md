@@ -59,6 +59,7 @@ Setup per app (start with Caddy and AdGuard Home, as the others are reached thro
 - [Caddy](containers/caddy.md): reverse proxy
 - [AdGuard Home](containers/adguardhome.md): DNS
 - [Homarr](containers/homarr.md): dashboard
+- [Glances](containers/glances.md): system monitor
 - [Immich](containers/immich.md): photos
 - [Jellyfin](containers/jellyfin.md): media
 - [Memos](containers/memos.md): notes

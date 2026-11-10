@@ -1,0 +1,4 @@
+@glances host glances.home.example.com
+handle @glances {
+	reverse_proxy 127.0.0.1:61208
+}
