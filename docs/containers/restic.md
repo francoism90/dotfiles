@@ -2,12 +2,12 @@
 
 Restic (`backup/`) backs up Vaultwarden, Memos, Homarr and the Immich photos to a Synology NAS over SFTP. Backups are encrypted and deduplicated, so each run only sends what changed.
 
-The timer runs on Monday, Wednesday and Friday at 10:00 (Amsterdam time), when the NAS is on. Each run:
+The timer runs on Monday, Wednesday and Friday at 10:30 (Amsterdam time). The NAS is on from 10:00 to 18:00, so this gives it time to boot and leaves room for retries and long runs. Each run has two steps:
 
-1. Checks that the NAS is reachable. If it isn't, the run fails without stopping anything and retries every 30 minutes, up to 6 times.
-2. Stops Vaultwarden, Memos and Homarr, so their SQLite databases aren't copied mid-write. That means a few seconds to minutes of downtime.
-3. Runs `restic backup`, then `restic forget --prune`, which keeps 7 daily, 4 weekly and 6 monthly snapshots.
-4. Starts the three apps again, even if the backup failed.
+1. `restic-apps` checks that the NAS is reachable. If it isn't, it fails without stopping anything and retries every 30 minutes, up to 6 times. Otherwise it stops Vaultwarden, Memos and Homarr, so their SQLite databases aren't copied mid-write, backs up their volumes and starts them again, even if the backup failed. This takes seconds.
+2. When that succeeds, `restic-photos` backs up the photos while the apps are running, then runs `restic forget --prune`. That keeps 7 daily, 4 weekly and 6 monthly snapshots each, for apps and photos separately. It also retries every 30 minutes on failure.
+
+Snapshots are tagged `apps` or `photos`.
 
 Syncthing is not a replacement for this: it syncs deletions and corruption to every device, and has no history.
 
@@ -83,7 +83,7 @@ $ podman secret inspect --showsecret --format '{{.SecretData}}' restic-password
 
 ## Install
 
-Replace `nas.home.example.com` in `restic-backup.container` (two places) and `restic-nas` (one place). If you don't run all three apps, remove the missing ones from the `systemctl` lines, otherwise the run fails. Then copy the files. Quadlet doesn't handle timers, so the timer goes into the regular systemd directory. `restic-nas` is a helper for manual restic commands, with the same secrets and repository as the service:
+Replace `nas.home.example.com` in `restic-apps.container` (two places), `restic-photos.container` and `restic-nas`. If you don't run all three apps, remove the missing ones from the `systemctl` lines, otherwise the run fails. Then copy the files. Quadlet doesn't handle timers, so the timer goes into the regular systemd directory. `restic-nas` is a helper for manual restic commands, with the same secrets and repository as the service:
 
 ```bash
 $ mkdir -p ~/.config/containers/systemd ~/.config/systemd/user ~/.local/bin
@@ -101,11 +101,11 @@ Create the repository on the NAS (once):
 $ restic-nas init
 ```
 
-Run the first backup by hand while the NAS is on, and follow it. With a large photo library this can take hours. Later runs are much faster:
+Run the first backup by hand while the NAS is on, and follow it. The photos step starts by itself after the apps step. With a large photo library it can take hours, and if the NAS shuts down at 18:00, the next run picks up where it stopped. Later runs are much faster:
 
 ```bash
-$ systemctl --user start restic-backup.service
-$ journalctl --user -fu restic-backup.service
+$ systemctl --user start restic-apps.service
+$ journalctl --user -f -u restic-apps.service -u restic-photos.service
 ```
 
 Then enable the timer:
@@ -123,6 +123,8 @@ List snapshots:
 $ restic-nas snapshots
 ```
 
+If a run was cut off (e.g. the NAS shut down mid-prune), restic may report a stale lock. Remove it with `restic-nas unlock`.
+
 Verify the repository now and then, e.g. once a month. `--read-data-subset` also reads part of the actual data, which catches disk errors on the NAS:
 
 ```bash
@@ -132,17 +134,17 @@ $ restic-nas check --read-data-subset=5%
 See the last run, or why it failed:
 
 ```bash
-$ systemctl --user status restic-backup.service
-$ journalctl --user -u restic-backup.service -n 100
+$ systemctl --user status restic-apps.service restic-photos.service
+$ journalctl --user -u restic-apps.service -u restic-photos.service -n 100
 ```
 
 ## Restore
 
-Snapshots contain everything under `/source`, e.g. `/source/memos`. Restore one app at a time into its volume. Stop the app first, then restore with `--delete`, so files that weren't in the snapshot are removed. This example restores Memos from the latest snapshot:
+App snapshots contain `/source/vaultwarden`, `/source/memos` and `/source/homarr`; photo snapshots contain `/source/photos`. Pass `--tag` so `latest` picks the right one. Restore one app at a time into its volume. Stop the app first, then restore with `--delete`, so files that weren't in the snapshot are removed. This example restores Memos from the latest snapshot:
 
 ```bash
 $ systemctl --user stop memos.service
-$ RESTIC_MOUNT=memos-data:/target restic-nas restore latest:/source/memos --target /target --delete
+$ RESTIC_MOUNT=memos-data:/target restic-nas restore latest:/source/memos --tag apps --target /target --delete
 $ systemctl --user start memos.service
 ```
 
@@ -152,10 +154,10 @@ To get back a single file, restore into a directory instead and copy what you ne
 
 ```bash
 $ mkdir ~/restore
-$ RESTIC_MOUNT=$HOME/restore:/target restic-nas restore latest --target /target --include /source/memos
+$ RESTIC_MOUNT=$HOME/restore:/target restic-nas restore latest --tag apps --target /target --include /source/memos
 ```
 
-For Immich, restore the photos into `/var/mnt/photos` the same way, with `latest:/source/photos` and `RESTIC_MOUNT=/var/mnt/photos:/target`, while the Immich pod is stopped. Then restore the database from the newest dump in `/var/mnt/photos/backups`, following the [Immich backup and restore docs](https://docs.immich.app/administration/backup-and-restore).
+For Immich, restore the photos into `/var/mnt/photos` the same way, with `latest:/source/photos --tag photos` and `RESTIC_MOUNT=/var/mnt/photos:/target`, while the Immich pod is stopped. Then restore the database from the newest dump in `/var/mnt/photos/backups`, following the [Immich backup and restore docs](https://docs.immich.app/administration/backup-and-restore).
 
 Test a restore once after setting this up, e.g. Memos into `~/restore`. A backup you have never restored from isn't proven to work.
 

@@ -1,5 +1,7 @@
 [Unit]
-Description=Restic backup container
+Description=Restic backup of app volumes
+# Photos are backed up afterwards, with the apps running again
+OnSuccess=restic-photos.service
 StartLimitIntervalSec=4h
 StartLimitBurst=6
 
@@ -13,14 +15,12 @@ HostName=restic-backup
 Volume=vaultwarden-data:/source/vaultwarden:ro
 Volume=memos-data:/source/memos:ro
 Volume=homarr-appdata:/source/homarr:ro
-Volume=/var/mnt/photos:/source/photos:ro
 Volume=restic-cache:/root/.cache/restic:rw
 Secret=restic-password,type=env,target=RESTIC_PASSWORD
 Secret=restic-ssh-key,type=mount,target=/root/.ssh/id_ed25519,mode=0600
 Secret=restic-known-hosts,type=mount,target=/root/.ssh/known_hosts,mode=0644
 Environment=RESTIC_REPOSITORY=sftp:restic@nas.home.example.com:/backup/restic
-Entrypoint=/bin/sh
-Exec=-c "restic backup --exclude /source/photos/thumbs --exclude /source/photos/encoded-video /source && restic forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6"
+Exec=backup --tag apps /source/vaultwarden /source/memos /source/homarr
 
 [Service]
 Type=oneshot
@@ -31,4 +31,4 @@ ExecStartPre=/usr/bin/systemctl --user stop vaultwarden.service memos.service ho
 ExecStopPost=/usr/bin/systemctl --user start vaultwarden.service memos.service homarr.service
 Restart=on-failure
 RestartSec=30min
-TimeoutStartSec=12h
+TimeoutStartSec=1h
