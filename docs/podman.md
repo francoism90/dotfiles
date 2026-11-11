@@ -64,5 +64,6 @@ Setup per app (start with Caddy and AdGuard Home, as the others are reached thro
 - [Jellyfin](containers/jellyfin.md): media
 - [Memos](containers/memos.md): notes
 - [qBittorrent and SABnzbd](containers/downloads.md): downloads
+- [Restic](containers/restic.md): backups
 - [Syncthing](containers/syncthing.md): file sync
 - [Vaultwarden](containers/vaultwarden.md): passwords

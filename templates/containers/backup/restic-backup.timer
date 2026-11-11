@@ -1,0 +1,9 @@
+[Unit]
+Description=Restic backup timer
+
+[Timer]
+OnCalendar=Mon,Wed,Fri 10:30 Europe/Amsterdam
+Unit=restic-apps.service
+
+[Install]
+WantedBy=timers.target

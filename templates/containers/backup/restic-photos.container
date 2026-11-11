@@ -1,0 +1,25 @@
+[Unit]
+Description=Restic backup of photos
+StartLimitIntervalSec=4h
+StartLimitBurst=6
+
+[Container]
+Image=docker.io/restic/restic:latest
+Pull=newer
+SecurityLabelDisable=true
+HostName=restic-backup
+Volume=/var/mnt/photos:/source/photos:ro
+Volume=restic-cache:/root/.cache/restic:rw
+Secret=restic-password,type=env,target=RESTIC_PASSWORD
+Secret=restic-ssh-key,type=mount,target=/root/.ssh/id_ed25519,mode=0600
+Secret=restic-known-hosts,type=mount,target=/root/.ssh/known_hosts,mode=0644
+Environment=RESTIC_REPOSITORY=sftp:restic@nas.home.example.com:/backup/restic
+Entrypoint=/bin/sh
+# Prunes all snapshots; apps and photos are kept apart, as their paths differ
+Exec=-c "restic backup --tag photos --exclude /source/photos/thumbs --exclude /source/photos/encoded-video /source/photos && restic forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6"
+
+[Service]
+Type=oneshot
+Restart=on-failure
+RestartSec=30min
+TimeoutStartSec=12h
